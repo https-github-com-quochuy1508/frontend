@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import Login from '../screens/Login'
-
+import App from './App';
+import Auth from './Auth';
 const Navigation = ({users}) => {
   const [info, setInfo] = useState(null);
 
@@ -24,7 +24,7 @@ const Navigation = ({users}) => {
   useEffect(() => {
     getUser()
   }, [users]);
-  return info && Object.keys(info).length > 0 ? <Login /> : <Login />;
+  return info && Object.keys(info).length > 0 ? <App /> : <Auth />;
 };
 
 const mapStateToProps = (state) => state;
