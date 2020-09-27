@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Signup from './Signup';
+import Signup from './Signup4';
 const Stack = createStackNavigator();
 
 export default function SignupStack() {

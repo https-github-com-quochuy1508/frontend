@@ -1,15 +1,17 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './Login';
-import Signup from './Signup';
+import Signup4 from './Signup/Signup4';
+import Signup5 from './Signup/Signup5';
+import Signup6 from './Signup/Signup6';
 
 const Stack = createStackNavigator();
 
 export default function AuthStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="Số di động" component={Signup4} />
+      <Stack.Screen name="Mật khẩu" component={Signup5} />
+      <Stack.Screen name="Điều khoản & quyền riêng tư" component={Signup6} />
     </Stack.Navigator>
   );
 }
