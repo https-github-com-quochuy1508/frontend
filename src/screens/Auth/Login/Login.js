@@ -1,14 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, TouchableOpacity, StatusBar, StyleSheet, Image, Text, Keyboard} from 'react-native';
+import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable} from 'react-native';
 
 export default function Login({navigation}) {
   const [focus, setFocus] = useState(0);
   const [showImage, setShowImage] = useState(true);
-
+  const [press, setPress] = useState(0);
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const WHITE = "#FFFFFF";
+  const BLUE = "#3f77f3";
+  const GREEN = "#00AA00";
+  const LIGHT_GRAY = "#BEBEBE";
+  const GRAY = "#999999";
+  const WHITE_SMOKE = "#F5F5F5";
+  const GAINSBORO = "#DCDCDC";
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: WHITE,
     },
     inputContainer:{
       alignItems: 'center',
@@ -17,21 +26,24 @@ export default function Login({navigation}) {
     input1: {
       height: 50,
       width: 320,
-      borderBottomColor: focus == 1 ? "#3f77f3" : "#BEBEBE",
+      backgroundColor: press == 1 ? WHITE_SMOKE : WHITE,
+      borderBottomColor: focus == 1 ? BLUE : LIGHT_GRAY,
       borderBottomWidth: focus == 1 ? 2 : 0.8,
       fontSize: 18,
+      marginBottom: 10,
     },
     input2: {
       height: 50,
       width: 320,
-      borderBottomColor: focus == 2 ? "#3f77f3" : "#BEBEBE",
+      backgroundColor: press == 2 ? WHITE_SMOKE : WHITE,
+      borderBottomColor: focus == 2 ? BLUE : LIGHT_GRAY,
       borderBottomWidth: focus == 2 ? 2 : 0.8,
       fontSize: 18,
     },
     button: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#3f77f3',
+      backgroundColor: BLUE,
       marginTop: 20,
       marginBottom: 10,
       width: 320,
@@ -39,23 +51,39 @@ export default function Login({navigation}) {
       borderRadius: 4,
     },
     buttonText: {
-      color: "#ffffff", 
+      color: WHITE, 
       fontSize: 16, 
       fontWeight: "bold",
-      opacity: 0.5,
+      opacity: (user.length > 0 && password.length > 0) ? 1 : 0.5,
     },
     button2Text: {
-      color: "#ffffff", 
+      color: WHITE, 
       fontSize: 16, 
       fontWeight: "bold",
     },
     forgot: {
-      color: "#3f77f3", 
+      backgroundColor: press == 3 ? GAINSBORO : WHITE,
+      borderRadius: 5,
+      width: 150,
+      height: 30,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    newBox: {
+      backgroundColor: press == 3 ? GAINSBORO : WHITE,
+      borderRadius: 5,
+      width: 220,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    forgotText: {
+      color: BLUE, 
       fontSize: 16, 
       fontWeight: "bold"
     },
     new: {
-      color: "#3f77f3", 
+      color: BLUE, 
       fontSize: 13, 
       fontWeight: "bold"
     },
@@ -68,7 +96,7 @@ export default function Login({navigation}) {
     button2: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#00AA00',
+      backgroundColor: GREEN,
       marginTop: 70,
       marginBottom: 10,
       width: 240,
@@ -115,37 +143,63 @@ export default function Login({navigation}) {
         <TextInput 
           style={styles.input1}
           placeholder="Số điện thoại hoặc email"
-          placeholderTextColor="#999999"
+          placeholderTextColor={GRAY}
           onFocus = {() => setFocus(1)}
+          onChangeText = {(text) => {setUser(text)}}
+          onTouchStart = {() => {setPress(1)}}
+          onTouchEnd = {() => {setPress(0)}}
+          pointerEvents = 'none'
         />
         <TextInput 
           style={styles.input2}
           placeholder="Mật khẩu"
-          placeholderTextColor="#999999"
+          placeholderTextColor={GRAY}
           secureTextEntry={true}
           onFocus = {() => setFocus(2)}
+          onChangeText = {(text) => {setPassword(text)}}
+          onTouchStart = {() => {setPress(2)}}
+          onTouchEnd = {() => {setPress(0)}}
         />
-        <TouchableOpacity style={styles.button} delayPressIn>
+        <Pressable 
+          style={styles.button} 
+          disabled={user.length == 0 || password.length == 0} 
+          onPress={() => alert("Đăng nhập")}
+        >
           <Text style={styles.buttonText}>Đăng nhập</Text>
-        </TouchableOpacity>
+        </Pressable>
         {
           showImage ?
           <View style={{alignItems: 'center'}}>
-            <Text style={styles.forgot}>Quên mật khẩu?</Text>
-              <View style={styles.orContainer}>
-              <Text style={{color: "#BEBEBE"}}>─────────────</Text>
+            <Pressable 
+              style={styles.forgot} 
+              onPress={()=>{setPress(3)}} 
+              onPressIn={()=>{setPress(3)}} 
+              onLongPress={()=>{setPress(3)}} 
+              onPressOut={()=>{setPress(0)}}>
+              <Text style={styles.forgotText}>Quên mật khẩu?</Text>
+            </Pressable>
+            <View style={styles.orContainer}>
+              <Text style={{color: LIGHT_GRAY}}>─────────────</Text>
               <Text style={{color: "#696969", fontSize: 12}}> HOẶC </Text>
-              <Text style={{color: "#BEBEBE"}}>─────────────</Text>
+              <Text style={{color: LIGHT_GRAY}}>─────────────</Text>
             </View>
-            <TouchableOpacity style={styles.button2}>
+            <Pressable style={styles.button2} onPress={() => {navigation.navigate("Signup")}}>
               <Text style={styles.button2Text}>Tạo tài khoản Fakebook mới</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           :
-          <Text style={styles.new}>Tạo tài khoản Fakebook mới</Text>
+          <Pressable 
+            style={styles.newBox} 
+            onPress={()=>{setPress(3); navigation.navigate("Signup")}} 
+            onPressIn={() => {setPress(3)}}
+            onLongPress={() => {setPress(3)}}
+            onPressOut={()=>{setPress(0)}}
+          >
+            <Text style={styles.new}>Tạo tài khoản Fakebook mới</Text>
+          </Pressable>
         }
       </View>
-      <StatusBar backgroundColor={showImage ? "#2e4b8a" : "#ffffff"}/>
+      <StatusBar backgroundColor={showImage ? "#2e4b8a" : WHITE}/>
     </View>
   );
 }
