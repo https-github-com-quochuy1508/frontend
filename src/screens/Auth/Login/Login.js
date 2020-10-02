@@ -148,7 +148,6 @@ export default function Login({navigation}) {
           onChangeText = {(text) => {setUser(text)}}
           onTouchStart = {() => {setPress(1)}}
           onTouchEnd = {() => {setPress(0)}}
-          pointerEvents = 'none'
         />
         <TextInput 
           style={styles.input2}
@@ -172,10 +171,9 @@ export default function Login({navigation}) {
           <View style={{alignItems: 'center'}}>
             <Pressable 
               style={styles.forgot} 
-              onPress={()=>{setPress(3)}} 
-              onPressIn={()=>{setPress(3)}} 
-              onLongPress={()=>{setPress(3)}} 
-              onPressOut={()=>{setPress(0)}}>
+              onTouchStart={()=>{setPress(3)}} 
+              onTouchEnd={()=>{setPress(0)}} 
+            >
               <Text style={styles.forgotText}>Quên mật khẩu?</Text>
             </Pressable>
             <View style={styles.orContainer}>
@@ -190,16 +188,15 @@ export default function Login({navigation}) {
           :
           <Pressable 
             style={styles.newBox} 
-            onPress={()=>{setPress(3); navigation.navigate("Signup")}} 
-            onPressIn={() => {setPress(3)}}
-            onLongPress={() => {setPress(3)}}
-            onPressOut={()=>{setPress(0)}}
+            onPress={() => navigation.navigate("Signup")} 
+            onTouchStart={() => {setPress(3)}}
+            onTouchEnd={()=>{setPress(0)}}
           >
             <Text style={styles.new}>Tạo tài khoản Fakebook mới</Text>
           </Pressable>
         }
       </View>
-      <StatusBar backgroundColor={showImage ? "#2e4b8a" : WHITE}/>
+      <StatusBar backgroundColor={showImage ? "#2e4b8a" : WHITE} barStyle="light-content"/>
     </View>
   );
 }
