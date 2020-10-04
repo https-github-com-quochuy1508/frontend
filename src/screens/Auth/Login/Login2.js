@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Text, StatusBar, Image, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import Icon3 from 'react-native-vector-icons/Octicons';
-
 
 export default function Login2({navigation}) {
     const [press, setPress] = useState(0);
@@ -84,6 +82,7 @@ export default function Login2({navigation}) {
             <View style={{width: "100%"}}>
                 <Pressable 
                     style={styles.account}
+                    onPress={() => navigation.navigate('Login3')}
                     onTouchStart={() => setPress(1)}
                     onTouchEnd={() => setPress(0)}
                     onPressOut={() => setPress(0)}
@@ -103,7 +102,12 @@ export default function Login2({navigation}) {
                     onPressOut={() => setPress(0)}
                 >
                     <View style={styles.icon}>
-                        <Icon2 name="add" size={23} color={BLUE}/>
+                        {
+                            press == 2 ?
+                            <Icon name="plus" size={23} color={BLUE}/>
+                            :
+                            <Icon2 name="add" size={23} color={BLUE}/>
+                        }
                     </View>
                     <Text style={styles.anotherText}>Đăng nhập bằng tài khoản khác</Text>
                 </Pressable>
@@ -114,7 +118,7 @@ export default function Login2({navigation}) {
                     onPressOut={() => setPress(0)}
                 >
                     <View style={styles.icon}>
-                        <Icon3 name="search" size={20} color={BLUE}/>
+                        <Icon2 name={press == 3 ? "search-sharp" : "search-outline"} size={20} color={BLUE}/>
                     </View>
                     <Text style={styles.anotherText}>Tìm tài khoản</Text>
                 </Pressable>
