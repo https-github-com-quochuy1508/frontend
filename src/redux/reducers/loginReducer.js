@@ -1,14 +1,21 @@
-import {PROCESSING_AUTHENTICATE_USER, LOG_OUT} from '../actions/loginAction';
+import {
+  AUTHENTICATED,
+  NOT_AUTHENTICATED,
+  LOG_OUT,
+} from '../actions/loginAction';
 
-const users = (state = {}, action) => {
+const users = (state = null, action) => {
   switch (action.type) {
-    case PROCESSING_AUTHENTICATE_USER:
+    case AUTHENTICATED:
       return {
         ...state,
-        session: action.session,
+        result: action.result,
       };
-    case LOG_OUT:
-      return {};
+    case NOT_AUTHENTICATED:
+      return {
+        ...state,
+        result: action.error,
+      };
     default:
       return state;
   }

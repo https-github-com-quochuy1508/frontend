@@ -11,14 +11,17 @@ export const requestAuthenticateUser = (data) => ({
   payload: data,
 });
 
-export const processAuthenticateUser = (
-  type = AUTHENTICATING,
-  session = null,
-) => {
+export const authenticateSuccess = (response = null) => {
   return {
-    type: PROCESSING_AUTHENTICATE_USER,
-    session,
-    status: type,
+    type: AUTHENTICATED,
+    result: response,
+  };
+};
+
+export const authenticateFail = (response = null) => {
+  return {
+    type: NOT_AUTHENTICATED,
+    error: response,
   };
 };
 
