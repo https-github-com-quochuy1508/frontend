@@ -1,17 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TextInput,
-  StatusBar,
-  StyleSheet,
-  Image,
-  Text,
-  Keyboard,
-  Pressable,
-  ToastAndroid,
-} from 'react-native';
+import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable, ToastAndroid} from 'react-native';
 import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
+import * as Colors from '../../../assets/Colors'
 
 function Login({navigation, login, infoUser, error}) {
   const [focus, setFocus] = useState(0);
@@ -20,17 +11,11 @@ function Login({navigation, login, infoUser, error}) {
   const [user, setUser] = useState('');
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState('');
-  const WHITE = '#FFFFFF';
-  const BLUE = '#3f77f3';
-  const GREEN = '#00AA00';
-  const LIGHT_GRAY = '#BEBEBE';
-  const GRAY = '#999999';
-  const WHITE_SMOKE = '#F5F5F5';
-  const GAINSBORO = '#DCDCDC';
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: WHITE,
+      backgroundColor: Colors.WHITE,
     },
     inputContainer: {
       alignItems: 'center',
@@ -39,8 +24,8 @@ function Login({navigation, login, infoUser, error}) {
     input1: {
       height: 50,
       width: 320,
-      backgroundColor: press == 1 ? WHITE_SMOKE : WHITE,
-      borderBottomColor: focus == 1 ? BLUE : LIGHT_GRAY,
+      backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE,
+      borderBottomColor: focus == 1 ? Colors.BLUE : Colors.LIGHTGRAY,
       borderBottomWidth: focus == 1 ? 2 : 0.8,
       fontSize: 18,
       marginBottom: 10,
@@ -48,15 +33,15 @@ function Login({navigation, login, infoUser, error}) {
     input2: {
       height: 50,
       width: 320,
-      backgroundColor: press == 2 ? WHITE_SMOKE : WHITE,
-      borderBottomColor: focus == 2 ? BLUE : LIGHT_GRAY,
+      backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE,
+      borderBottomColor: focus == 2 ? Colors.BLUE : Colors.LIGHTGRAY,
       borderBottomWidth: focus == 2 ? 2 : 0.8,
       fontSize: 18,
     },
     button: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: BLUE,
+      backgroundColor: Colors.BLUE,
       marginTop: 20,
       marginBottom: 10,
       width: 320,
@@ -64,18 +49,18 @@ function Login({navigation, login, infoUser, error}) {
       borderRadius: 4,
     },
     buttonText: {
-      color: WHITE,
+      color: Colors.WHITE,
       fontSize: 16,
       fontWeight: 'bold',
       opacity: user.length > 0 && password.length > 0 ? 1 : 0.5,
     },
     button2Text: {
-      color: WHITE,
+      color: Colors.WHITE,
       fontSize: 16,
       fontWeight: 'bold',
     },
     forgot: {
-      backgroundColor: press == 3 ? GAINSBORO : WHITE,
+      backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE,
       borderRadius: 5,
       width: 150,
       height: 30,
@@ -83,7 +68,7 @@ function Login({navigation, login, infoUser, error}) {
       justifyContent: 'center',
     },
     newBox: {
-      backgroundColor: press == 3 ? GAINSBORO : WHITE,
+      backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE,
       borderRadius: 5,
       width: 220,
       height: 40,
@@ -91,12 +76,12 @@ function Login({navigation, login, infoUser, error}) {
       justifyContent: 'center',
     },
     forgotText: {
-      color: BLUE,
+      color: Colors.BLUE,
       fontSize: 16,
       fontWeight: 'bold',
     },
     new: {
-      color: BLUE,
+      color: Colors.BLUE,
       fontSize: 13,
       fontWeight: 'bold',
     },
@@ -104,13 +89,13 @@ function Login({navigation, login, infoUser, error}) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 70,
+      marginTop: 65,
     },
     button2: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: GREEN,
-      marginTop: 70,
+      backgroundColor: Colors.GREEN,
+      marginTop: 65,
       marginBottom: 10,
       width: 240,
       height: 35,
@@ -146,7 +131,7 @@ function Login({navigation, login, infoUser, error}) {
     <View style={styles.container}>
       {showImage ? (
         <Image
-          style={{height: 200, marginBottom: 100}}
+          style={{height: 200, marginBottom: 90}}
           source={{
             uri:
               'https://raw.githubusercontent.com/ihsaninh/facebook-clone-react-native/master/src/img/banner.png',
@@ -155,7 +140,7 @@ function Login({navigation, login, infoUser, error}) {
         />
       ) : (
         <View
-          style={{alignItems: 'center', justifyContent: 'center', height: 250}}>
+          style={{alignItems: 'center', justifyContent: 'center', height: 210, paddingTop: 25}}>
           <Image
             style={{height: 65, width: 65}}
             source={{
@@ -169,7 +154,7 @@ function Login({navigation, login, infoUser, error}) {
         <TextInput
           style={styles.input1}
           placeholder="Số điện thoại hoặc email"
-          placeholderTextColor={GRAY}
+          placeholderTextColor={Colors.GRAY}
           onFocus={() => setFocus(1)}
           onChangeText={(text) => {
             setUser(text);
@@ -184,7 +169,7 @@ function Login({navigation, login, infoUser, error}) {
         <TextInput
           style={styles.input2}
           placeholder="Mật khẩu"
-          placeholderTextColor={GRAY}
+          placeholderTextColor={Colors.GRAY}
           secureTextEntry={true}
           onFocus={() => setFocus(2)}
           onChangeText={(text) => {
@@ -222,9 +207,9 @@ function Login({navigation, login, infoUser, error}) {
               <Text style={styles.forgotText}>Quên mật khẩu?</Text>
             </Pressable>
             <View style={styles.orContainer}>
-              <Text style={{color: LIGHT_GRAY}}>─────────────</Text>
+              <Text style={{color: Colors.LIGHTGRAY}}>─────────────</Text>
               <Text style={{color: '#696969', fontSize: 12}}> HOẶC </Text>
-              <Text style={{color: LIGHT_GRAY}}>─────────────</Text>
+              <Text style={{color: Colors.LIGHTGRAY}}>─────────────</Text>
             </View>
             <Pressable
               style={styles.button2}
@@ -249,7 +234,7 @@ function Login({navigation, login, infoUser, error}) {
         )}
       </View>
       <StatusBar
-        backgroundColor={showImage ? '#2e4b8a' : WHITE}
+        backgroundColor={showImage ? '#2e4b8a' : Colors.WHITE}
         barStyle="light-content"
       />
       {visible

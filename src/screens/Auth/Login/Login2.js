@@ -2,13 +2,11 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Text, StatusBar, Image, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/Ionicons';
+import * as Colors from '../../../assets/Colors'
 
 export default function Login2({navigation}) {
     const [press, setPress] = useState(0);
-    const WHITE = "#FFFFFF";
-    const BLUE = "#3f77f3";
-    const SLATE_GRAY = "rgba(198, 226, 255, 0.4)";
-    const WHITE_SMOKE = "#F5F5F5";
+    
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -22,7 +20,7 @@ export default function Login2({navigation}) {
             marginTop: 30,
             paddingTop: 10,
             paddingBottom: 10,
-            backgroundColor: press == 1 ? WHITE_SMOKE : WHITE,
+            backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE,
         },
         name: {
             fontWeight: 'bold',
@@ -34,22 +32,22 @@ export default function Login2({navigation}) {
             alignItems: 'center',
             paddingTop: 8,
             paddingBottom: 8,
-            backgroundColor: press == 2 ? WHITE_SMOKE : WHITE,
+            backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE,
         },
         find: {
             flexDirection: 'row',
             alignItems: 'center',
             paddingTop: 8,
             paddingBottom: 8,
-            backgroundColor: press == 3 ? WHITE_SMOKE : WHITE,
+            backgroundColor: press == 3 ? Colors.WHITESMOKE : Colors.WHITE,
         },
         anotherText: {
             fontWeight: 'bold', 
-            color: BLUE, 
+            color: Colors.BLUE, 
             marginLeft: 15
         },
         icon: {
-            backgroundColor: SLATE_GRAY, 
+            backgroundColor: Colors.SLATEGRAY, 
             borderRadius: 6,
             height: 28,
             width: 28,
@@ -60,7 +58,7 @@ export default function Login2({navigation}) {
         button: {
             width: 320,
             height: 38,
-            backgroundColor: press == 4 ? WHITE_SMOKE : SLATE_GRAY,
+            backgroundColor: press == 4 ? Colors.WHITESMOKE : Colors.SLATEGRAY,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 5,
@@ -68,7 +66,7 @@ export default function Login2({navigation}) {
             bottom: 30,
         },
         signup: {
-            color: BLUE,
+            color: Colors.BLUE,
             fontWeight: 'bold',
         }
     })
@@ -104,9 +102,9 @@ export default function Login2({navigation}) {
                     <View style={styles.icon}>
                         {
                             press == 2 ?
-                            <Icon name="plus" size={23} color={BLUE}/>
+                            <Icon name="plus" size={23} color={Colors.BLUE}/>
                             :
-                            <Icon2 name="add" size={23} color={BLUE}/>
+                            <Icon2 name="add" size={23} color={Colors.BLUE}/>
                         }
                     </View>
                     <Text style={styles.anotherText}>Đăng nhập bằng tài khoản khác</Text>
@@ -118,7 +116,7 @@ export default function Login2({navigation}) {
                     onPressOut={() => setPress(0)}
                 >
                     <View style={styles.icon}>
-                        <Icon2 name={press == 3 ? "search-sharp" : "search-outline"} size={20} color={BLUE}/>
+                        <Icon2 name={press == 3 ? "search-sharp" : "search-outline"} size={20} color={Colors.BLUE}/>
                     </View>
                     <Text style={styles.anotherText}>Tìm tài khoản</Text>
                 </Pressable>
@@ -132,7 +130,7 @@ export default function Login2({navigation}) {
             >
                 <Text style={styles.signup}>TẠO TÀI KHOẢN FAKEBOOK MỚI</Text>
             </Pressable>
-            <StatusBar backgroundColor="#ffffff" barStyle="dark-content"/>
+            <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content"/>
         </View>
     )
 }

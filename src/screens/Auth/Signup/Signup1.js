@@ -1,21 +1,24 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity,StyleSheet, onPress, Alert} from 'react-native';
+import {View, Text, Image, TouchableOpacity,StyleSheet, Alert} from 'react-native';
+import * as Colors from '../../../assets/Colors'
 
 export default function Signup1({navigation}) {
 
   const createTwoButtonAlert = () =>
   Alert.alert(
     "Bạn có muốn dừng tạo tài khoản không?",
-    "Nếu dừng bây giờ, bạn sẽ mât toàn bọ tiến trình cho đến nay.",
+    "Nếu dừng bây giờ, bạn sẽ mât toàn bộ tiến trình cho đến nay.",
     [
       {
-        text: "Tiếp tục tạo tài khoản",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "contin",
+        text: "Dừng tạo tài khoản",
+        onPress: () => navigation.navigate('Login'),
       },
-      { text: "Dừng tạo tài khoản ", onPress: () => navigation.navigate('Login') }
+      { 
+        text: "Tiếp tục tạo tài khoản ",
+        style: 'cancel'
+      }
     ],
-    { cancelable: false }
+    { cancelable: true }
   );
 
 
@@ -29,13 +32,14 @@ export default function Signup1({navigation}) {
           Tham gia Fakebook
         </Text>
         <Text style={styles.text2}>
-          Chúng tôi sẽ giúp bạn tạo tài khoản mới sau vài bước dễ dàng 
+          Chúng tôi sẽ giúp bạn tạo tài khoản mới sau vài bước dễ dàng. 
         </Text>
         <TouchableOpacity 
-        style={styles.buttonContainer} 
-        onPress={() => navigation.navigate('Name')}
+          style={styles.buttonContainer} 
+          onPress={() => navigation.navigate('Name')}
+          activeOpacity={0.8}
         >
-          <Text style={styles.textButton}> Tiếp </Text>
+          <Text style={styles.textButton}>Tiếp</Text>
         </TouchableOpacity>
         <Text style={styles.text3} onPress={createTwoButtonAlert}>
           Bạn đã có tài khoản?
@@ -45,85 +49,46 @@ export default function Signup1({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex:1,
-    flexDirection:'column',
-    // justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#FFF',
-    // position:'relative'
+    alignItems: 'center',
+    backgroundColor: Colors.WHITE,
   },
-  image:{
+  image: {
     marginTop:'5%',
   },
-  text1:{
-    marginTop:'7%',
-    fontSize:18,
-    fontWeight:"700",
+  text1: {
+    marginTop: '14%',
+    fontSize: 18,
+    fontWeight: "bold",
   },  
-  text2:{
-    marginTop:'2%',
-    fontSize:15,
-    marginHorizontal:30,
+  text2: {
+    marginTop:'4%',
+    fontSize: 14,
+    width: "90%",
     textAlign:'center',
-    lineHeight:20,
-    color:'#666'
+    lineHeight: 20,
+    color: Colors.DARKGRAY,
   },
-  textButton:{
-    fontSize:18,
-    fontWeight:"600",
+  textButton: {
+    fontSize: 14,
     alignItems:'center',
-    color:'#fff',
+    color: Colors.WHITE,
   },
   buttonContainer: {
-    marginTop:'7%',
-    paddingHorizontal:150,
-    paddingVertical:11,
-    backgroundColor:'#1878f3',
-    borderRadius:5,
+    marginTop: '12%',
+    backgroundColor: Colors.BLUE,
+    borderRadius: 5,
+    width: "90%",
+    height: 42,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  text3:{
+  text3: {
     position:'absolute',
     bottom:'1.5%',
-    color:'#1878f3',
-    fontWeight:"700",
-    fontSize:15,
+    color: Colors.BLUE,
+    fontWeight: "bold",
+    fontSize: 14,
   },
-  // inputContainer:{
-  //   flexDirection:'row',
-  //   marginTop:'8%',
-  //   marginBottom:'8%',
-  //   justifyContent:'space-between'
-  // },  
-  // textInput:{
-  //   width:'43%',
-  //   height:40,
-  //   fontSize:18,
-  //   backgroundColor:'#fff',
-  //   borderBottomColor: focus == 1 ? '#1878f3':'#ccc',
-  //   borderBottomWidth: focus == 1 ? 2 : 1,
-  //   marginHorizontal:5,
-  //   paddingHorizontal:10,
-  //   paddingVertical:0,
-  // },
-  // textInput2:{
-  //   width:'43%',
-  //   height:40,
-  //   fontSize:18,
-  //   backgroundColor:'#fff',
-  //   borderBottomColor: focus == 2 ? '#1878f3':'#ccc',
-  //   borderBottomWidth: focus == 2 ? 2 : 1,
-  //   marginHorizontal:5,
-  //   paddingHorizontal:10,
-  //   paddingVertical:0,
-  // },
-  inputFocused:{
-    borderBottomColor:'#000',
-    borderRightColor:'#000',
-    borderRightWidth:2,
-  },
-  contin:{
-    color:'blue',
-    fontSize:20,
-  }
 })

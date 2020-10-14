@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text,StyleSheet,Button,navigation} from 'react-native';
+import {View, Text,StyleSheet,Button} from 'react-native';
 // import DatePicker from 'react-native-date-picker';
 
 export default function Signup3({navigation}) {

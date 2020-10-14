@@ -1,21 +1,16 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text, TextInput, Image, Pressable, KeyboardAvoidingView} from 'react-native';
+import * as Colors from '../../../assets/Colors'
 
 export default function Login3() {
     const [password, setPassword] = useState("");
     const [press, setPress] = useState(0);
     const [show, setShow] = useState(false);
-    const WHITE = "#FFFFFF";
-    const GRAY = "#999999";
-    const LIGHT_GRAY = "#BEBEBE";
-    const BLUE = "#3f77f3";
-    const WHITE_SMOKE = "#F5F5F5";
-
 
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: WHITE,
+            backgroundColor: Colors.WHITE,
             alignItems: 'center',
             justifyContent: 'center',
         },
@@ -31,12 +26,12 @@ export default function Login3() {
             height: 45,
             borderWidth: 1,
             borderRadius: 5,
-            borderColor: LIGHT_GRAY,
+            borderColor: Colors.LIGHTGRAY,
             fontSize: 18,
             width: password.length > 0 ? (show ? 292 : 257) : 320,
         },
         show: {
-            backgroundColor: press == 2 ? WHITE_SMOKE : WHITE, 
+            backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE, 
             height: 45,
             alignItems: 'center',
             justifyContent: 'center',
@@ -46,7 +41,7 @@ export default function Login3() {
         button: {
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: BLUE,
+            backgroundColor: Colors.BLUE,
             marginTop: 15,
             marginBottom: 35,
             width: 320,
@@ -54,12 +49,12 @@ export default function Login3() {
             borderRadius: 4,
         },
         buttonText: {
-            color: WHITE, 
+            color: Colors.WHITE, 
             fontWeight: "bold",
             opacity: password.length > 0 ? 1 : 0.5,
         },
         forgot: {
-            backgroundColor: press == 1 ? WHITE_SMOKE : WHITE,
+            backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE,
             borderRadius: 5,
             paddingHorizontal: 5,
             height: 30,
@@ -67,7 +62,7 @@ export default function Login3() {
             justifyContent: 'center'
         },
         forgotText: {
-            color: BLUE, 
+            color: Colors.BLUE, 
             fontWeight: "bold"
         },
     })
@@ -84,7 +79,7 @@ export default function Login3() {
                         style={styles.input}
                         autoFocus={true}
                         placeholder="Mật khẩu"
-                        placeholderTextColor={GRAY}
+                        placeholderTextColor={Colors.GRAY}
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={!show}
                     />

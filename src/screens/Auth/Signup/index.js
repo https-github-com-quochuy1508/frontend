@@ -8,10 +8,20 @@ const Stack = createStackNavigator();
 
 export default function SignupStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Create" component={Signup1} options={{ title: 'Welcome11' }}/>
-      <Stack.Screen name="Name" component={Signup2} options={{ title: 'Welcome22' }} />
-      <Stack.Screen name="Birth" component={Signup3}  options={{ title: 'Welcome33' }}/>
+    <Stack.Navigator 
+      screenOptions={{
+        headerStyle: {
+          elevation: 0, 
+          borderBottomWidth: 0.8
+        },
+        headerTitleStyle: {
+          fontSize: 17,
+        }
+      }}
+    >
+      <Stack.Screen name="Create" component={Signup1} options={{ title: 'Tạo tài khoản' }}/>
+      <Stack.Screen name="Name" component={Signup2} options={{ title: 'Tên' }} />
+      <Stack.Screen name="Birth" component={Signup3}  options={{ title: 'Ngày sinh' }}/>
     </Stack.Navigator>
   );
 }
