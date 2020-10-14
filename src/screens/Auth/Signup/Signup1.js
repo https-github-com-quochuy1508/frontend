@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity,StyleSheet, Alert} from 'react-native';
+import {View, Text, Image, TouchableOpacity,StyleSheet, Alert, StatusBar} from 'react-native';
 import * as Colors from '../../../assets/Colors'
 
 export default function Signup1({navigation}) {
@@ -44,6 +44,7 @@ export default function Signup1({navigation}) {
         <Text style={styles.text3} onPress={createTwoButtonAlert}>
           Bạn đã có tài khoản?
         </Text>
+        <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content"/>
     </View>
   );
 }

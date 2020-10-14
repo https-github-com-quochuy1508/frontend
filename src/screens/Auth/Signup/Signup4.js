@@ -48,7 +48,7 @@ function Signup({navigation}) {
         <Button
         title='Tiếp'
         color='#2176E1'
-        onPress={() => navigation.navigate('Mật khẩu')}
+        onPress={() => navigation.navigate('Password')}
         />
       </View>
     </View>

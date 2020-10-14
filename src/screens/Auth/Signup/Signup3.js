@@ -1,73 +1,82 @@
-import React from 'react';
-import {View, Text,StyleSheet,Button} from 'react-native';
-// import DatePicker from 'react-native-date-picker';
+import React, { useState, useEffect} from 'react'
+import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native'
+import DatePicker from 'react-native-date-picker'
+import * as Colors from '../../../assets/Colors'
 
-export default function Signup3({navigation}) {
+export default function Signup3 ({navigation, route}) {
+
+  const [date, setDate] = useState(new Date())
+
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        e.preventDefault();
+        Alert.alert(
+          "Bạn có muốn dừng tạo tài khoản không?",
+          "Nếu dừng bây giờ, bạn sẽ mât toàn bộ tiến trình cho đến nay.",
+          [
+            {
+              text: "Dừng tạo tài khoản",
+              style: "destructive",
+              onPress: () => navigation.dispatch(e.data.action),
+            },
+            { 
+              text: "Tiếp tục tạo tài khoản ",
+              style: 'cancel'
+            }
+          ],
+          { cancelable: true }
+        );
+      }),
+    [navigation]
+  );
+
+  const current = new Date();
   return (
     <View style={styles.container}>
-
-        {/* <DatePicker
-              mode="date"
-              // date={01/01/2000}
-              // onDateChange={02/02/2020}
-              androidVariant= 'nativeAndroid'
-            />  */}
-
-        <Button
-        title="Go to Signup4"
-        onPress={() => navigation.navigate('Create')}
+      <Text style={styles.text}>Sinh nhật của bạn khi nào?</Text>
+      <DatePicker
+        date={date}
+        onDateChange={(date) => setDate(date)}
+        androidVariant="nativeAndroid"
+        mode="date"
+        maximumDate={current}
       />
-      <Text>Signup3 Screen</Text>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => navigation.navigate("Gender")}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.textButton}>Tiếp</Text>
+      </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    flexDirection:'column',
-    justifyContent:'center',
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: "20%",
+    marginBottom: "4%"
+  },
+  textButton: {
+    fontSize: 14,
     alignItems:'center',
-    backgroundColor:'#FFF',
-    // position:'relative'
+    color: Colors.WHITE,
   },
-  image:{
-    width:300,
-    height:220,
-    top:'3%',
-    position:'absolute',
-  },
-  text1:{
-    marginTop:80,
-    fontSize:18,
-    fontWeight:"700",
-  },
-  text2:{
-    marginTop:'5%',
-    fontSize:16,
-    color:'#777',
-    marginHorizontal:30,
-    textAlign:"center",
-    lineHeight:22,
-  },
-  textButton:{
-    fontSize:18,
-    fontWeight:"600",
-    alignItems:'center',
-    color:'#fff',
-  },
-  buttonContainer: {
-    marginTop:30,
-    paddingHorizontal:150,
-    paddingVertical:13,
-    backgroundColor:'#1878f3',
+  button: {
+    width: "90%",
+    height: 44,
+    backgroundColor: Colors.BLUE,
     borderRadius:6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: "19%"
   },
-  text3:{
-    fontWeight:"700",
-    fontSize: 16,
-    color:'#3178d2',
-    position:'absolute',
-    bottom:'1%',
-  }
 })

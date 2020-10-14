@@ -15,7 +15,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-
+import com.henninghall.date_picker.DatePickerPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
                             new SafeAreaContextPackage(),
                             new RNGestureHandlerPackage(),
                             new SplashScreenReactPackage(), // <-- this needs to be in the list
-                            new AsyncStoragePackage()
+                            new AsyncStoragePackage(),
+                            new DatePickerPackage()
                     );
                 }
 

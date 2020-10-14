@@ -155,6 +155,7 @@ function Login({navigation, login, infoUser, error}) {
           style={styles.input1}
           placeholder="Số điện thoại hoặc email"
           placeholderTextColor={Colors.GRAY}
+          returnKeyType="next"
           onFocus={() => setFocus(1)}
           onChangeText={(text) => {
             setUser(text);
