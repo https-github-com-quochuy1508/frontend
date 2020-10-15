@@ -1,56 +1,104 @@
-import React, { useState } from 'react';
-import {View, Text, StyleSheet, Button, Pressable} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Keyboard} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import * as Colors from '../../../assets/Colors'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from '../../../components/NextButton';
 
-const styles = StyleSheet.create({
-  text: {
-    paddingTop: 120,
-    fontSize: 24,
-    textAlign: 'center',
-  },
 
-  title: {
-    paddingLeft: 24,
-    fontSize: 16,
-    color: '#2176E1',
-  },
+function Signup({navigation, route}) {
+  const [key, setKey] = useState(false);
+  const [wrong, setWrong] = useState(false);
+  const [phone, setPhone] = useState("");
 
-  textInput: {
-    fontSize:20,
-    paddingLeft: 24,
-    borderBottomWidth: 2,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    borderBottomColor: '#2176E1',
-    marginBottom: 70,
-  },
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
 
-  button: {
-    padding: 30,
-  },
-});
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+    };
+  }, []);
 
-function Signup({navigation}) {
+  const _keyboardDidShow = () => {
+    setKey(true);
+  };
 
+  const _keyboardDidHide = () => {
+    setKey(false);
+  };
+
+  const submit = () => {
+    let regex = new RegExp(/^\d+$/);
+    if(regex.test(phone)) {
+      setWrong(false);
+      navigation.navigate("Password", {
+        firstName: route.params.firstName,
+        lastName: route.params.lastName,
+        birth: route.params.birth,
+        phone: phone
+      })
+    } else {
+      setWrong(true);
+    }
+  }
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.WHITE,
+      alignItems: 'center'
+    },
+    inputContainer: {
+      width: "90%",
+      alignItems: 'center',
+      marginBottom: key ? "14%" : "22%"
+    },
+    text: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: key ? "13%" : "22%",
+      marginBottom: "4%"
+    },
+    title: {
+      fontSize: 12,
+      color: Colors.BLUE,
+      alignSelf: "flex-start",
+      marginTop: "4%"
+    },
+    textInput: {
+      fontSize: 18,
+      width: "100%",
+      borderBottomColor: Colors.BLUE,
+      borderBottomWidth: 2
+    }
+  });
   return (
-    <View style={{flex: 1,}}>
-      <Text style={styles.text}> Nhập số di động của bạn {"\n"}</Text>
-      <Text style={styles.title}>Số di động</Text>
-      <TextInput
-        style={styles.textInput}
-        keyboardType = 'numeric'
-        textContentType = 'telephoneNumber'
-      />
-      <View style={styles.button}>
-        <Pressable
-
-        />
-        <Button
-        title='Tiếp'
-        color='#2176E1'
-        onPress={() => navigation.navigate('Password')}
+    <View style={styles.container}>
+      <Text style={styles.text}> Nhập số di động của bạn</Text>
+      {
+        wrong ? 
+        <View style={{width: "90%", alignItems: 'center'}}>
+        <Text style={{color: Colors.RED}}>Vui lòng nhập số điện thoại hợp lệ.</Text>
+        <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{alignSelf: "flex-end"}}/>
+      </View> : null
+      }
+      <View style={styles.inputContainer}>
+        <Text style={styles.title}>Số di động</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => setPhone(text)}
+          keyboardType = "phone-pad"
+          textContentType = 'telephoneNumber'
+          autoFocus={true}
+          selectionColor={Colors.BLUE}
+          onSubmitEditing={() => submit()}
         />
       </View>
+      <TouchableOpacity onPress={() => submit()} activeOpacity={0.8}>
+        <Button/>
+      </TouchableOpacity>
     </View>
   );
 }

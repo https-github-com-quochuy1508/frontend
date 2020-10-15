@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {View, Text,StyleSheet,TouchableOpacity,TextInput, Keyboard, Alert} from 'react-native';
 import * as Colors from '../../../assets/Colors'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from '../../../components/NextButton';
 
 export default function Signup2({navigation}) {
   const [focus, setFocus] = useState(0);
@@ -79,24 +80,10 @@ export default function Signup2({navigation}) {
       fontSize: 18,
       fontWeight: "bold",
     },
-    textButton: {
-      fontSize: 14,
-      alignItems:'center',
-      color: Colors.WHITE,
-    },
-    buttonContainer: {
-      width: "90%",
-      height: 44,
-      marginTop: key ? "8%" : "18%",
-      backgroundColor: Colors.BLUE,
-      borderRadius:6,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
     inputContainer:{
       flexDirection:'row',
       marginTop:'8%',
-      marginBottom:'8%',
+      marginBottom: key ? "16%" : "26%",
     },  
     textInput:{
       width:'43%',
@@ -151,12 +138,8 @@ export default function Signup2({navigation}) {
           onChangeText={(text) => setLastName(text.trim())}
         />
       </View>
-      <TouchableOpacity 
-        style={styles.buttonContainer} 
-        onPress={() => submit()}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.textButton}>Tiếp</Text>
+      <TouchableOpacity onPress={() => submit()} activeOpacity={0.8}>
+        <Button/>
       </TouchableOpacity>
     </View>
   );
