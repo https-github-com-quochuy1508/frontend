@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Keyboard} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import {View, Text, StyleSheet, TouchableOpacity, Keyboard, TextInput} from 'react-native';
 import * as Colors from '../../../assets/Colors'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../../components/NextButton';
@@ -31,7 +30,7 @@ function Signup({navigation, route}) {
   };
 
   const submit = () => {
-    let regex = new RegExp(/^\d+$/);
+    let regex = new RegExp(/^\d{10}$/);
     if(regex.test(phone)) {
       setWrong(false);
       navigation.navigate("Password", {
@@ -76,7 +75,7 @@ function Signup({navigation, route}) {
   });
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Nhập số di động của bạn</Text>
+      <Text style={styles.text}>Nhập số di động của bạn</Text>
       {
         wrong ? 
         <View style={{width: "90%", alignItems: 'center'}}>

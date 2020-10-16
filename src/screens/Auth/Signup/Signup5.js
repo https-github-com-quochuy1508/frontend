@@ -1,56 +1,103 @@
-import React, { useState } from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Keyboard , TextInput} from 'react-native';
+import * as Colors from '../../../assets/Colors'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from '../../../components/NextButton';
 
-const styles = StyleSheet.create({
-  text: {
-    paddingTop: 120,
-    fontSize: 24,
-    textAlign: 'center',
-  },
 
-  title: {
-    paddingLeft: 24,
-    fontSize: 16,
-    color: '#2176E1',
-  },
+export default function Signup5({navigation, route}) {
+  const [key, setKey] = useState(false);
+  const [wrong, setWrong] = useState(false);
+  const [passWord, setPassWord] = useState("");
 
-  textInput: {
-    fontSize:20,
-    paddingLeft: 24,
-    borderBottomWidth: 2,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    borderBottomColor: '#2176E1',
-    marginBottom: 70,
-  },
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
 
-  button: {
-    padding: 30,
-  },
-});
+    // cleanup function
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+    };
+  }, []);
 
-function Signup({navigation}) {
+  const _keyboardDidShow = () => {
+    setKey(true);
+  };
 
+  const _keyboardDidHide = () => {
+    setKey(false);
+  };
+
+  const submit = () => {
+    if(passWord.length >= 6) {
+      setWrong(false);
+      navigation.navigate("Rule", {
+        firstName: route.params.firstName,
+        lastName: route.params.lastName,
+        birth: route.params.birth,
+        phone: route.params.phone,
+        passWord: passWord
+      })
+    } else {
+      setWrong(true);
+    }
+  }
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.WHITE,
+      alignItems: 'center'
+    },
+    inputContainer: {
+      width: "90%",
+      alignItems: 'center',
+      marginBottom: key ? "14%" : "22%"
+    },
+    text: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: key ? "13%" : "22%",
+      marginBottom: "4%"
+    },
+    title: {
+      fontSize: 12,
+      color: Colors.BLUE,
+      alignSelf: "flex-start",
+      marginTop: "4%"
+    },
+    textInput: {
+      fontSize: 18,
+      width: "100%",
+      borderBottomColor: Colors.BLUE,
+      borderBottomWidth: 2
+    }
+  });
   return (
-    <View style={{flex: 1,}}>
-      <Text style={styles.text}> Chọn mật khẩu {"\n"}</Text>
-      <Text style={styles.title}>Mật khẩu</Text>
-      <TextInput
-        style={styles.textInput}
-        keyboardType = 'default'
-        textContentType = 'password'
-      />
-      <View style={styles.button}>
-        <Button
-        title='Tiếp'
-        color='#2176E1'
-        onPress={() => navigation.navigate('Điều khoản & quyền riêng tư')}
+    <View style={styles.container}>
+      <Text style={styles.text}>Chọn mật khẩu</Text>
+      {
+        wrong ? 
+        <View style={{width: "90%", alignItems: 'center'}}>
+        <Text style={{color: Colors.RED}}>Mật khẩu của bạn phải có tối thiểu 6 chữ cái, số</Text>
+        <Text style={{color: Colors.RED}}>và biểu tượng (như ! và %%).</Text>
+        <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{position: "absolute", bottom: 0, right: 0}}/>
+      </View> : null
+      }
+      <View style={styles.inputContainer}>
+        <Text style={styles.title}>Mật khẩu</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => setPassWord(text)}
+          textContentType = "password"
+          autoFocus={true}
+          selectionColor={Colors.BLUE}
+          onSubmitEditing={() => submit()}
         />
       </View>
+      <TouchableOpacity onPress={() => submit()} activeOpacity={0.8}>
+        <Button/>
+      </TouchableOpacity>
     </View>
   );
 }
-
-
-export default Signup;

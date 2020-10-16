@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
 })
-export default function Button() {
+export default function Button({done}) {
     return(
         <View style={styles.button}>
-            <Text style={styles.textButton}>Tiếp</Text>
+            <Text style={styles.textButton}>{done ? "Đăng ký" : "Tiếp"}</Text>
         </View>
     )
 }

@@ -22,12 +22,12 @@ export default function SignupStack() {
         }
       }}
     >
+      <Stack.Screen name="Rule" component={Signup6}  options={{ title: 'Điều khoản & quyền riêng tư' }}/>
       <Stack.Screen name="Create" component={Signup1} options={{ title: 'Tạo tài khoản' }}/>
       <Stack.Screen name="Name" component={Signup2} options={{ title: 'Tên' }} />
       <Stack.Screen name="Birth" component={Signup3}  options={{ title: 'Ngày sinh' }}/>
       <Stack.Screen name="Phone" component={Signup4} options={{ title: 'Số điện thoại' }}/>
       <Stack.Screen name="Password" component={Signup5} options={{ title: 'Mật khẩu' }} />
-      <Stack.Screen name="Rule" component={Signup6}  options={{ title: 'Điều khoản & quyền riêng tư' }}/>
     </Stack.Navigator>
   );
 }
