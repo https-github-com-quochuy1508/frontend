@@ -1,4 +1,4 @@
-package com.edubot; // Change this to your package name.
+package com.fakebook; // Change this to your package name.
 
 import android.content.Intent;
 import android.os.Bundle;
