@@ -3,15 +3,28 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Home from './Home';
 import Notifications from './Notifications';
 import Menu from './Menu';
+import Icon from '../../components/TabBarIcon';
+import * as Colors from '../../assets/Colors';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function AppTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Notifications" component={Notifications} />
+    <Tab.Navigator 
+      tabBarOptions={{showIcon: true, showLabel: false, activeTintColor: Colors.BLUE, inactiveTintColor: Colors.DARKGRAY}}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color}) => {
+          return <Icon name={route.name} color={color} focused={focused}/>;
+        },
+      })}
+    >
+			<Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Friend" component={Home} />
+      <Tab.Screen name="Group" component={Home} />
+      <Tab.Screen name="Profile" component={Home} />
+      <Tab.Screen name="Notification" component={Notifications} />
       <Tab.Screen name="Menu" component={Menu} />
-    </Tab.Navigator>
+		</Tab.Navigator>
+
   );
 }
