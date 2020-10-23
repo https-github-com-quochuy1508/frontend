@@ -15,8 +15,7 @@ export default function Signup3 ({navigation, route}) {
     if(age > 5) {
       setWrong(false);
       navigation.navigate("Phone", {
-        firstName: route.params.firstName,
-        lastName: route.params.lastName,
+        name: route.params.name,
         birth: date.getTime()
       });
     } else {

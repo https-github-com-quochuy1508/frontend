@@ -8,7 +8,7 @@ import Button from '../../../components/NextButton';
 export default function Signup5({navigation, route}) {
   const [key, setKey] = useState(false);
   const [wrong, setWrong] = useState(false);
-  const [passWord, setPassWord] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
@@ -30,14 +30,13 @@ export default function Signup5({navigation, route}) {
   };
 
   const submit = () => {
-    if(passWord.length >= 6) {
+    if(password.length >= 6) {
       setWrong(false);
       navigation.navigate("Rule", {
-        firstName: route.params.firstName,
-        lastName: route.params.lastName,
+        name: route.params.name,
         birth: route.params.birth,
         phone: route.params.phone,
-        passWord: passWord
+        password: password
       })
     } else {
       setWrong(true);
@@ -88,7 +87,7 @@ export default function Signup5({navigation, route}) {
         <Text style={styles.title}>Mật khẩu</Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={(text) => setPassWord(text)}
+          onChangeText={(text) => setPassword(text)}
           textContentType = "password"
           autoFocus={true}
           selectionColor={Colors.BLUE}

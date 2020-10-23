@@ -55,9 +55,9 @@ export default function Signup2({navigation}) {
 
   const submit = () => {
     if (firstName.length > 0 && lastName.length > 0) {
+      const name = firstName + " " + lastName;
       navigation.navigate("Birth", {
-        firstName: firstName,
-        lastName: lastName
+        name: name
       })
     }
     else if(firstName.length == 0 && lastName.length == 0) {

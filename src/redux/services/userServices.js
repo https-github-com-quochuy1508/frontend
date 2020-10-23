@@ -1,12 +1,19 @@
-import {stringify} from 'qs';
 import request from '../../utils/request';
-// import CONFIG from '@/utils/config';
 import varEnv from '../../utils/env';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default {
   authendicate: (params) => {
     return request(varEnv.apiUrlBackend + `/auth/login`, {
+      method: 'POST',
+      body: {
+        ...params,
+      },
+    });
+  },
+
+  create: (params) => {
+    return request(varEnv.apiUrlBackend + `/auth/signin`, {
       method: 'POST',
       body: {
         ...params,
@@ -21,6 +28,7 @@ export default {
       // Error saving data
     }
   },
+  
   getToken: async () => {
     try {
       const value = await AsyncStorage.getItem('token');

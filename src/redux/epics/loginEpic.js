@@ -1,5 +1,4 @@
-import {mergeMap, map, switchMap} from 'rxjs/operators';
-import {ajax} from 'rxjs/ajax';
+import {map, switchMap} from 'rxjs/operators';
 import {ofType} from 'redux-observable';
 import {
   authenticateSuccess,

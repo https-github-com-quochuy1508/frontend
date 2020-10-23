@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable, ToastAndroid} from 'react-native';
+import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable} from 'react-native';
 import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 import * as Colors from '../../../assets/Colors'
@@ -9,7 +9,6 @@ function Login({navigation, login, infoUser, error}) {
   const [showImage, setShowImage] = useState(true);
   const [press, setPress] = useState(0);
   const [user, setUser] = useState('');
-  const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState('');
 
   const styles = StyleSheet.create({
@@ -113,12 +112,6 @@ function Login({navigation, login, infoUser, error}) {
       Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
     };
   }, []);
-
-  useEffect(() => {
-    if (error) {
-      setVisible(true);
-    }
-  }, [infoUser, error]);
 
   const _keyboardDidShow = () => {
     setShowImage(false);
@@ -238,42 +231,17 @@ function Login({navigation, login, infoUser, error}) {
         backgroundColor={showImage ? '#2e4b8a' : Colors.WHITE}
         barStyle="light-content"
       />
-      {visible
-        ? ToastAndroid.showWithGravityAndOffset(
-            error.message,
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50,
-          )
-        : null}
     </View>
   );
 }
 
-const mapStateToProps = (state) => {
-  let loginReducer = state.users;
-  let infoUser = null;
-  let error = null;
-  if (loginReducer && loginReducer.success) {
-    infoUser = loginReducer.result;
-  } else if (loginReducer && !loginReducer.success) {
-    error = loginReducer.result;
-  }
-
-  return {infoUser, error};
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    // doSearchClick: (searchCriteria) => {
-    //   dispatch(action_doSearch(searchCriteria));
-    // },
     login: (params) => {
       dispatch(requestAuthenticateUser(params));
     },
   };
 };
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
+const LoginContainer = connect(null, mapDispatchToProps)(Login);
 export default LoginContainer;

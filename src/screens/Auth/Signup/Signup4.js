@@ -34,8 +34,7 @@ function Signup({navigation, route}) {
     if(regex.test(phone)) {
       setWrong(false);
       navigation.navigate("Password", {
-        firstName: route.params.firstName,
-        lastName: route.params.lastName,
+        name: route.params.name,
         birth: route.params.birth,
         phone: phone
       })
