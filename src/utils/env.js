@@ -1,3 +1,3 @@
 export default {
-  apiUrlBackend: 'http://192.168.43.243:3001',
+  apiUrlBackend: 'http://192.168.1.13:3001',
 };

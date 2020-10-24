@@ -16,6 +16,11 @@ const users = (state = null, action) => {
         ...state,
         result: action.error,
       };
+    case LOG_OUT:
+      return {
+        ...state,
+        result: null,
+      }
     default:
       return state;
   }

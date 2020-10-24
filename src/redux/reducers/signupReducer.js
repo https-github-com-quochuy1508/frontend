@@ -3,7 +3,7 @@ import {
   FAIL_CREATED,
 } from '../actions/signupAction';
 
-const signup = (state = null, action) => {
+const register = (state = null, action) => {
   switch (action.type) {
     case CREATED:
       return {
@@ -20,4 +20,4 @@ const signup = (state = null, action) => {
   }
 };
 
-export default signup;
+export default register;

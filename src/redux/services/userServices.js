@@ -28,6 +28,14 @@ export default {
       // Error saving data
     }
   },
+
+  removeToken: async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+    } catch (error) {
+      // Error saving data
+    }
+  },
   
   getToken: async () => {
     try {

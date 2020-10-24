@@ -25,6 +25,6 @@ export const authenticateFail = (response = null) => {
   };
 };
 
-export const signOut = () => ({
+export const logOut = () => ({
   type: LOG_OUT,
 });

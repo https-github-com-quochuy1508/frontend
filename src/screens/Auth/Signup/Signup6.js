@@ -7,10 +7,10 @@ import * as Colors from '../../../assets/Colors'
 import Button from '../../../components/NextButton';
 
 
-function Signup6({route, is, login, signup}) {
+function Signup6({route, register, login, signup}) {
   
   useEffect(() => {
-    if(is.result.success) {
+    if(register.result.success) {
       const param = {
         telephone: route.params.phone,
         password: route.params.password,
@@ -69,7 +69,7 @@ function Signup6({route, is, login, signup}) {
         onPress={() => {
           const param = {
             name: route.params.name,
-            birthday: "1999-10-30",
+            birthday: route.params.birth,
             telephone: route.params.phone,
             password: route.params.password,
             token: "123"
@@ -86,10 +86,7 @@ function Signup6({route, is, login, signup}) {
   );
 }
 
-const mapStateToProps = (state) => {
-  let is = state.is
-  return {is};
-};
+const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
   return {

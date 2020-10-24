@@ -10,7 +10,10 @@ const Navigation = ({users}) => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token !== null) {
+        console.log(token);
         setAuth(true);
+      } else {
+        setAuth(false);
       }
     } catch (e) {
       // error reading value
@@ -21,7 +24,6 @@ const Navigation = ({users}) => {
     getUser();
   }, [users]);
   return auth ? <App /> : <Auth />;
-  // return auth ? <Auth /> : <App />;
 };
 
 const mapStateToProps = (state) => state;

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 import * as Colors from '../../../assets/Colors'
 
-function Login({navigation, login, infoUser, error}) {
+function Login({navigation, login}) {
   const [focus, setFocus] = useState(0);
   const [showImage, setShowImage] = useState(true);
   const [press, setPress] = useState(0);
@@ -120,6 +120,14 @@ function Login({navigation, login, infoUser, error}) {
   const _keyboardDidHide = () => {
     setShowImage(true);
   };
+
+  const submit = () => {
+    const param = {
+      telephone: user,
+      password: password,
+    };
+    login(param);
+  }
   return (
     <View style={styles.container}>
       {showImage ? (
@@ -175,17 +183,12 @@ function Login({navigation, login, infoUser, error}) {
           onTouchEnd={() => {
             setPress(0);
           }}
+          onSubmitEditing={() => submit()}
         />
         <Pressable
           style={styles.button}
           disabled={user.length == 0 || password.length == 0}
-          onPress={() => {
-            const param = {
-              telephone: user,
-              password: password,
-            };
-            login(param);
-          }}>
+          onPress={() => submit()}>
           <Text style={styles.buttonText}>Đăng nhập</Text>
         </Pressable>
         {showImage ? (
