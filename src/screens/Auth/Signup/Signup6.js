@@ -9,15 +9,25 @@ import Button from '../../../components/NextButton';
 
 function Signup6({route, register, login, signup}) {
   
+  const submit = () => {
+    const param = {
+      name: route.params.name,
+      birthday: route.params.birth,
+      telephone: route.params.phone,
+      password: route.params.password,
+      token: "123"
+    }
+    signup(param);
+  }
+
   useEffect(() => {
-    if(register.result.success) {
-      const param = {
+    if(register != null && register.result.success) {
+      login({
         telephone: route.params.phone,
         password: route.params.password,
-      }
-      login(param);
+      })
     }
-  },[is])
+  },[register])
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -66,16 +76,7 @@ function Signup6({route, register, login, signup}) {
       <TouchableOpacity 
         activeOpacity={0.8} 
         style={{marginTop: "15%"}}
-        onPress={() => {
-          const param = {
-            name: route.params.name,
-            birthday: route.params.birth,
-            telephone: route.params.phone,
-            password: route.params.password,
-            token: "123"
-          }
-          signup(param);
-        }}
+        onPress={() => submit()}
       >
         <Button done={true}/>
       </TouchableOpacity>

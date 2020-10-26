@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable} from 'react-native';
+import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable, Alert} from 'react-native';
 import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 import * as Colors from '../../../assets/Colors'
 
-function Login({navigation, login}) {
+function Login({navigation, login, users}) {
   const [focus, setFocus] = useState(0);
   const [showImage, setShowImage] = useState(true);
   const [press, setPress] = useState(0);
@@ -120,6 +120,45 @@ function Login({navigation, login}) {
   const _keyboardDidHide = () => {
     setShowImage(true);
   };
+
+  useEffect(() => {
+    if(users != null && users.result != null)
+    switch(users.result.code) {
+      case 9995: 
+        Alert.alert(
+          "Không thể tìm tài khoản",
+          "Có vẻ như " + user + " không khớp với tài khoản hiện tại. Nếu chưa có tài khoản Fakebook, bạn có thể tạo một tài khoản ngay bây giờ.",
+          [
+            {
+              text: "TẠO TÀI KHOẢN",
+              onPress: () => navigation.navigate("Signup"),
+            },
+            { 
+              text: "THỬ LẠI",
+              style: 'cancel'
+            },
+          ],   
+          {cancelable: true}
+        );
+        break;
+      case 200:
+        Alert.alert(
+          "Sai mật khẩu",
+          "Mật khẩu bạn vừa nhập không chính xác. Vui lòng thử lại hoặc lấy mã để đăng nhập.",
+          [
+            {
+              text: "LẤY MÃ",
+            },
+            { 
+              text: "OK",
+              style: 'cancel'
+            },
+          ],   
+          {cancelable: true}
+        );
+        break;
+    }
+  },[users])
 
   const submit = () => {
     const param = {
@@ -238,6 +277,8 @@ function Login({navigation, login}) {
   );
 }
 
+const mapStateToProps = (state) => state;
+
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (params) => {
@@ -246,5 +287,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const LoginContainer = connect(null, mapDispatchToProps)(Login);
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
 export default LoginContainer;

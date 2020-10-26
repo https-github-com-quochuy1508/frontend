@@ -12,7 +12,7 @@ export default function Signup3 ({navigation, route}) {
 
   const submit = () => {
     let age = current.getFullYear() - date.getFullYear();
-    let birth = current.getFullYear() + "-" + current.getMonth() + "-" + current.getDate;
+    let birth = current.getFullYear() + "-" + current.getMonth() + "-" + current.getDate();
     if(age > 5) {
       setWrong(false);
       navigation.navigate("Phone", {
