@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Home from './Home';
+import Home from './HomeTab/Home';
 import Notifications from './Notifications';
 import Menu from './Menu';
 import Icon from '../../components/TabBarIcon';
