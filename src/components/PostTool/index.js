@@ -47,7 +47,8 @@ export default function PostTool() {
             <Pressable 
                 onPress={() => onFullPostToolPressHandler()} 
                 style={styles.postInputWrapper}
-                onPressIn={() => setPress(true)}
+                onTouchStart={() => setPress(true)}
+                onTouchEnd={() => setPress(false)}
                 onPressOut={() => setPress(false)}
             >
                 <Text style={{fontSize: 16}}>Bạn đang nghĩ gì?</Text>

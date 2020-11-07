@@ -3,12 +3,15 @@ import {View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard} from 'rea
 import Ant from 'react-native-vector-icons/AntDesign';
 import Oct from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Ion from 'react-native-vector-icons/Ionicons';
 import * as Colors from '../../../assets/Colors'
+import Modal from 'react-native-modal';
 
 export default function FullPostTool({navigation}) {
     const [press, setPress] = useState(0);
     const [show, setShow] = useState(true);
     const [content, setContent] = useState("");
+    const [isModalVisible, setModalVisible] = useState(false);
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -101,7 +104,7 @@ export default function FullPostTool({navigation}) {
             justifyContent: 'center',
             borderRadius: 20,
         },
-        line1: {
+        line: {
             flexDirection: 'row',
             width: '100%',
             height: 50,
@@ -109,17 +112,20 @@ export default function FullPostTool({navigation}) {
             borderTopWidth: 0.5,
             alignItems: 'center',
             padding: 15,
-            backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE,
         },
-        line2: {
+        modal: {
+            margin: 0, 
+            position: "absolute", 
+            bottom: 0,
+            width: "100%",
+            backgroundColor: Colors.WHITE, 
+        },
+        saveContainer: {
             flexDirection: 'row',
-            width: '100%',
-            height: 50,
-            borderTopColor: Colors.LIGHTGRAY,
-            borderTopWidth: 0.5,
+            paddingLeft: 10,
             alignItems: 'center',
-            padding: 15,
-            backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE
+            height: 70
+
         }
     })
 
@@ -135,11 +141,24 @@ export default function FullPostTool({navigation}) {
         setShow(false);
       };
 
+    const onGoBack = () => {
+        if(show) {
+            setShow(false);
+        }
+        else if(content.length > 0) {
+            Keyboard.dismiss();
+            setModalVisible(true);
+        }
+        else {
+            navigation.goBack();
+        }
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.header}>
                 <Pressable style={styles.backIcon} 
-                    onPress={() => navigation.goBack()}
+                    onPress={() => onGoBack()}
                     onTouchStart={() => setPress(1)}
                     onTouchEnd={() => setPress(0)}
                 >
@@ -174,11 +193,21 @@ export default function FullPostTool({navigation}) {
             />
             {show ? 
             <View style={{position: "absolute", bottom: 0, width: '100%'}}>
-                <Pressable style={styles.line1} onPressIn={() => setPress(2)} onPressOut={() => setPress(0)}>
+                <Pressable 
+                    style={[styles.line, {backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE}]} 
+                    onTouchStart={() => setPress(2)} 
+                    onTouchEnd={() => setPress(0)} 
+                    onPressOut={() => setPress(0)}
+                >
                     <Fontisto style={{marginRight: 15}} name="photograph" color={Colors.LIME} size={24}/>
                     <Text style={{fontSize: 16}}>Ảnh/Video</Text>
                 </Pressable>
-                <Pressable style={styles.line2} onPressIn={() => setPress(3)} onPressOut={() => setPress(0)}>
+                <Pressable 
+                    style={[styles.line, {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE}]} 
+                    onTouchStart={() => setPress(3)} 
+                    onTouchEnd={() => setPress(0)} 
+                    onPressOut={() => setPress(0)}
+                >
                     <Fontisto style={{marginRight: 15}} name="smiley" size={24} color={Colors.ORANGE}/>
                     <Text style={{fontSize: 16}}>Cảm xúc/Hoạt động</Text>
                 </Pressable>
@@ -192,6 +221,49 @@ export default function FullPostTool({navigation}) {
                 </View>
             </Pressable> 
             }
+            <Modal 
+                isVisible={isModalVisible}
+                backdropOpacity={0.35}
+                onBackdropPress={() => setModalVisible(false)}
+                style={styles.modal}
+            >
+                <View style={{padding: 10}}>
+                    <Text style={{fontSize: 15, marginBottom: 5}}>Bạn muốn hoàn thành bài viết của mình sau?</Text>
+                    <Text style={{color: Colors.DARKGRAY, fontSize: 13.5}}>Lưu làm bản nháp hoặc bạn có thể tiếp tục chỉnh sửa.</Text>
+                </View>
+                <Pressable 
+                    style={[styles.saveContainer, {backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE}]}
+                    onTouchStart={() => {setPress(5)}}
+                    onTouchEnd={() => setPress(0)} 
+                    onPressOut={() => {setPress(0)}}
+                >
+                    <Ion name="bookmark-outline" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
+                    <View>
+                        <Text style={{fontSize: 15}}>Lưu làm bản nháp</Text>
+                        <Text style={{color: Colors.DARKGRAY, fontSize: 12}}>Bạn sẽ nhận được thông báo về bản nháp.</Text>
+                    </View>
+                </Pressable>
+                <Pressable 
+                    style={[styles.saveContainer, {backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE}]}
+                    onTouchStart={() => {setPress(6)}}
+                    onTouchEnd={() => setPress(0)} 
+                    onPressOut={() => {setPress(0)}}
+                    onPress={() => {setModalVisible(false);navigation.goBack()}}
+                >
+                    <Ion name="trash-outline" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
+                    <Text style={{fontSize: 15}}>Bỏ bài viết</Text>
+                </Pressable>
+                <Pressable 
+                    style={[styles.saveContainer, {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE}]}
+                    onTouchStart={() => {setPress(7)}}
+                    onTouchEnd={() => setPress(0)} 
+                    onPressOut={() => {setPress(0)}}
+                    onPress={() => setModalVisible(false)}
+                >
+                    <Ion name="checkmark" size={28} color={Colors.BLUE} style={{marginRight: 10}}/>
+                    <Text style={{fontSize: 15, color: Colors.BLUE}}>Tiếp tục chỉnh sửa</Text>
+                </Pressable>
+            </Modal>
         </View>
     )
 }
