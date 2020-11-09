@@ -9,35 +9,6 @@ export default function PostTool() {
     const onFullPostToolPressHandler = () => {
         navigation.navigate('FullPostTool')
     }
-    const styles = StyleSheet.create({
-        container: {
-            borderTopColor: Colors.LIGHTGRAY,
-            borderTopWidth: 0.5,
-            borderBottomColor: Colors.LIGHTGRAY,
-            borderBottomWidth: 0.5,
-            backgroundColor: Colors.WHITE,
-            padding: 10,
-            flexDirection: 'row'
-        },
-        postInputWrapper: {
-            borderRadius: 48,
-            flex: 1,
-            marginLeft: 10,
-            justifyContent: 'center',
-            borderRadius: 20,
-            height: 40,
-            width: "100%",
-            borderColor: Colors.LIGHTGRAY,
-            paddingHorizontal: 20,
-            borderWidth: 1,
-            backgroundColor: press ? Colors.GAINSBORO : Colors.WHITE,
-        },
-        userAvatar: {
-            width: 40,
-            height: 40,
-            borderRadius: 50,
-        },
-    })
     
     return (
         <View style={styles.container}>
@@ -46,7 +17,7 @@ export default function PostTool() {
             </Pressable>
             <Pressable 
                 onPress={() => onFullPostToolPressHandler()} 
-                style={styles.postInputWrapper}
+                style={[styles.postInputWrapper, {backgroundColor: press ? Colors.GAINSBORO : Colors.WHITE}]}
                 onTouchStart={() => setPress(true)}
                 onTouchEnd={() => setPress(false)}
                 onPressOut={() => setPress(false)}
@@ -58,3 +29,31 @@ export default function PostTool() {
     
 }
 
+const styles = StyleSheet.create({
+    container: {
+        borderTopColor: Colors.LIGHTGRAY,
+        borderTopWidth: 0.5,
+        borderBottomColor: Colors.LIGHTGRAY,
+        borderBottomWidth: 0.5,
+        backgroundColor: Colors.WHITE,
+        padding: 10,
+        flexDirection: 'row'
+    },
+    postInputWrapper: {
+        borderRadius: 48,
+        flex: 1,
+        marginLeft: 10,
+        justifyContent: 'center',
+        borderRadius: 20,
+        height: 40,
+        width: "100%",
+        borderColor: Colors.LIGHTGRAY,
+        paddingHorizontal: 20,
+        borderWidth: 1,
+    },
+    userAvatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+    },
+})

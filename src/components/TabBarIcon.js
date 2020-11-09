@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/SimpleLineIcons';
 
 function TabBarIcon({color, focused, name}) {
   let iconName;
@@ -13,15 +14,14 @@ function TabBarIcon({color, focused, name}) {
     case "Group":
       iconName = focused ? 'people-circle' : 'people-circle-outline';  
       break;
-    case "Profile":
-      iconName = focused ? 'person-circle' : 'person-circle-outline';  
+    case "Watch":
+      iconName = focused ? 'tv' : 'tv-outline';  
       break;
     case "Notification":
       iconName = focused ? 'notifications' : 'notifications-outline';
       break;
     case "Menu":
-      iconName = focused ? 'menu' : 'menu-outline';
-      break;
+      return <Icon2 name="menu" size={24} color={color}/>
   }
   return <Icon name={iconName} size={24} color={color} />;
 }

@@ -6,70 +6,6 @@ import * as Colors from '../../../assets/Colors'
 
 export default function Login2({navigation}) {
     const [press, setPress] = useState(0);
-    
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#ffffff'
-        },
-        account: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 30,
-            paddingTop: 10,
-            paddingBottom: 10,
-            backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE,
-        },
-        name: {
-            fontWeight: 'bold',
-            marginLeft: 15,
-            fontSize: 15,
-        },
-        another: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 8,
-            paddingBottom: 8,
-            backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE,
-        },
-        find: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingTop: 8,
-            paddingBottom: 8,
-            backgroundColor: press == 3 ? Colors.WHITESMOKE : Colors.WHITE,
-        },
-        anotherText: {
-            fontWeight: 'bold', 
-            color: Colors.BLUE, 
-            marginLeft: 15
-        },
-        icon: {
-            backgroundColor: Colors.SLATEGRAY, 
-            borderRadius: 6,
-            height: 28,
-            width: 28,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: 35,
-        },
-        button: {
-            width: 320,
-            height: 38,
-            backgroundColor: press == 4 ? Colors.WHITESMOKE : Colors.SLATEGRAY,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-            position: 'absolute',
-            bottom: 30,
-        },
-        signup: {
-            color: Colors.BLUE,
-            fontWeight: 'bold',
-        }
-    })
 
     return(
         <View style={styles.container}>
@@ -79,7 +15,7 @@ export default function Login2({navigation}) {
             />
             <View style={{width: "100%"}}>
                 <Pressable 
-                    style={styles.account}
+                    style={[styles.account, {backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE}]}
                     onPress={() => navigation.navigate('Login3')}
                     onTouchStart={() => setPress(1)}
                     onTouchEnd={() => setPress(0)}
@@ -93,7 +29,7 @@ export default function Login2({navigation}) {
                     <Icon name="dots-three-vertical" size={15} style={{position:'absolute', right: 30}}/>
                 </Pressable>
                 <Pressable 
-                    style={styles.another} 
+                    style={[styles.another, {backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE}]} 
                     onPress={() => navigation.navigate('Login')}
                     onTouchStart={() => {setPress(2)}}
                     onTouchEnd={() => setPress(0)}
@@ -110,7 +46,7 @@ export default function Login2({navigation}) {
                     <Text style={styles.anotherText}>Đăng nhập bằng tài khoản khác</Text>
                 </Pressable>
                 <Pressable 
-                    style={styles.find}
+                    style={[styles.find, {backgroundColor: press == 3 ? Colors.WHITESMOKE : Colors.WHITE}]}
                     onTouchStart={() => setPress(3)}
                     onTouchEnd={() => setPress(0)}
                     onPressOut={() => setPress(0)}
@@ -122,7 +58,7 @@ export default function Login2({navigation}) {
                 </Pressable>
             </View>
             <Pressable 
-                style={styles.button} 
+                style={[styles.button, {backgroundColor: press == 4 ? Colors.WHITESMOKE : Colors.SLATEGRAY}]} 
                 onPress={() => navigation.navigate('Signup')}
                 onTouchStart={() => setPress(4)}
                 onTouchEnd={() => setPress(0)}
@@ -134,3 +70,63 @@ export default function Login2({navigation}) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff'
+    },
+    account: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    name: {
+        fontWeight: 'bold',
+        marginLeft: 15,
+        fontSize: 15,
+    },
+    another: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 8,
+        paddingBottom: 8,
+    },
+    find: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 8,
+        paddingBottom: 8,
+    },
+    anotherText: {
+        fontWeight: 'bold', 
+        color: Colors.BLUE, 
+        marginLeft: 15
+    },
+    icon: {
+        backgroundColor: Colors.SLATEGRAY, 
+        borderRadius: 6,
+        height: 28,
+        width: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 35,
+    },
+    button: {
+        width: 320,
+        height: 38,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        position: 'absolute',
+        bottom: 30,
+    },
+    signup: {
+        color: Colors.BLUE,
+        fontWeight: 'bold',
+    }
+})

@@ -21,7 +21,7 @@ export default function AppTabs() {
 			<Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Friend" component={Home} />
       <Tab.Screen name="Group" component={Home} />
-      <Tab.Screen name="Profile" component={Home} />
+      <Tab.Screen name="Watch" component={Home} />
       <Tab.Screen name="Notification" component={Notifications} />
       <Tab.Screen name="Menu" component={Menu} />
 		</Tab.Navigator>

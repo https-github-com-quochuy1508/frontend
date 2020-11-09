@@ -12,122 +12,6 @@ export default function FullPostTool({navigation}) {
     const [show, setShow] = useState(true);
     const [content, setContent] = useState("");
     const [isModalVisible, setModalVisible] = useState(false);
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: Colors.WHITE,
-        },
-        header: {
-            flexDirection: 'row',
-            width: "100%",
-            height: 50,
-            padding: 10,
-            borderBottomColor: Colors.LIGHTGRAY,
-            borderBottomWidth: 0.5,
-            alignItems: 'center'
-        },
-        title: {
-            fontSize: 17,
-            marginLeft: 5,
-        },
-        postContainer: {
-            position: "absolute",
-            right: 5,
-            backgroundColor: press == 4 ? Colors.LIGHTGRAY : Colors.WHITE,
-            height: 46,
-            width: 60,
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        postText: {
-            color: content.length > 0 ? Colors.BLUE : Colors.GAINSBORO
-        },
-        headContainer: {
-            flexDirection: "row",
-            marginHorizontal: 15,
-            marginTop: 15,
-        },
-        avt: {
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-        },
-        name: {
-            fontWeight: "bold",
-            fontSize: 16,
-        },
-        headTitleContainer: {
-            marginLeft: 10,
-        },
-        public: {
-            flexDirection: 'row',
-            width: 100,
-            height: 30,
-            borderRadius: 5,
-            borderColor: Colors.LIGHTGRAY,
-            borderWidth: 0.5,
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            paddingHorizontal: 5
-        },
-        publicText: {
-            fontWeight: 'bold',
-            color: Colors.GRAY,
-            fontSize: 12,
-        },
-        input: {
-            fontSize: 25,
-            margin: 15,
-        },
-        addContainer: {
-            flexDirection: 'row',
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            height: 43,
-            borderTopWidth: 0.5,
-            borderTopColor: Colors.LIGHTGRAY,
-            alignItems: 'center',
-            padding: 10,
-        },
-        iconGroup: {
-            flexDirection: 'row',
-            position: 'absolute',
-            right: 10,
-        },
-        backIcon: {
-            backgroundColor: press == 1 ? Colors.LIGHTGRAY : Colors.WHITE,
-            width: 40,
-            height: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 20,
-        },
-        line: {
-            flexDirection: 'row',
-            width: '100%',
-            height: 50,
-            borderTopColor: Colors.LIGHTGRAY,
-            borderTopWidth: 0.5,
-            alignItems: 'center',
-            padding: 15,
-        },
-        modal: {
-            margin: 0, 
-            position: "absolute", 
-            bottom: 0,
-            width: "100%",
-            backgroundColor: Colors.WHITE, 
-        },
-        saveContainer: {
-            flexDirection: 'row',
-            paddingLeft: 10,
-            alignItems: 'center',
-            height: 70
-
-        }
-    })
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', _keyboardDidShow);    
@@ -157,7 +41,7 @@ export default function FullPostTool({navigation}) {
     return(
         <View style={styles.container}>
             <View style={styles.header}>
-                <Pressable style={styles.backIcon} 
+                <Pressable style={[styles.backIcon, {backgroundColor: press == 1 ? Colors.LIGHTGRAY : Colors.WHITE}]} 
                     onPress={() => onGoBack()}
                     onTouchStart={() => setPress(1)}
                     onTouchEnd={() => setPress(0)}
@@ -167,11 +51,11 @@ export default function FullPostTool({navigation}) {
                 <Text style={styles.title}>Tạo bài viết</Text>
                 <Pressable 
                     disabled={content.length == 0}
-                    style={styles.postContainer}
+                    style={[styles.postContainer, {backgroundColor: press == 4 ? Colors.LIGHTGRAY : Colors.WHITE}]}
                     onTouchStart={() => {if(content.length > 0) setPress(4)}}
                     onTouchEnd={() => setPress(0)}
                 >
-                    <Text style={styles.postText}>ĐĂNG</Text>
+                    <Text style={{color: content.length > 0 ? Colors.BLUE : Colors.GAINSBORO}}>ĐĂNG</Text>
                 </Pressable>
             </View>
             <View style={styles.headContainer}>
@@ -192,7 +76,7 @@ export default function FullPostTool({navigation}) {
                 multiline={true}
             />
             {show ? 
-            <View style={{position: "absolute", bottom: 0, width: '100%'}}>
+            <View style={styles.add}>
                 <Pressable 
                     style={[styles.line, {backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE}]} 
                     onTouchStart={() => setPress(2)} 
@@ -267,3 +151,119 @@ export default function FullPostTool({navigation}) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+    },
+    header: {
+        flexDirection: 'row',
+        width: "100%",
+        height: 50,
+        padding: 10,
+        borderBottomColor: Colors.LIGHTGRAY,
+        borderBottomWidth: 0.5,
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 17,
+        marginLeft: 5,
+    },
+    postContainer: {
+        position: "absolute",
+        right: 5,
+        height: 46,
+        width: 60,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    headContainer: {
+        flexDirection: "row",
+        marginHorizontal: 15,
+        marginTop: 15,
+    },
+    avt: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+    name: {
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    headTitleContainer: {
+        marginLeft: 10,
+    },
+    public: {
+        flexDirection: 'row',
+        width: 100,
+        height: 30,
+        borderRadius: 5,
+        borderColor: Colors.LIGHTGRAY,
+        borderWidth: 0.5,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingHorizontal: 5
+    },
+    publicText: {
+        fontWeight: 'bold',
+        color: Colors.GRAY,
+        fontSize: 12,
+    },
+    input: {
+        fontSize: 25,
+        margin: 15,
+    },
+    add: {
+        position: "absolute", 
+        bottom: 0, 
+        width: '100%'
+    },
+    addContainer: {
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: 43,
+        borderTopWidth: 0.5,
+        borderTopColor: Colors.LIGHTGRAY,
+        alignItems: 'center',
+        padding: 10,
+    },
+    iconGroup: {
+        flexDirection: 'row',
+        position: 'absolute',
+        right: 10,
+    },
+    backIcon: {
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20,
+    },
+    line: {
+        flexDirection: 'row',
+        width: '100%',
+        height: 50,
+        borderTopColor: Colors.LIGHTGRAY,
+        borderTopWidth: 0.5,
+        alignItems: 'center',
+        padding: 15,
+    },
+    modal: {
+        margin: 0, 
+        position: "absolute", 
+        bottom: 0,
+        width: "100%",
+        backgroundColor: Colors.WHITE, 
+    },
+    saveContainer: {
+        flexDirection: 'row',
+        paddingLeft: 10,
+        alignItems: 'center',
+        height: 70
+    }
+})

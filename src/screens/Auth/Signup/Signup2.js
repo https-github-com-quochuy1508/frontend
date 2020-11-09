@@ -22,29 +22,6 @@ export default function Signup2({navigation}) {
     };
   }, []);
 
-  useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        e.preventDefault();
-        Alert.alert(
-          "Bạn có muốn dừng tạo tài khoản không?",
-          "Nếu dừng bây giờ, bạn sẽ mât toàn bộ tiến trình cho đến nay.",
-          [
-            {
-              text: "Dừng tạo tài khoản",
-              style: "destructive",
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-            { 
-              text: "Tiếp tục tạo tài khoản ",
-              style: 'cancel'
-            }
-          ],
-          { cancelable: true }
-        );
-      }),
-    [navigation]
-  );
   const _keyboardDidShow = () => {
     setKey(true);
   };
@@ -70,45 +47,12 @@ export default function Signup2({navigation}) {
       setAlert(3);
     }
   }
-  const styles = StyleSheet.create({
-    container: {
-      alignItems:'center',
-      backgroundColor: Colors.WHITE,
-    },
-    text1: {
-      marginTop: key ? '15%' : '25%',
-      fontSize: 18,
-      fontWeight: "bold",
-    },
-    inputContainer:{
-      flexDirection:'row',
-      marginTop:'8%',
-      marginBottom: key ? "16%" : "26%",
-    },  
-    textInput:{
-      width:'43%',
-      height: 40,
-      fontSize: 18,
-      backgroundColor: Colors.WHITE,
-      borderBottomColor: alert > 0 ? Colors.RED : (focus == 1 ? Colors.BLUE : Colors.GRAY),
-      borderBottomWidth: focus == 1 ? 2 : 0.5,
-      marginHorizontal:5,
-    },
-    textInput2:{
-      width:'43%',
-      height:40,
-      fontSize:18,
-      backgroundColor: Colors.WHITE,
-      borderBottomColor: alert > 0 ? Colors.RED : (focus == 2 ? Colors.BLUE : Colors.GRAY),
-      borderBottomWidth: focus == 2 ? 2 : 0.5,
-      marginHorizontal:5,
-    },
-  })
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text1}>Bạn tên gì?</Text>
+      <Text style={[styles.text, {marginTop: key ? '15%' : '25%'}]}>Bạn tên gì?</Text>
       {alert > 0 ? 
-        <View style={{width: "90%", alignItems: 'center', marginTop: 15}}>
+        <View style={styles.alert}>
           {
             alert == 1 ? 
             <Text style={{color: Colors.RED}}>Vui lòng nhập họ và tên của bạn.</Text> :
@@ -120,8 +64,15 @@ export default function Signup2({navigation}) {
           <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{alignSelf: "flex-end"}}/>
         </View> : null
       }
-      <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput}
+      <View style={[styles.inputContainer, {marginBottom: key ? "16%" : "26%"}]}>
+        <TextInput 
+          style={[
+            styles.textInput, 
+            {
+              borderBottomColor: alert > 0 ? Colors.RED : (focus == 1 ? Colors.BLUE : Colors.GRAY),
+              borderBottomWidth: focus == 1 ? 2 : 0.5
+            }
+          ]}
           placeholder="Họ"
           placeholderTextColor={Colors.GRAY}
           returnKeyType='next'
@@ -130,7 +81,14 @@ export default function Signup2({navigation}) {
           selectionColor={Colors.BLUE}
           onChangeText={(text) => setFirstName(text.trim())}
         />
-        <TextInput style={styles.textInput2}
+        <TextInput 
+          style={[
+            styles.textInput, 
+            {
+              borderBottomColor: alert > 0 ? Colors.RED : (focus == 2 ? Colors.BLUE : Colors.GRAY),
+              borderBottomWidth: focus == 2 ? 2 : 0.5
+            }
+          ]}
           placeholder="Tên"
           placeholderTextColor={Colors.GRAY}
           onFocus={() => { setFocus(2); setAlert(0)}}
@@ -145,3 +103,29 @@ export default function Signup2({navigation}) {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems:'center',
+    backgroundColor: Colors.WHITE,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  inputContainer:{
+    flexDirection:'row',
+    marginTop:'8%',
+  },  
+  textInput:{
+    width:'43%',
+    height: 40,
+    fontSize: 18,
+    backgroundColor: Colors.WHITE,
+    marginHorizontal:5,
+  },
+  alert: {
+    width: "90%", 
+    alignItems: 'center', 
+    marginTop: 15
+  }
+})

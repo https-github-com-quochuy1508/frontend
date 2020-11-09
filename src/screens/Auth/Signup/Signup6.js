@@ -28,34 +28,7 @@ function Signup6({route, register, login, signup}) {
       })
     }
   },[register])
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.WHITE,
-      alignItems: 'center'
-    },
-    title: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginTop: "13%",
-      marginBottom: "4%"
-    },
-    text: {
-      textAlign: "center",
-      width: "91%",
-      color: Colors.DARKGRAY,
-      lineHeight: 19
-    },
-    text2: {
-      textAlign: "center",
-      width: "90%",
-      color: Colors.DARKGRAY,
-      lineHeight: 16,
-      position: "absolute",
-      bottom: 12,
-      fontSize: 12
-    }
-  });
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hoàn tất đăng ký</Text>
@@ -86,6 +59,35 @@ function Signup6({route, register, login, signup}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+    alignItems: 'center'
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: "13%",
+    marginBottom: "4%"
+  },
+  text: {
+    textAlign: "center",
+    width: "91%",
+    color: Colors.DARKGRAY,
+    lineHeight: 19
+  },
+  text2: {
+    textAlign: "center",
+    width: "90%",
+    color: Colors.DARKGRAY,
+    lineHeight: 16,
+    position: "absolute",
+    bottom: 12,
+    fontSize: 12
+  }
+});
 
 const mapStateToProps = (state) => state;
 

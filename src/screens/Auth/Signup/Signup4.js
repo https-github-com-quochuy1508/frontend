@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../../components/NextButton';
 
 
-function Signup({navigation, route}) {
+function Signup4({navigation, route}) {
   const [key, setKey] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [phone, setPhone] = useState("");
@@ -42,47 +42,17 @@ function Signup({navigation, route}) {
       setWrong(true);
     }
   }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.WHITE,
-      alignItems: 'center'
-    },
-    inputContainer: {
-      width: "90%",
-      alignItems: 'center',
-      marginBottom: key ? "14%" : "22%"
-    },
-    text: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginTop: key ? "13%" : "22%",
-      marginBottom: "4%"
-    },
-    title: {
-      fontSize: 12,
-      color: Colors.BLUE,
-      alignSelf: "flex-start",
-      marginTop: "4%"
-    },
-    textInput: {
-      fontSize: 18,
-      width: "100%",
-      borderBottomColor: Colors.BLUE,
-      borderBottomWidth: 2
-    }
-  });
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Nhập số di động của bạn</Text>
-      {
-        wrong ? 
+      <Text style={[styles.text, {marginTop: key ? "13%" : "22%"}]}>Nhập số di động của bạn</Text>
+      {wrong ? 
         <View style={{width: "90%", alignItems: 'center'}}>
-        <Text style={{color: Colors.RED}}>Vui lòng nhập số điện thoại hợp lệ.</Text>
-        <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{alignSelf: "flex-end"}}/>
-      </View> : null
+          <Text style={{color: Colors.RED}}>Vui lòng nhập số điện thoại hợp lệ.</Text>
+          <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{alignSelf: "flex-end"}}/>
+        </View> : null
       }
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, {marginBottom: key ? "14%" : "22%"}]}>
         <Text style={styles.title}>Số di động</Text>
         <TextInput
           style={styles.textInput}
@@ -101,5 +71,33 @@ function Signup({navigation, route}) {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+    alignItems: 'center'
+  },
+  inputContainer: {
+    width: "90%",
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: "4%"
+  },
+  title: {
+    fontSize: 12,
+    color: Colors.BLUE,
+    alignSelf: "flex-start",
+    marginTop: "4%"
+  },
+  textInput: {
+    fontSize: 18,
+    width: "100%",
+    borderBottomColor: Colors.BLUE,
+    borderBottomWidth: 2
+  }
+});
 
-export default Signup;
+export default Signup4;

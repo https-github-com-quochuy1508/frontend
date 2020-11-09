@@ -42,48 +42,19 @@ export default function Signup5({navigation, route}) {
       setWrong(true);
     }
   }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.WHITE,
-      alignItems: 'center'
-    },
-    inputContainer: {
-      width: "90%",
-      alignItems: 'center',
-      marginBottom: key ? "14%" : "22%"
-    },
-    text: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginTop: key ? "13%" : "22%",
-      marginBottom: "4%"
-    },
-    title: {
-      fontSize: 12,
-      color: Colors.BLUE,
-      alignSelf: "flex-start",
-      marginTop: "4%"
-    },
-    textInput: {
-      fontSize: 18,
-      width: "100%",
-      borderBottomColor: Colors.BLUE,
-      borderBottomWidth: 2
-    }
-  });
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Chọn mật khẩu</Text>
+      <Text style={[styles.text, {marginTop: key ? "13%" : "22%"}]}>Chọn mật khẩu</Text>
       {
         wrong ? 
         <View style={{width: "90%", alignItems: 'center'}}>
         <Text style={{color: Colors.RED}}>Mật khẩu của bạn phải có tối thiểu 6 chữ cái, số</Text>
         <Text style={{color: Colors.RED}}>và biểu tượng (như ! và %%).</Text>
-        <Icon name="exclamation-circle" color={Colors.RED} size={22} style={{position: "absolute", bottom: 0, right: 0}}/>
+        <Icon name="exclamation-circle" color={Colors.RED} size={22} style={styles.icon}/>
       </View> : null
       }
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, {marginBottom: key ? "14%" : "22%"}]}>
         <Text style={styles.title}>Mật khẩu</Text>
         <TextInput
           style={styles.textInput}
@@ -100,3 +71,37 @@ export default function Signup5({navigation, route}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.WHITE,
+    alignItems: 'center'
+  },
+  inputContainer: {
+    width: "90%",
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: "4%"
+  },
+  title: {
+    fontSize: 12,
+    color: Colors.BLUE,
+    alignSelf: "flex-start",
+    marginTop: "4%"
+  },
+  textInput: {
+    fontSize: 18,
+    width: "100%",
+    borderBottomColor: Colors.BLUE,
+    borderBottomWidth: 2
+  },
+  icon: {
+    position: "absolute", 
+    bottom: 0, 
+    right: 0
+  }
+});
