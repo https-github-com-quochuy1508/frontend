@@ -30,7 +30,7 @@ export default function Signup1({navigation}) {
         <Text style={styles.text1}>Tham gia Fakebook</Text>
         <Text style={styles.text2}>Chúng tôi sẽ giúp bạn tạo tài khoản mới sau vài bước dễ dàng.</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Name")} activeOpacity={0.8}>
-          <Button/>
+          <Button />
         </TouchableOpacity>
         <Text style={styles.text3} onPress={createAlert}>Bạn đã có tài khoản?</Text>
         <StatusBar backgroundColor={Colors.WHITE} barStyle="dark-content"/>

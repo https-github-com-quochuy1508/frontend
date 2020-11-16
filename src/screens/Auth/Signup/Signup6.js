@@ -1,33 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
-import {connect} from 'react-redux';
-import {requestCreateUser} from '../../../redux/actions/signupAction';
-import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 import * as Colors from '../../../assets/Colors'
 import Button from '../../../components/NextButton';
 
 
-function Signup6({route, register, login, signup}) {
-  
-  const submit = () => {
-    const param = {
-      name: route.params.name,
-      birthday: route.params.birth,
-      telephone: route.params.phone,
-      password: route.params.password,
-      token: "123"
-    }
-    signup(param);
-  }
-
-  useEffect(() => {
-    if(register != null && register.result.success) {
-      login({
-        telephone: route.params.phone,
-        password: route.params.password,
-      })
-    }
-  },[register])
+function Signup6({route, navigation}) {
   
   return (
     <View style={styles.container}>
@@ -49,9 +26,9 @@ function Signup6({route, register, login, signup}) {
       <TouchableOpacity 
         activeOpacity={0.8} 
         style={{marginTop: "15%"}}
-        onPress={() => submit()}
+        onPress={() => navigation.navigate("Confirm", route.params)}
       >
-        <Button done={true}/>
+        <Button type="submit"/>
       </TouchableOpacity>
       <Text style={styles.text2}>Thông tin liên hệ trong danh bạ của bạn, bao gồm tên, số điện thoại và biệt danh, sẽ được gửi tới Facebook để chúng tôi có thể gợi ý bạn bè, cung cấp và cải thiện quảng cáo cho bạn và người khác, cũng như mang đến dịch vụ tốt hơn. Bạn có thể tắt tính năng này trong phần Cài đặt, quản lý hoặc xóa bỏ thông tin liên hệ của mình đã chia sẻ với Fakebook.
         <Text style={{color: Colors.BLUE}}> Tìm hiểu thêm</Text>
@@ -89,17 +66,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signup: (params) => {
-      dispatch(requestCreateUser(params));
-    },
-    login: (params) => {
-      dispatch(requestAuthenticateUser(params));
-    },
-  };
-};
-const SignupContainer = connect(mapStateToProps, mapDispatchToProps)(Signup6);
-export default SignupContainer;
+export default Signup6;

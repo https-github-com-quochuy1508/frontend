@@ -33,9 +33,7 @@ export default function Signup5({navigation, route}) {
     if(password.length >= 6) {
       setWrong(false);
       navigation.navigate("Rule", {
-        name: route.params.name,
-        birth: route.params.birth,
-        phone: route.params.phone,
+        ...route.params,
         password: password
       })
     } else {

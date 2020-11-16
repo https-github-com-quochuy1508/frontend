@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from 'react'
-import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native'
+import React, {useState} from 'react'
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import * as Colors from '../../../assets/Colors'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,40 +12,17 @@ export default function Signup3 ({navigation, route}) {
 
   const submit = () => {
     let age = current.getFullYear() - date.getFullYear();
-    let birth = current.getFullYear() + "-" + current.getMonth() + "-" + current.getDate();
+    let birth = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
     if(age > 5) {
       setWrong(false);
       navigation.navigate("Phone", {
-        name: route.params.name,
-        birth: birth
+        ...route.params,
+        birthday: birth
       });
     } else {
       setWrong(true);
     }
   }
-  useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        e.preventDefault();
-        Alert.alert(
-          "Bạn có muốn dừng tạo tài khoản không?",
-          "Nếu dừng bây giờ, bạn sẽ mât toàn bộ tiến trình cho đến nay.",
-          [
-            {
-              text: "Dừng tạo tài khoản",
-              style: "destructive",
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-            { 
-              text: "Tiếp tục tạo tài khoản ",
-              style: 'cancel'
-            }
-          ],
-          { cancelable: true }
-        );
-      }),
-    [navigation]
-  );
 
   return (
     <View style={styles.container}>
@@ -67,7 +44,7 @@ export default function Signup3 ({navigation, route}) {
         style={{marginBottom: "19%"}}
       />
       <TouchableOpacity onPress={() => submit()} activeOpacity={0.8}>
-        <Button/>
+        <Button />
       </TouchableOpacity>
     </View>
   )

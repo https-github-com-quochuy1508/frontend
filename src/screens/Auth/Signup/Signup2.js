@@ -97,7 +97,7 @@ export default function Signup2({navigation}) {
         />
       </View>
       <TouchableOpacity onPress={() => submit()} activeOpacity={0.8}>
-        <Button/>
+        <Button />
       </TouchableOpacity>
     </View>
   );
