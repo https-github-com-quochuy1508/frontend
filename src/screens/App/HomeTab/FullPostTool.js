@@ -6,12 +6,14 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ion from 'react-native-vector-icons/Ionicons';
 import * as Colors from '../../../assets/Colors'
 import Modal from 'react-native-modal';
+import ImagePicker from 'react-native-image-picker';
 
 export default function FullPostTool({navigation}) {
     const [press, setPress] = useState(0);
     const [show, setShow] = useState(true);
     const [content, setContent] = useState("");
     const [isModalVisible, setModalVisible] = useState(false);
+    const [avtSource, setAvtSource] = useState();
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', _keyboardDidShow);    
@@ -38,6 +40,36 @@ export default function FullPostTool({navigation}) {
         }
     }
 
+    const options = {
+        title: 'Chọn ảnh',
+        takePhotoButtonTitle: "Chụp ảnh",
+        chooseFromLibraryButtonTitle: "Tải ảnh lên từ thư viện",
+        cancelButtonTitle: "Thoát",
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+    
+    const pickImage = async () => { 
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+        
+            if (response.didCancel) {
+            console.log('User cancelled image picker');
+            } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+            } else {
+            const source = { uri: response.uri };
+        
+            // You can also display the image using data:
+            // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+            setAvtSource(source);
+            } 
+        });
+    }
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -75,6 +107,7 @@ export default function FullPostTool({navigation}) {
                 onChangeText={(text) => setContent(text.trim())}
                 multiline={true}
             />
+            <Image source={avtSource} style={{width: "90%", height: 200}} />
             {show ? 
             <View style={styles.add}>
                 <Pressable 
@@ -82,6 +115,7 @@ export default function FullPostTool({navigation}) {
                     onTouchStart={() => setPress(2)} 
                     onTouchEnd={() => setPress(0)} 
                     onPressOut={() => setPress(0)}
+                    onPress={() => pickImage()}
                 >
                     <Fontisto style={{marginRight: 15}} name="photograph" color={Colors.LIME} size={24}/>
                     <Text style={{fontSize: 16}}>Ảnh/Video</Text>
