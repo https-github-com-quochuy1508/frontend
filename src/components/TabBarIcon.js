@@ -22,6 +22,9 @@ function TabBarIcon({color, focused, name}) {
     case "Menu":
       iconName = focused ? 'menu' : 'menu-outline';
       break;
+    case "Menu":
+      iconName = focused ? 'search' : 'search-outline';
+      break;
   }
   return <Icon name={iconName} size={24} color={color} />;
 }
