@@ -33,7 +33,7 @@ function Login({navigation, login, users}) {
   useEffect(() => {
     if(users != null && users.result != null)
     switch(users.result.code) {
-      case 9995: 
+      case 500: 
         Alert.alert(
           "Không thể tìm tài khoản",
           "Có vẻ như " + user + " không khớp với tài khoản hiện tại. Nếu chưa có tài khoản Fakebook, bạn có thể tạo một tài khoản ngay bây giờ.",
@@ -50,7 +50,7 @@ function Login({navigation, login, users}) {
           {cancelable: true}
         );
         break;
-      case 200:
+      case 1001:
         Alert.alert(
           "Sai mật khẩu",
           "Mật khẩu bạn vừa nhập không chính xác. Vui lòng thử lại hoặc lấy mã để đăng nhập.",

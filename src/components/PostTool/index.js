@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import * as Colors from '../../assets/Colors';
 import {navigation} from '../../../rootNavigation';
 
-export default function PostTool() {    
+function PostTool({users}) {    
     const [press, setPress] = useState(false);
+
     const onFullPostToolPressHandler = () => {
         navigation.navigate('FullPostTool')
     }
@@ -13,7 +14,7 @@ export default function PostTool() {
     return (
         <View style={styles.container}>
             <Pressable>
-                <Image source={{ uri: "https://scontent.fhan9-1.fna.fbcdn.net/v/t1.0-9/109937103_1147876648925466_5407335593471103700_n.jpg?_nc_cat=108&ccb=2&_nc_sid=09cbfe&_nc_ohc=uKzWS_yxgZAAX9-JzFG&_nc_ht=scontent.fhan9-1.fna&oh=91377309008559c505359fd91e291b66&oe=5FCB1B0D" }} style={styles.userAvatar} ></Image>
+                <Image source={{ uri: users.result != null ? users.result.avatar : null}} style={styles.userAvatar} ></Image>
             </Pressable>
             <Pressable 
                 onPress={() => onFullPostToolPressHandler()} 
@@ -57,3 +58,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
 })
+
+const mapStateToProps = (state) => state;
+const PostToolConnected = connect(mapStateToProps, null)(PostTool);
+export default PostToolConnected;
