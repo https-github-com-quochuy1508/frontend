@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
+import En from 'react-native-vector-icons/Entypo';
 import Oct from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ion from 'react-native-vector-icons/Ionicons';
 import * as Colors from '../../../assets/Colors'
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-picker';
-
+import AliasImage from '../../../components/AliasImage';
 export default function FullPostTool({navigation}) {
     const [press, setPress] = useState(0);
     const [show, setShow] = useState(true);
     const [content, setContent] = useState("");
     const [isModalVisible, setModalVisible] = useState(false);
-    const [avtSource, setAvtSource] = useState();
+    const [avtSource, setAvtSource] = useState([]);
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', _keyboardDidShow);    
@@ -47,29 +48,43 @@ export default function FullPostTool({navigation}) {
         cancelButtonTitle: "Thoát",
         storageOptions: {
           skipBackup: true,
-          path: 'images',
+          path: 'Fakebook',
         },
       };
     
-    const pickImage = async () => { 
-        ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
-        
-            if (response.didCancel) {
-            console.log('User cancelled image picker');
-            } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-            } else {
-            const source = { uri: response.uri };
-        
-            // You can also display the image using data:
-            // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-            setAvtSource(source);
-            } 
-        });
+    const pickImage = async () => {
+        if(avtSource.length < 4) {
+            ImagePicker.showImagePicker(options, (response) => {        
+                if (response.didCancel) {
+                console.log('User cancelled image picker');
+                } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                } else {
+                const source = response.uri;
+            
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+                // console.log(source);
+                let newAvtSource = avtSource.concat([source]);
+                setAvtSource(newAvtSource);
+                } 
+            });
+        } else {
+            alert("Chỉ được chọn tối đa 4 ảnh!");
+        }
     }
+
+    const removeImage = (id) => {
+        let newAvtSource = avtSource.filter((value, index) => index != id);
+        setAvtSource(newAvtSource);
+    }
+
+    const Remove = ({id}) => {
+        return <En name="cross" color={Colors.WHITE} size={24} style={styles.cancelButton} onPress={() => removeImage(id)}/>
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -82,12 +97,12 @@ export default function FullPostTool({navigation}) {
                 </Pressable>
                 <Text style={styles.title}>Tạo bài viết</Text>
                 <Pressable 
-                    disabled={content.length == 0}
+                    disabled={content.length == 0 && avtSource.length == 0}
                     style={[styles.postContainer, {backgroundColor: press == 4 ? Colors.LIGHTGRAY : Colors.WHITE}]}
-                    onTouchStart={() => {if(content.length > 0) setPress(4)}}
+                    onTouchStart={() => {if(content.length > 0 || avtSource.length > 0) setPress(4)}}
                     onTouchEnd={() => setPress(0)}
                 >
-                    <Text style={{color: content.length > 0 ? Colors.BLUE : Colors.GAINSBORO}}>ĐĂNG</Text>
+                    <Text style={{color: content.length > 0 || avtSource.length > 0 ? Colors.BLUE : Colors.GAINSBORO}}>ĐĂNG</Text>
                 </Pressable>
             </View>
             <View style={styles.headContainer}>
@@ -101,13 +116,29 @@ export default function FullPostTool({navigation}) {
                 </View>
             </View>
             <TextInput
-                placeholder="Bạn đang nghĩ gì?"
+                placeholder={ avtSource.length > 0 ? "Hãy nói gì đó về các bức ảnh này..." : "Bạn đang nghĩ gì?"}
                 placeholderTextColor={Colors.GRAY}
-                style={styles.input}
+                style={avtSource.length > 0 ? {fontSize: 15, paddingLeft: 15} : {fontSize: 25, paddingLeft: 15}}
                 onChangeText={(text) => setContent(text.trim())}
                 multiline={true}
             />
-            <Image source={avtSource} style={{width: "90%", height: 200}} />
+           {avtSource.length > 0 ?
+            <View style={styles.imageContainer}>
+                <View style={{width: "64.5%", height: "100%"}}>
+                    <Image source={{uri: avtSource[0]}} style={{width: "100%", height: "100%"}} />
+                    <Remove id={0}/>
+                </View>
+                <View style={styles.smallImages}>
+                    {avtSource.map((value, index) => index != 0 ? 
+                    <View style={{width: "100%", height: "33%"}} key={index}>
+                        <Image source={{uri: value}} style={{width: "100%", height: "100%"}}/>
+                        <Remove id={index}/>
+                    </View> : null)}
+                    {avtSource.length < 4 ? <AliasImage/> : null}
+                    {avtSource.length < 3 ? <AliasImage/> : null}
+                    {avtSource.length < 2 ? <AliasImage/> : null}
+                </View>
+            </View> : null}
             {show ? 
             <View style={styles.add}>
                 <Pressable 
@@ -217,6 +248,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginHorizontal: 15,
         marginTop: 15,
+        marginBottom: 5,
     },
     avt: {
         width: 50,
@@ -245,10 +277,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.GRAY,
         fontSize: 12,
-    },
-    input: {
-        fontSize: 25,
-        margin: 15,
     },
     add: {
         position: "absolute", 
@@ -299,5 +327,20 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         alignItems: 'center',
         height: 70
+    },
+    imageContainer: {
+        flexDirection: 'row', 
+        width: "100%", 
+        height: "50%", 
+        justifyContent: 'space-between'
+    },
+    smallImages: {
+        width: "35%", 
+        height: "100%", 
+        justifyContent: 'space-between'
+    },
+    cancelButton: {
+        position: 'absolute', 
+        alignSelf: 'flex-end'
     }
 })
