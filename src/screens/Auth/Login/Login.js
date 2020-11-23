@@ -1,8 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, StatusBar, StyleSheet, Image, Text, Keyboard, Pressable, Alert} from 'react-native';
+import {
+  View,
+  TextInput,
+  StatusBar,
+  StyleSheet,
+  Image,
+  Text,
+  Keyboard,
+  Pressable,
+  Alert,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
-import * as Colors from '../../../assets/Colors'
+import * as Colors from '../../../assets/Colors';
 
 function Login({navigation, login, users}) {
   const [focus, setFocus] = useState(0);
@@ -31,43 +41,45 @@ function Login({navigation, login, users}) {
   };
 
   useEffect(() => {
-    if(users != null && users.result != null)
-    switch(users.result.code) {
-      case 500: 
-        Alert.alert(
-          "Không thể tìm tài khoản",
-          "Có vẻ như " + user + " không khớp với tài khoản hiện tại. Nếu chưa có tài khoản Fakebook, bạn có thể tạo một tài khoản ngay bây giờ.",
-          [
-            {
-              text: "TẠO TÀI KHOẢN",
-              onPress: () => navigation.navigate("Signup"),
-            },
-            { 
-              text: "THỬ LẠI",
-              style: 'cancel'
-            },
-          ],   
-          {cancelable: true}
-        );
-        break;
-      case 1001:
-        Alert.alert(
-          "Sai mật khẩu",
-          "Mật khẩu bạn vừa nhập không chính xác. Vui lòng thử lại hoặc lấy mã để đăng nhập.",
-          [
-            {
-              text: "LẤY MÃ",
-            },
-            { 
-              text: "OK",
-              style: 'cancel'
-            },
-          ],   
-          {cancelable: true}
-        );
-        break;
-    }
-  },[users])
+    if (users != null && users.result != null)
+      switch (users.result.code) {
+        case 500:
+          Alert.alert(
+            'Không thể tìm tài khoản',
+            'Có vẻ như ' +
+              user +
+              ' không khớp với tài khoản hiện tại. Nếu chưa có tài khoản Fakebook, bạn có thể tạo một tài khoản ngay bây giờ.',
+            [
+              {
+                text: 'TẠO TÀI KHOẢN',
+                onPress: () => navigation.navigate('Signup'),
+              },
+              {
+                text: 'THỬ LẠI',
+                style: 'cancel',
+              },
+            ],
+            {cancelable: true},
+          );
+          break;
+        case 1001:
+          Alert.alert(
+            'Sai mật khẩu',
+            'Mật khẩu bạn vừa nhập không chính xác. Vui lòng thử lại hoặc lấy mã để đăng nhập.',
+            [
+              {
+                text: 'LẤY MÃ',
+              },
+              {
+                text: 'OK',
+                style: 'cancel',
+              },
+            ],
+            {cancelable: true},
+          );
+          break;
+      }
+  }, [users]);
 
   const submit = () => {
     const param = {
@@ -75,7 +87,7 @@ function Login({navigation, login, users}) {
       password: password,
     };
     login(param);
-  }
+  };
   return (
     <View style={styles.container}>
       {showImage ? (
@@ -89,7 +101,12 @@ function Login({navigation, login, users}) {
         />
       ) : (
         <View
-          style={{alignItems: 'center', justifyContent: 'center', height: 210, paddingTop: 25}}>
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 210,
+            paddingTop: 25,
+          }}>
           <Image
             style={{height: 65, width: 65}}
             source={{
@@ -102,12 +119,12 @@ function Login({navigation, login, users}) {
       <View style={styles.inputContainer}>
         <TextInput
           style={[
-            styles.input, 
+            styles.input,
             {
               backgroundColor: press == 1 ? Colors.WHITESMOKE : Colors.WHITE,
               borderBottomColor: focus == 1 ? Colors.BLUE : Colors.LIGHTGRAY,
               borderBottomWidth: focus == 1 ? 2 : 0.8,
-            }
+            },
           ]}
           placeholder="Số điện thoại hoặc email"
           placeholderTextColor={Colors.GRAY}
@@ -130,7 +147,7 @@ function Login({navigation, login, users}) {
               backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE,
               borderBottomColor: focus == 2 ? Colors.BLUE : Colors.LIGHTGRAY,
               borderBottomWidth: focus == 2 ? 2 : 0.8,
-            }
+            },
           ]}
           placeholder="Mật khẩu"
           placeholderTextColor={Colors.GRAY}
@@ -151,12 +168,21 @@ function Login({navigation, login, users}) {
           style={styles.button}
           disabled={user.length == 0 || password.length == 0}
           onPress={() => submit()}>
-          <Text style={[styles.buttonText, {opacity: user.length > 0 && password.length > 0 ? 1 : 0.5}]}>Đăng nhập</Text>
+          <Text
+            style={[
+              styles.buttonText,
+              {opacity: user.length > 0 && password.length > 0 ? 1 : 0.5},
+            ]}>
+            Đăng nhập
+          </Text>
         </Pressable>
         {showImage ? (
           <View style={{alignItems: 'center'}}>
             <Pressable
-              style={[styles.forgot, {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE}]}
+              style={[
+                styles.forgot,
+                {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE},
+              ]}
               onTouchStart={() => {
                 setPress(3);
               }}
@@ -180,7 +206,10 @@ function Login({navigation, login, users}) {
           </View>
         ) : (
           <Pressable
-            style={[styles.newBox, {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE}]}
+            style={[
+              styles.newBox,
+              {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE},
+            ]}
             onPress={() => navigation.navigate('Signup')}
             onTouchStart={() => {
               setPress(3);

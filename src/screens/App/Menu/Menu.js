@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, ScrollView, Image, StyleSheet, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,7 +16,6 @@ import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
 
 function Menu({logout, users}) {
-
   const removeToken = async () => {
     try {
       await AsyncStorage.removeItem('token');
@@ -27,50 +34,65 @@ function Menu({logout, users}) {
         <View style={styles.menu}>
           <Text style={styles.menu_text}>Menu</Text>
           <TouchableOpacity style={styles.menu_button}>
-            <Icon name="search-outline" size={22}/>
+            <Icon name="search-outline" size={22} />
           </TouchableOpacity>
         </View>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <View style={styles.btnProfile}>
-            <Image style={styles.avatar} source={{uri: users.result!= null ? users.result.avatar : null}} />
+            <Image
+              style={styles.avatar}
+              source={{
+                uri:
+                  (users && users.result) != null ? users.result.avatar : null,
+              }}
+            />
             <View style={styles.text}>
-              <Text style={styles.name}>{users.result != null ? users.result.name : null}</Text>
-              <Text style={{color: Colors.DARKGRAY}}>Xem trang cá nhân của bạn</Text>
+              <Text style={styles.name}>
+                {(users && users.result) != null ? users.result.name : null}
+              </Text>
+              <Text style={{color: Colors.DARKGRAY}}>
+                Xem trang cá nhân của bạn
+              </Text>
             </View>
           </View>
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="group"/>
+          <Button name="group" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="friend"/>
+          <Button name="friend" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="memory"/>
+          <Button name="memory" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="saved"/>
+          <Button name="saved" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="page"/>
+          <Button name="page" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="event"/>
+          <Button name="event" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="game"/>
+          <Button name="game" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="job"/>
+          <Button name="job" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="help"/>
+          <Button name="help" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="setting"/>
+          <Button name="setting" />
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => {removeToken();logout()}} underlayColor={Colors.WHITESMOKE}>
-          <Button name="logout"/>
+        <TouchableHighlight
+          onPress={() => {
+            removeToken();
+            logout();
+          }}
+          underlayColor={Colors.WHITESMOKE}>
+          <Button name="logout" />
         </TouchableHighlight>
       </ScrollView>
     </View>

@@ -77,7 +77,10 @@ export default async function request(url, option) {
   // const cookieToken = cookie.get("token");
   const cookieToken = await AsyncStorage.getItem('token');
 
-  console.log('cookieToken: ', cookieToken);
+  console.log(
+    '========================================cookieToken========================================: ',
+    cookieToken,
+  );
   const token = cookieToken !== 'undefined' ? cookieToken : null;
   // const cookieEmail = cookie.get("auth_email");
   // const authEmail = localStorage.getItem('antd-pro-userName') !== "undefined" ? JSON.parse(localStorage.getItem('antd-pro-userName')) : null;
@@ -123,7 +126,8 @@ export default async function request(url, option) {
     } else {
       // newOptions.body is FormData
       newOptions.headers = {
-        Accept: 'application/json',
+        // Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
         ...newOptions.headers,
       };
     }

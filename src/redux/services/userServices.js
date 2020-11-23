@@ -36,7 +36,7 @@ export default {
       // Error saving data
     }
   },
-  
+
   getToken: async () => {
     try {
       const value = await AsyncStorage.getItem('token');
@@ -46,6 +46,69 @@ export default {
       }
     } catch (error) {
       // Error retrieving data
+    }
+  },
+
+  setName: async (data) => {
+    try {
+      await AsyncStorage.setItem('name', data);
+    } catch (error) {
+      // Error saving data
+    }
+  },
+
+  getName: async () => {
+    try {
+      const value = await AsyncStorage.getItem('name');
+      if (value !== null) {
+        // We have data!!
+        return value;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  setAvatar: async (data) => {
+    try {
+      await AsyncStorage.setItem('avatar', data);
+    } catch (error) {
+      // Error saving data
+    }
+  },
+
+  getAvatar: async () => {
+    try {
+      const value = await AsyncStorage.getItem('avatar');
+      if (value !== null) {
+        // We have data!!
+        return value;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  setUserId: async (data) => {
+    try {
+      await AsyncStorage.setItem('userId', data);
+    } catch (error) {
+      // Error saving data
+    }
+  },
+
+  getUserId: async () => {
+    try {
+      const value = await AsyncStorage.getItem('userId');
+      if (value !== null) {
+        // We have data!!
+        return value;
+      }
+      return null;
+    } catch (error) {
+      return null;
     }
   },
 };

@@ -17,6 +17,9 @@ const loginEpic = (action$) =>
         map((response) => {
           if (response.success) {
             userApi.setToken(response.token);
+            userApi.setName(response.name);
+            userApi.setAvatar(response.avatar);
+            userApi.setUserId(response.userId.toString());
             return authenticateSuccess(response);
           } else {
             return authenticateFail(response.error);
