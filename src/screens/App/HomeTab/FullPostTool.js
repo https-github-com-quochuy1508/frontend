@@ -19,14 +19,24 @@ import ImagePicker from 'react-native-image-picker';
 import AliasImage from '../../../components/AliasImage';
 import ENV from '../../../utils/env';
 import mediaServices from '../../../redux/services/mediaServices';
+import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
+import {requestUpdatePost} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 
-function FullPostTool({navigation, users, valuePost}) {
+function FullPostTool({
+  navigation,
+  users,
+  valuePost,
+  deleteMediaPost,
+  requestUpdatePost,
+  hasUpdate,
+}) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
   const [content, setContent] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [avtSource, setAvtSource] = useState([]);
+  const [idAvatart, setIdAvatar] = useState([]);
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
@@ -35,6 +45,12 @@ function FullPostTool({navigation, users, valuePost}) {
       Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
     };
   }, []);
+
+  useEffect(() => {
+    if (hasUpdate) {
+      navigation.navigate('Home');
+    }
+  }, [hasUpdate]);
 
   const _keyboardDidShow = () => {
     setShow(false);
@@ -61,23 +77,6 @@ function FullPostTool({navigation, users, valuePost}) {
       path: 'Fakebook',
     },
   };
-
-  // const uploadImageToServer = async (file) => {
-  //   let formdata = new FormData();
-  //   const userId = (valuePost && valuePost.userId) || 0;
-  //   const postId = (valuePost && valuePost.id) || 0;
-  //   formdata.append('myFiles', file);
-  //   formdata.append('userId', userId);
-  //   formdata.append('postId', postId);
-  //   await postServices.
-  //     .then((response) => {
-  //       console.log('response: ', response);
-  //       console.log('image uploaded');
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   const pickImage = async () => {
     if (avtSource.length < 4) {
@@ -118,7 +117,10 @@ function FullPostTool({navigation, users, valuePost}) {
             // })
             .then((response) => {
               console.log('response: ', response);
-              console.log('image uploaded');
+              const idAvt = [...idAvatart, response.id];
+              setIdAvatar(idAvt);
+
+              console.log('image uploaded', idAvt);
             })
             .catch((err) => {
               console.log(err);
@@ -132,9 +134,23 @@ function FullPostTool({navigation, users, valuePost}) {
 
   const removeImage = (id) => {
     let newAvtSource = avtSource.filter((value, index) => index != id);
-    setAvtSource(newAvtSource);
+    const idAvt = idAvatart[id] || 0;
+    if (idAvt) {
+      let newIdAvt = idAvatart.filter((value, index) => index != id);
+      deleteMediaPost(idAvt);
+      setIdAvatar(newIdAvt);
+      setAvtSource(newAvtSource);
+    }
   };
 
+  const updatePost = () => {
+    console.log('valuePost: ', valuePost);
+    const param = {
+      id: valuePost.id,
+      content: content || '',
+    };
+    requestUpdatePost(param);
+  };
   const Remove = ({id}) => {
     return (
       <En
@@ -170,7 +186,8 @@ function FullPostTool({navigation, users, valuePost}) {
           onTouchStart={() => {
             if (content.length > 0 || avtSource.length > 0) setPress(4);
           }}
-          onTouchEnd={() => setPress(0)}>
+          onTouchEnd={() => setPress(0)}
+          onPress={updatePost}>
           <Text
             style={{
               color:
@@ -515,13 +532,35 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const post = state.post || {};
+  const post = (state.post && state.post.result) || {};
+  console.log('state: ', state);
   let valuePost = null;
+  let hasUpdate = false;
   if (post.success) {
     valuePost = post.result;
+    if (valuePost.hasOwnProperty('content')) {
+      hasUpdate = true;
+    } else {
+      hasUpdate = false;
+    }
   } else {
   }
-  return {valuePost};
+  return {valuePost, hasUpdate};
 };
-const NavigationConnected = connect(mapStateToProps, null)(FullPostTool);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteMediaPost: (id) => {
+      dispatch(requestDeleteMedia(id));
+    },
+    requestUpdatePost: (data) => {
+      dispatch(requestUpdatePost(data));
+    },
+  };
+};
+
+const NavigationConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FullPostTool);
 export default NavigationConnected;

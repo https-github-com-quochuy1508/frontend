@@ -4,12 +4,15 @@ import {
   REQUEST_CREATE_POST,
   createPostSuccess,
   createPostFail,
+  REQUEST_UPDATE_POST,
+  updatePostSuccess,
+  updatePostFail,
 } from '../actions/postAction';
-
+import {combineEpics} from 'redux-observable';
 import postApi from '../services/postServices';
 import {from} from 'rxjs';
 
-const loginEpic = (action$) =>
+const createPostEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_CREATE_POST),
     switchMap((action) => {
@@ -26,4 +29,23 @@ const loginEpic = (action$) =>
       );
     }),
   );
-export default loginEpic;
+
+const updatePostEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_UPDATE_POST),
+    switchMap((action) => {
+      console.log('action: ', action);
+      return from(postApi.update(action.payload.id, action.payload)).pipe(
+        map((response) => {
+          console.log('response: ', response);
+          if (response.success) {
+            return updatePostSuccess(response);
+          } else {
+            return updatePostFail(response.error);
+          }
+        }),
+      );
+    }),
+  );
+
+export default combineEpics(createPostEpic, updatePostEpic);

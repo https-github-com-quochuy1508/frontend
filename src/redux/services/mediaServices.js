@@ -20,4 +20,10 @@ export default {
       body: formdata,
     });
   },
+
+  deleteImage: (params) => {
+    return request(varEnv.apiUrlBackend + `/api/upload/` + params, {
+      method: 'DELETE',
+    });
+  },
 };
