@@ -11,4 +11,12 @@ export default {
       },
     });
   },
+  update: (id, params) => {
+    return request(varEnv.apiUrlBackend + `/api/posts/` + id, {
+      method: 'PUT',
+      body: {
+        ...params,
+      },
+    });
+  },
 };
