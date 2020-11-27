@@ -1,11 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, StatusBar, Image, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import * as Colors from '../../../assets/Colors'
+import * as Colors from '../../../assets/Colors';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Login2({navigation}) {
     const [press, setPress] = useState(0);
+    const [avt, setAvt] = useState(" ");
+    const [name, setName] = useState("");
+
+    const getData = async () => {
+        try {
+          const avt = await AsyncStorage.getItem('avatar')
+          const name = await AsyncStorage.getItem('name')
+          if(avt !== null && name !== null) {
+            setAvt(avt);
+            setName(name)
+          }
+        } catch(e) {
+          // error reading value
+        }
+      }
+    
+    useEffect(() => {
+        getData();
+    })
 
     return(
         <View style={styles.container}>
@@ -22,10 +42,10 @@ export default function Login2({navigation}) {
                     onPressOut={() => setPress(0)}
                 >
                     <Image 
-                        style={{width: 60, height: 60, marginLeft: 35}}
-                        source={{uri: "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"}}
+                        style={{width: 60, height: 60, marginLeft: 35, borderRadius: 30}}
+                        source={{uri: avt}}
                     />
-                    <Text style={styles.name}>Phạm Đình Thắng</Text>
+                    <Text style={styles.name}>{name}</Text>
                     <Icon name="dots-three-vertical" size={15} style={{position:'absolute', right: 30}}/>
                 </Pressable>
                 <Pressable 

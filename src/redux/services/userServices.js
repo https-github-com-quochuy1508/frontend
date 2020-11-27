@@ -111,4 +111,24 @@ export default {
       return null;
     }
   },
+
+  getTelephone: async () => {
+    try {
+      const value = await AsyncStorage.getItem('telephone');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  },
+
+  setTelephone: async (data) => {
+    try {
+      await AsyncStorage.setItem('telephone', data);
+    } catch (error) {
+      // Error saving data
+    }
+  },
 };

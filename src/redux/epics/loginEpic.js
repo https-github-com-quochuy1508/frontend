@@ -20,6 +20,7 @@ const loginEpic = (action$) =>
             userApi.setName(response.name);
             userApi.setAvatar(response.avatar);
             userApi.setUserId(response.userId.toString());
+            userApi.setTelephone(response.telephone);
             return authenticateSuccess(response);
           } else {
             return authenticateFail(response.error);

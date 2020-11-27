@@ -5,9 +5,11 @@ import * as Colors from '../../assets/Colors';
 import {navigation} from '../../../rootNavigation';
 import userServices from '../../redux/services/userServices';
 import {requestCreatePost} from '../../redux/actions/postAction';
+import AsyncStorage from '@react-native-community/async-storage';
 
-function PostTool({users, createPost}) {
+function PostTool({createPost}) {
   const [press, setPress] = useState(false);
+  const [avt, setAvt] = useState(" ");
 
   const onFullPostToolPressHandler = async (data) => {
     const fakeData = {
@@ -17,14 +19,24 @@ function PostTool({users, createPost}) {
     navigation.navigate('FullPostTool');
   };
 
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('avatar')
+      if(value !== null) {
+        setAvt(value);
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  })
   return (
     <View style={styles.container}>
       <Pressable>
-        <Image
-          source={{
-            uri: (users && users.result) != null ? users.result.avatar : null,
-          }}
-          style={styles.userAvatar}></Image>
+        <Image source={{uri: avt}} style={styles.userAvatar}/>
       </Pressable>
       <Pressable
         onPress={() => onFullPostToolPressHandler()}
@@ -70,10 +82,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return state;
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     createPost: (params) => {
@@ -83,7 +91,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const PostToolConnected = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(PostTool);
 

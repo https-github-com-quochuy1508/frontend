@@ -1,20 +1,70 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, TextInput, Image, Pressable, KeyboardAvoidingView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, Text, TextInput, Image, Pressable, KeyboardAvoidingView, Alert} from 'react-native';
 import * as Colors from '../../../assets/Colors'
+import AsyncStorage from '@react-native-community/async-storage';
+import {connect} from 'react-redux';
+import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 
-export default function Login3() {
+function Login3({login, users}) {
     const [password, setPassword] = useState("");
     const [press, setPress] = useState(0);
     const [show, setShow] = useState(false);
+    const [avt, setAvt] = useState(" ");
+    const [name, setName] = useState("");
+    const [telephone, setTelephone] = useState("");
 
+    const getData = async () => {
+        try {
+          const avt = await AsyncStorage.getItem('avatar')
+          const name = await AsyncStorage.getItem('name')
+          const tel = await AsyncStorage.getItem('telephone')
+          if(avt !== null && name !== null && tel !== null) {
+            setAvt(avt);
+            setName(name);
+            setTelephone(tel);
+          }
+        } catch(e) {
+          // error reading value
+        }
+      }
+    
+    useEffect(() => {
+        getData();
+    })
+
+    useEffect(() => {
+        if (users != null && users.result != null && !users.result.success)
+            Alert.alert(
+            'Sai mật khẩu',
+            'Mật khẩu bạn vừa nhập không chính xác. Vui lòng thử lại hoặc lấy mã để đăng nhập.',
+            [
+                {
+                text: 'LẤY MÃ',
+                },
+                {
+                text: 'OK',
+                style: 'cancel',
+                },
+            ],
+            {cancelable: true},
+            );
+    }, [users]);
+
+    const submit = () => {
+        const param = {
+            telephone: telephone,
+            password: password,
+        };
+        login(param);
+    };
     return(
         <View style={styles.container}>
             <KeyboardAvoidingView style={styles.content}>
                 <Image 
-                    style={{width: 75, height: 75, marginBottom: 10}}
-                    source={{uri: "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"}}
+                    style={{width: 75, height: 75, marginBottom: 10, borderRadius: 38}}
+                    source={{uri: avt}}
                 />
-                <Text>Phạm Đình Thắng</Text>
+                <Text>{name}</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={[styles.input, {width: password.length > 0 ? (show ? 292 : 257) : 320}]}
@@ -39,7 +89,7 @@ export default function Login3() {
                 <Pressable 
                     style={styles.button} 
                     disabled={password.length == 0} 
-                    onPress={() => alert("Đăng nhập")}
+                    onPress={() => submit()}
                 >
                     <Text style={[styles.buttonText, {opacity: password.length > 0 ? 1 : 0.5}]}>ĐĂNG NHẬP</Text>
                 </Pressable>
@@ -111,3 +161,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
 })
+
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (params) => {
+      dispatch(requestAuthenticateUser(params));
+    },
+  };
+};
+
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login3);
+export default LoginContainer;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
 
-function Menu({logout, users}) {
+function Menu({logout}) {
+  const [avt, setAvt] = useState(" ");
+  const [name, setName] = useState("");
   const removeToken = async () => {
     try {
       await AsyncStorage.removeItem('token');
@@ -23,6 +25,23 @@ function Menu({logout, users}) {
       // Error saving data
     }
   };
+
+  const getData = async () => {
+    try {
+      const avt = await AsyncStorage.getItem('avatar')
+      const name = await AsyncStorage.getItem('name')
+      if(avt !== null && name !== null) {
+        setAvt(avt);
+        setName(name);
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  })
 
   const onPress = () => {};
 
@@ -39,20 +58,10 @@ function Menu({logout, users}) {
         </View>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <View style={styles.btnProfile}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri:
-                  (users && users.result) != null ? users.result.avatar : null,
-              }}
-            />
+            <Image style={styles.avatar} source={{ uri: avt }}/>
             <View style={styles.text}>
-              <Text style={styles.name}>
-                {(users && users.result) != null ? users.result.name : null}
-              </Text>
-              <Text style={{color: Colors.DARKGRAY}}>
-                Xem trang cá nhân của bạn
-              </Text>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={{color: Colors.DARKGRAY}}>Xem trang cá nhân của bạn</Text>
             </View>
           </View>
         </TouchableHighlight>
@@ -99,7 +108,6 @@ function Menu({logout, users}) {
   );
 }
 
-const mapStateToProps = (state) => state;
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => {
@@ -108,7 +116,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const MenuContainer = connect(mapStateToProps, mapDispatchToProps)(Menu);
+const MenuContainer = connect(null, mapDispatchToProps)(Menu);
 
 export default MenuContainer;
 

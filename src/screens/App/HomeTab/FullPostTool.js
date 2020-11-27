@@ -17,15 +17,14 @@ import * as Colors from '../../../assets/Colors';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-picker';
 import AliasImage from '../../../components/AliasImage';
-import ENV from '../../../utils/env';
 import mediaServices from '../../../redux/services/mediaServices';
 import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
 import {requestUpdatePost} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function FullPostTool({
   navigation,
-  users,
   valuePost,
   deleteMediaPost,
   requestUpdatePost,
@@ -37,6 +36,8 @@ function FullPostTool({
   const [isModalVisible, setModalVisible] = useState(false);
   const [avtSource, setAvtSource] = useState([]);
   const [idAvatart, setIdAvatar] = useState([]);
+  const [avt, setAvt] = useState(" ");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
@@ -163,6 +164,22 @@ function FullPostTool({
     );
   };
 
+  const getData = async () => {
+    try {
+      const avt = await AsyncStorage.getItem('avatar')
+      const name = await AsyncStorage.getItem('name')
+      if(avt !== null && name !== null) {
+        setAvt(avt);
+        setName(name)
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  })
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -200,16 +217,9 @@ function FullPostTool({
         </Pressable>
       </View>
       <View style={styles.headContainer}>
-        <Image
-          source={{
-            uri: (users && users.result) != null ? users.result.avatar : null,
-          }}
-          style={styles.avt}
-        />
+        <Image source={{ uri: avt }} style={styles.avt} />
         <View style={styles.headTitleContainer}>
-          <Text style={styles.name}>
-            {(users && users.result) != null ? users.result.name : null}
-          </Text>
+          <Text style={styles.name}>{name}</Text>
           <View style={styles.public}>
             <Oct name="globe" color={Colors.GRAY} size={16} />
             <Text style={styles.publicText}>Công khai</Text>
