@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, StatusBar, Image, Pressable} from 'react-native';
+import {View, StyleSheet, Text, StatusBar, Image, Pressable, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import * as Colors from '../../../assets/Colors';
@@ -21,12 +21,60 @@ export default function Login2({navigation}) {
         } catch(e) {
           // error reading value
         }
-      }
+    }
+
+    const removeUser = async () => {
+        try {
+          await AsyncStorage.removeItem('avatar');
+          await AsyncStorage.removeItem('name');
+          await AsyncStorage.removeItem('telephone');
+          await AsyncStorage.removeItem('userId');
+          navigation.navigate("Login");
+        } catch (error) {
+          // Error saving data
+        }
+    };
     
+    const loginNewAccount = async () => {
+        try {
+          await AsyncStorage.removeItem('userId');
+          navigation.push("Login");
+        } catch (error) {
+          // Error saving data
+        }
+    };
+
     useEffect(() => {
         getData();
     })
 
+    const pressHandle = () => {
+        Alert.alert(
+            "Xóa tài khoản khỏi thiết bị", 
+            "Fakebook sẽ không ghi nhớ tài khoản này trên thiết bị nữa",
+            [
+                {
+                  text: 'Đồng ý',
+                  onPress: () => removeUser(),
+                },
+                {
+                  text: 'Hủy',
+                  style: 'cancel',
+                },
+            ],
+            {cancelable: true},
+        )
+    }
+
+    useEffect(() =>
+        navigation.addListener('beforeRemove', async (e) => {
+            // Prevent default behavior of leaving the screen
+            e.preventDefault();
+            const tel = await AsyncStorage.getItem("telephone");
+            if(tel === null)
+                navigation.dispatch(e.data.action);
+        }),
+    [navigation]);
     return(
         <View style={styles.container}>
             <Image 
@@ -46,11 +94,11 @@ export default function Login2({navigation}) {
                         source={{uri: avt}}
                     />
                     <Text style={styles.name}>{name}</Text>
-                    <Icon name="dots-three-vertical" size={15} style={{position:'absolute', right: 30}}/>
+                    <Icon name="dots-three-vertical" onPress={() => pressHandle()} size={15} style={{position:'absolute', right: 30}}/>
                 </Pressable>
                 <Pressable 
                     style={[styles.another, {backgroundColor: press == 2 ? Colors.WHITESMOKE : Colors.WHITE}]} 
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => loginNewAccount()}
                     onTouchStart={() => {setPress(2)}}
                     onTouchEnd={() => setPress(0)}
                     onPressOut={() => setPress(0)}

@@ -13,6 +13,7 @@ import {
 import {connect} from 'react-redux';
 import {requestAuthenticateUser} from '../../../redux/actions/loginAction';
 import * as Colors from '../../../assets/Colors';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function Login({navigation, login, users}) {
   const [focus, setFocus] = useState(0);
@@ -39,6 +40,23 @@ function Login({navigation, login, users}) {
   const _keyboardDidHide = () => {
     setShowImage(true);
   };
+
+  const getData = async () => {
+    try {
+      const id = await AsyncStorage.getItem('userId')
+      const tel = await AsyncStorage.getItem('telephone')
+      if(id !== null && tel !== null) {
+        navigation.navigate("Login2");
+      }
+      await AsyncStorage.setItem("userId", " ");
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  },[])
 
   useEffect(() => {
     if (users != null && users.result != null)
