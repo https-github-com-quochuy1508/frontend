@@ -1,13 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TextInput,
-  Pressable,
-  Keyboard,
-} from 'react-native';
+import {View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import En from 'react-native-vector-icons/Entypo';
 import Oct from 'react-native-vector-icons/Octicons';
@@ -23,13 +15,7 @@ import {requestUpdatePost} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-function FullPostTool({
-  navigation,
-  valuePost,
-  deleteMediaPost,
-  requestUpdatePost,
-  hasUpdate,
-}) {
+function FullPostTool({navigation, valuePost, deleteMediaPost, requestUpdatePost, hasUpdate}) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
   const [content, setContent] = useState('');
@@ -154,13 +140,7 @@ function FullPostTool({
   };
   const Remove = ({id}) => {
     return (
-      <En
-        name="cross"
-        color={Colors.WHITE}
-        size={24}
-        style={styles.cancelButton}
-        onPress={() => removeImage(id)}
-      />
+      <En name="cross" color={Colors.WHITE} size={24} style={styles.cancelButton} onPress={() => removeImage(id)}/>
     );
   };
 
@@ -184,36 +164,21 @@ function FullPostTool({
     <View style={styles.container}>
       <View style={styles.header}>
         <Pressable
-          style={[
-            styles.backIcon,
-            {backgroundColor: press == 1 ? Colors.LIGHTGRAY : Colors.WHITE},
-          ]}
+          style={[styles.backIcon, {backgroundColor: press == 1 ? Colors.LIGHTGRAY : Colors.WHITE}]}
           onPress={() => onGoBack()}
           onTouchStart={() => setPress(1)}
-          onTouchEnd={() => setPress(0)}>
+          onTouchEnd={() => setPress(0)}
+        >
           <Ant name="arrowleft" size={24} />
         </Pressable>
         <Text style={styles.title}>Tạo bài viết</Text>
         <Pressable
           disabled={content.length == 0 && avtSource.length == 0}
-          style={[
-            styles.postContainer,
-            {backgroundColor: press == 4 ? Colors.LIGHTGRAY : Colors.WHITE},
-          ]}
-          onTouchStart={() => {
-            if (content.length > 0 || avtSource.length > 0) setPress(4);
-          }}
+          style={[styles.postContainer, {backgroundColor: press == 4 ? Colors.LIGHTGRAY : Colors.WHITE}]}
+          onTouchStart={() => {if (content.length > 0 || avtSource.length > 0) setPress(4)}}
           onTouchEnd={() => setPress(0)}
           onPress={updatePost}>
-          <Text
-            style={{
-              color:
-                content.length > 0 || avtSource.length > 0
-                  ? Colors.BLUE
-                  : Colors.GAINSBORO,
-            }}>
-            ĐĂNG
-          </Text>
+          <Text style={{color: content.length > 0 || avtSource.length > 0 ? Colors.BLUE : Colors.GAINSBORO}}>ĐĂNG</Text>
         </Pressable>
       </View>
       <View style={styles.headContainer}>
@@ -227,37 +192,23 @@ function FullPostTool({
         </View>
       </View>
       <TextInput
-        placeholder={
-          avtSource.length > 0
-            ? 'Hãy nói gì đó về các bức ảnh này...'
-            : 'Bạn đang nghĩ gì?'
-        }
+        placeholder={avtSource.length > 0 ? 'Hãy nói gì đó về các bức ảnh này...' : 'Bạn đang nghĩ gì?'}
         placeholderTextColor={Colors.GRAY}
-        style={
-          avtSource.length > 0
-            ? {fontSize: 15, paddingLeft: 15}
-            : {fontSize: 25, paddingLeft: 15}
-        }
+        style={avtSource.length > 0 ? {fontSize: 15, paddingLeft: 15} : {fontSize: 25, paddingLeft: 15}}
         onChangeText={(text) => setContent(text.trim())}
         multiline={true}
       />
       {avtSource.length > 0 ? (
         <View style={styles.imageContainer}>
           <View style={{width: '64.5%', height: '100%'}}>
-            <Image
-              source={{uri: avtSource[0]}}
-              style={{width: '100%', height: '100%'}}
-            />
+            <Image source={{uri: avtSource[0]}} style={{width: '100%', height: '100%'}}/>
             <Remove id={0} />
           </View>
           <View style={styles.smallImages}>
             {avtSource.map((value, index) =>
               index != 0 ? (
                 <View style={{width: '100%', height: '33%'}} key={index}>
-                  <Image
-                    source={{uri: value}}
-                    style={{width: '100%', height: '100%'}}
-                  />
+                  <Image source={{uri: value}} style={{width: '100%', height: '100%'}}/>
                   <Remove id={index} />
                 </View>
               ) : null,
@@ -271,36 +222,21 @@ function FullPostTool({
       {show ? (
         <View style={styles.add}>
           <Pressable
-            style={[
-              styles.line,
-              {backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE},
-            ]}
+            style={[styles.line, {backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE}]}
             onTouchStart={() => setPress(2)}
             onTouchEnd={() => setPress(0)}
             onPressOut={() => setPress(0)}
-            onPress={() => pickImage()}>
-            <Fontisto
-              style={{marginRight: 15}}
-              name="photograph"
-              color={Colors.LIME}
-              size={24}
-            />
+            onPress={() => pickImage()}
+          >
+            <Fontisto style={{marginRight: 15}} name="photograph" color={Colors.LIME} size={24}/>
             <Text style={{fontSize: 16}}>Ảnh/Video</Text>
           </Pressable>
           <Pressable
-            style={[
-              styles.line,
-              {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE},
-            ]}
+            style={[styles.line, {backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE}]}
             onTouchStart={() => setPress(3)}
             onTouchEnd={() => setPress(0)}
             onPressOut={() => setPress(0)}>
-            <Fontisto
-              style={{marginRight: 15}}
-              name="smiley"
-              size={24}
-              color={Colors.ORANGE}
-            />
+            <Fontisto style={{marginRight: 15}} name="smiley" size={24} color={Colors.ORANGE}/>
             <Text style={{fontSize: 16}}>Cảm xúc/Hoạt động</Text>
           </Pressable>
         </View>
@@ -310,16 +246,12 @@ function FullPostTool({
           onPress={() => {
             setShow(true);
             Keyboard.dismiss();
-          }}>
+          }}
+        >
           <Text style={{fontSize: 16}}>Thêm vào bài viết của bạn</Text>
           <View style={styles.iconGroup}>
-            <Fontisto
-              style={{marginRight: 5}}
-              name="photograph"
-              color={Colors.LIME}
-              size={24}
-            />
-            <Fontisto name="smiley" size={24} color={Colors.ORANGE} />
+            <Fontisto style={{marginRight: 5}} name="photograph" color={Colors.LIME} size={24}/>
+            <Fontisto name="smiley" size={24} color={Colors.ORANGE}/>
           </View>
         </Pressable>
       )}
@@ -327,7 +259,8 @@ function FullPostTool({
         isVisible={isModalVisible}
         backdropOpacity={0.35}
         onBackdropPress={() => setModalVisible(false)}
-        style={styles.modal}>
+        style={styles.modal}
+      >
         <View style={{padding: 10}}>
           <Text style={{fontSize: 15, marginBottom: 5}}>
             Bạn muốn hoàn thành bài viết của mình sau?
@@ -337,23 +270,12 @@ function FullPostTool({
           </Text>
         </View>
         <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => {
-            setPress(5);
-          }}
+          style={[styles.saveContainer,{backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE}]}
+          onTouchStart={() => setPress(5)}
           onTouchEnd={() => setPress(0)}
-          onPressOut={() => {
-            setPress(0);
-          }}>
-          <Ion
-            name="bookmark-outline"
-            size={28}
-            color={Colors.DARKGRAY}
-            style={{marginRight: 10}}
-          />
+          onPressOut={() => setPress(0)}
+        >
+          <Ion name="bookmark-outline" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
           <View>
             <Text style={{fontSize: 15}}>Lưu làm bản nháp</Text>
             <Text style={{color: Colors.DARKGRAY, fontSize: 12}}>
@@ -361,49 +283,27 @@ function FullPostTool({
             </Text>
           </View>
         </Pressable>
-        <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => {
-            setPress(6);
-          }}
+        <Pressable 
+          style={[styles.saveContainer,{backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE}]}
+          onTouchStart={() => setPress(6)}
           onTouchEnd={() => setPress(0)}
-          onPressOut={() => {
-            setPress(0);
-          }}
+          onPressOut={() => setPress(0)}
           onPress={() => {
             setModalVisible(false);
             navigation.goBack();
-          }}>
-          <Ion
-            name="trash-outline"
-            size={28}
-            color={Colors.DARKGRAY}
-            style={{marginRight: 10}}
-          />
+          }}
+        >
+          <Ion name="trash-outline" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
           <Text style={{fontSize: 15}}>Bỏ bài viết</Text>
         </Pressable>
         <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => {
-            setPress(7);
-          }}
+          style={[styles.saveContainer,{backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE}]}
+          onTouchStart={() => setPress(7)}
           onTouchEnd={() => setPress(0)}
-          onPressOut={() => {
-            setPress(0);
-          }}
-          onPress={() => setModalVisible(false)}>
-          <Ion
-            name="checkmark"
-            size={28}
-            color={Colors.BLUE}
-            style={{marginRight: 10}}
-          />
+          onPressOut={() => setPress(0)}
+          onPress={() => setModalVisible(false)}
+        >
+          <Ion name="checkmark" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
           <Text style={{fontSize: 15, color: Colors.BLUE}}>
             Tiếp tục chỉnh sửa
           </Text>
