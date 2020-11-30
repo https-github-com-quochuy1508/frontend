@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard} from 'react-native';
+import {View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard, BackHandler} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import En from 'react-native-vector-icons/Entypo';
 import Oct from 'react-native-vector-icons/Octicons';
@@ -39,6 +39,13 @@ function FullPostTool({navigation, valuePost, deleteMediaPost, requestUpdatePost
     }
   }, [hasUpdate]);
 
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", onGoBack);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", onGoBack);
+  }, []);
+  
   const _keyboardDidShow = () => {
     setShow(false);
   };
@@ -46,12 +53,13 @@ function FullPostTool({navigation, valuePost, deleteMediaPost, requestUpdatePost
   const onGoBack = () => {
     if (show) {
       setShow(false);
-    } else if (content.length > 0) {
+    } else if (content.length > 0 || avtSource.length > 0) {
       Keyboard.dismiss();
       setModalVisible(true);
     } else {
       navigation.goBack();
     }
+    return true;
   };
 
   const options = {
@@ -303,7 +311,7 @@ function FullPostTool({navigation, valuePost, deleteMediaPost, requestUpdatePost
           onPressOut={() => setPress(0)}
           onPress={() => setModalVisible(false)}
         >
-          <Ion name="checkmark" size={28} color={Colors.DARKGRAY} style={{marginRight: 10}}/>
+          <Ion name="checkmark" size={28} color={isModalVisible ? Colors.BLUE : Colors.DARKGRAY} style={{marginRight: 10}}/>
           <Text style={{fontSize: 15, color: Colors.BLUE}}>
             Tiếp tục chỉnh sửa
           </Text>

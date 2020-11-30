@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, Pressable} from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
@@ -7,16 +7,33 @@ import Oct from 'react-native-vector-icons/Octicons';
 import Ent from 'react-native-vector-icons/Entypo';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Sim from 'react-native-vector-icons/SimpleLineIcons';
-export default function Post({avt, name, time, content, medias, likes, comments ,liked}) {
+import AsyncStorage from '@react-native-community/async-storage';
+
+export default function Post({userPostId, avt, name, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [press, setPress] = useState(0);
     const [noti, setNoti] = useState(true);
     const [isLike, setLike] = useState(liked);
+    const [uid, setUid] = useState(0);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
+    const getData = async () => {
+        try {
+          const uid = await AsyncStorage.getItem('userId')
+          if(uid !== null) {
+            setUid(uid);
+          }
+        } catch(e) {
+          // error reading value
+        }
+      }
+    
+    useEffect(() => {
+        getData();
+    },[])
     return (
         <View style={styles.wrap}>
             <View style={styles.headWrap}>
@@ -79,6 +96,8 @@ export default function Post({avt, name, time, content, medias, likes, comments 
                 onBackdropPress={() => setModalVisible(false)}
                 style={styles.modal}>
                 <View style={{ padding: 0 }}>
+                    {uid == userPostId ?
+                    <View>
                     <Pressable
                         style={[styles.saveContainer, { backgroundColor: press == 1 ? Colors.GAINSBORO : Colors.WHITE }]}
                         onTouchStart={() => setPress(1)}
@@ -97,6 +116,8 @@ export default function Post({avt, name, time, content, medias, likes, comments 
                         <Ion name="trash-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         <Text style={{ fontSize: 16 }}>Xóa</Text>
                     </Pressable>
+                    </View> : null
+                    }
                     <Pressable
                         style={[styles.saveContainer, { backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE }]}
                         onTouchStart={() => setPress(3)}
@@ -109,6 +130,7 @@ export default function Post({avt, name, time, content, medias, likes, comments 
                         <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
                     </Pressable>
+                    {uid != userPostId ? 
                     <Pressable
                         style={[styles.saveContainer, { backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE }]}
                         onTouchStart={() => setPress(6)}
@@ -120,8 +142,8 @@ export default function Post({avt, name, time, content, medias, likes, comments 
                             <Text style={{ fontSize: 16 }}>Tìm hỗ trợ hoặc báo cáo bài viết</Text>
                             <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
                         </View>
-                        
-                    </Pressable>
+                    </Pressable>:null
+                    }   
                 </View>
             </Modal>
         </View>

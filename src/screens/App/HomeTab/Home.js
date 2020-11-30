@@ -9,6 +9,7 @@ export default function Home() {
       <PostTool/>
       <StatusBar barStyle="dark-content"/>
       <Post 
+        userPostId={0}
         avt="https://i.stack.imgur.com/l60Hf.png"
         name="Quân Nguyễn" 
         time="Vừa xong" 
