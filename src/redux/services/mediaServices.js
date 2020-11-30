@@ -6,10 +6,10 @@ export default {
   uploadImage: async (formdata) => {
     const cookieToken = await AsyncStorage.getItem('token');
 
-    console.log(
-      '========================================cookieToken========================================: ',
-      cookieToken,
-    );
+    // console.log(
+    //   '========================================cookieToken========================================: ',
+    //   cookieToken,
+    // );
     const token = cookieToken !== 'undefined' ? cookieToken : null;
     return request(varEnv.apiUrlBackend + '/api/upload/uploadfile', {
       method: 'POST',
