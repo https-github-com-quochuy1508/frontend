@@ -10,7 +10,7 @@ const Navigation = ({users}) => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token !== null) {
-        console.log(token);
+        // console.log(token);
         setAuth(true);
       } else {
         setAuth(false);
@@ -20,7 +20,7 @@ const Navigation = ({users}) => {
     }
   };
   useEffect(() => {
-    console.log('users: ', users);
+    // console.log('users: ', users);
     getUser();
   }, [users]);
   return auth ? <App /> : <Auth />;

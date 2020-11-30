@@ -13,10 +13,10 @@ const deleteMediaEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_DELETE_MEDIA),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(mediaApi.deleteImage(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response.success) {
             return deleteMediaSuccess(response);
           } else {

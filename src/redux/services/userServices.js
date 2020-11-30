@@ -42,7 +42,7 @@ export default {
       const value = await AsyncStorage.getItem('token');
       if (value !== null) {
         // We have data!!
-        console.log(value);
+        // console.log(value);
       }
     } catch (error) {
       // Error retrieving data
@@ -117,7 +117,7 @@ export default {
       const value = await AsyncStorage.getItem('telephone');
       if (value !== null) {
         // We have data!!
-        console.log(value);
+        // console.log(value);
       }
     } catch (error) {
       // Error retrieving data

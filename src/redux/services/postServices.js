@@ -19,4 +19,10 @@ export default {
       },
     });
   },
+  get: (params) => {
+    return request(varEnv.apiUrlBackend + `/api/posts/`, {
+      method: 'GET',
+      params: params,
+    });
+  },
 };
