@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, Pressable} from 'react-native';
+import { View, Image, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
 import Ion from 'react-native-vector-icons/Ionicons';
@@ -9,22 +9,22 @@ import Ant from 'react-native-vector-icons/AntDesign';
 import Sim from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function Post({userPostId, avt, name, time, content, medias, likes, comments ,liked}) {
+export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [press, setPress] = useState(0);
     const [noti, setNoti] = useState(true);
     const [isLike, setLike] = useState(liked);
     const [uid, setUid] = useState(0);
-
+    const [height, setHeight]  =useState(300);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
     const getData = async () => {
         try {
-          const uid = await AsyncStorage.getItem('userId')
-          if(uid !== null) {
-            setUid(uid);
+          const uuid = await AsyncStorage.getItem('userId')
+          if(uuid !== null) {
+            setUid(uuid);
           }
         } catch(e) {
           // error reading value
@@ -33,13 +33,26 @@ export default function Post({userPostId, avt, name, time, content, medias, like
     
     useEffect(() => {
         getData();
+        calHeight();
     },[])
+
+    const calHeight = async () => {
+        try {
+            Image.getSize("http://" + medias[0].path, (width, height) => {
+                let h = Dimensions.get("window").width*height/width;
+                if(h > 500) h = 500;
+                setHeight(h);
+            });
+        } catch(e) {
+
+        }
+    }
     return (
         <View style={styles.wrap}>
             <View style={styles.headWrap}>
-                <Image style={styles.avatar} source={{uri: avt}} />
+                <Image style={styles.avatar} source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} />
                 <View style={styles.nameWrap}>
-                    <Text style={styles.name}>{name}</Text>
+                    <Text style={styles.name}>{userInfo.name}</Text>
                     <Text style={styles.time}>{time} <Text style={styles.dot}>•</Text> <Oct name="globe" color={Colors.DARKGRAY} size={13} /></Text>
                 </View>
                 <Pressable style={[styles.dotButton, {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE}]}
@@ -54,8 +67,33 @@ export default function Post({userPostId, avt, name, time, content, medias, like
             {content.length > 0 ?
                 <Text style={[styles.content, {fontSize: medias.length > 0 ? 16 : 24}]}>{content}</Text> : null
             }
-            {medias.length > 0 ?
-                <Image style={{height: 300}} source={{ uri: medias[0] }}/> : null
+            {medias.length == 1 ?
+                <Image style={{height: height}} source={{ uri: "http://" + medias[0].path}}/> : null
+            }
+            {medias.length == 2 ?
+                <View>
+                    <Image style={{height: 250, width: "100%", marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <Image style={{height: 250, width: "100%"}} source={{ uri: "http://" + medias[1].path}}/>
+                </View>: null
+            }
+            {medias.length == 3 ?
+                <View>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[1].path}}/>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[2].path}}/>
+                    </View>
+                </View>: null
+            }
+            {medias.length == 4 ?
+                <View>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[1].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[2].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[3].path}}/> 
+                    </View>
+                </View>: null
             }
             <View style={styles.likeComment}>
                 {likes > 0 || isLike  ?
@@ -96,7 +134,7 @@ export default function Post({userPostId, avt, name, time, content, medias, like
                 onBackdropPress={() => setModalVisible(false)}
                 style={styles.modal}>
                 <View style={{ padding: 0 }}>
-                    {uid == userPostId ?
+                    {uid == userInfo.id ?
                     <View>
                     <Pressable
                         style={[styles.saveContainer, { backgroundColor: press == 1 ? Colors.GAINSBORO : Colors.WHITE }]}
@@ -130,7 +168,7 @@ export default function Post({userPostId, avt, name, time, content, medias, like
                         <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
                     </Pressable>
-                    {uid != userPostId ? 
+                    {uid != userInfo.id ? 
                     <Pressable
                         style={[styles.saveContainer, { backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE }]}
                         onTouchStart={() => setPress(6)}

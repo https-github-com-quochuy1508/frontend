@@ -7,16 +7,14 @@ import {connect} from 'react-redux';
 
 function Home({requestGetPosts, listPosts}) {
   const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
-    // console.log('HELLO WORLD');
     requestGetPosts({});
   }, []);
 
   useEffect(() => {
-    if (listPosts.success) {
-      console.log('listPosts.result.result.list: ', listPosts.result.list);
+    if (listPosts != null && listPosts.success) {
+      //console.log('listPosts.result.result.list: ', listPosts.result.list);
       setPosts((listPosts.result && listPosts.result.list) || []);
     }
   }, [listPosts]);
@@ -28,14 +26,10 @@ function Home({requestGetPosts, listPosts}) {
       {posts.map((post) => (
         <Post
           key={post.id}
-          userPostId={post.userId}
-          avt="https://i.stack.imgur.com/l60Hf.png"
-          name="Quân Nguyễn"
+          userInfo={post.users}
           time="Vừa xong"
           content={post.content || ''}
-          medias={[
-            'https://sites.google.com/site/thietkewebtaihanoi/_/rsrc/1480308136221/kien-thuc-web/tim-kiem-hinh-anh-dep-cho-giao-dien-website/T%C3%ACm%20ki%E1%BA%BFm%20h%C3%ACnh%20%E1%BA%A3nh%20%C4%91%E1%BA%B9p%20cho%20giao%20di%E1%BB%87n%20website-1.jpg',
-          ]}
+          medias={post.media}
           liked={false}
           likes={0}
           comments={15}
@@ -52,8 +46,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  const listPosts = state.post.result;
+const mapStateToProps = (state) => {  
+  let listPosts;
+  if(state.post != null) listPosts = state.post.result;
   return {
     listPosts,
   };
