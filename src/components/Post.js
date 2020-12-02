@@ -8,9 +8,11 @@ import Ent from 'react-native-vector-icons/Entypo';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Sim from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
+import Comment from '../components/comment';
 
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
+    const [showComment, setShowComment] = useState(false);
     const [press, setPress] = useState(0);
     const [noti, setNoti] = useState(true);
     const [isLike, setLike] = useState(liked);
@@ -98,7 +100,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
             <View style={styles.likeComment}>
                 {likes > 0 || isLike  ?
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Image style={styles.like} source={require('../assets/images/like.jpg')}/>
+                        <Image style={styles.like} source={{uri: "https://static.xx.fbcdn.net/rsrc.php/v3/yH/r/LH87Z6E9R6k.png"}}/>
                         <Text style={styles.likeNum}>{isLike ? 'Bạn và ' + likes +' người khác' : likes}</Text>
                     </View> : null
                 }
@@ -122,6 +124,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     onTouchStart={() => setPress(5)}
                     onTouchEnd={() => setPress(0)}
                     onPressOut={() => setPress(0)}
+                    onPress={() => setShowComment(true)}
                 >
                     <Ion name="chatbox-outline" size={24} style={{ alignSelf: "center", color: Colors.DARKGRAY }}/>
                     <Text style={styles.likeText}>  Bình luận</Text>
@@ -183,6 +186,15 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     </Pressable>:null
                     }   
                 </View>
+            </Modal>
+            <Modal
+                style={[styles.modal, {height: "100%"}]}
+                isVisible={showComment}
+                onBackButtonPress={() => setShowComment(false)}
+                onSwipeComplete={() => setShowComment(false)}
+                swipeDirection="down"
+            >
+                <Comment liked={isLike} likes={likes}/>
             </Modal>
         </View>
     )
@@ -264,8 +276,9 @@ const styles = StyleSheet.create({
         height: 60,
     },
     like: {
-        width: 30,
-        height: 30,
+        width: 17,
+        height: 17,
+        marginRight: 5,
     },
     likeNum: {
         color: Colors.DARKGRAY,
