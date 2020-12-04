@@ -7,8 +7,11 @@ import Oct from 'react-native-vector-icons/Octicons';
 import Ent from 'react-native-vector-icons/Entypo';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Sim from 'react-native-vector-icons/SimpleLineIcons';
+import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-import Comment from '../components/comment';
+import Comment from './comment';
+import ReportItem from './ReportItem'
+import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost'
 
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -18,6 +21,10 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const [isLike, setLike] = useState(liked);
     const [uid, setUid] = useState(0);
     const [height, setHeight]  =useState(300);
+    const [showReport, setShowReport] = useState(false);
+    const [selectedType, setSelectedType] = useState(-1);
+    const [selectedDetail, setSelectedDetail] = useState(-1);  
+    
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -48,6 +55,19 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
         } catch(e) {
 
         }
+    }
+    
+    const selectType = (id) =>{
+        if(selectedType != id)
+            setSelectedType(id);
+        else setSelectedType(-1);
+        setSelectedDetail(-1);
+    }
+
+    const selectDetail = (id) =>{
+        if(selectedDetail != id)
+            setSelectedDetail(id);
+        else setSelectedDetail(-1);
     }
     return (
         <View style={styles.wrap}>
@@ -177,10 +197,11 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         onTouchStart={() => setPress(6)}
                         onTouchEnd={() => setPress(0)}
                         onPressOut={() => setPress(0)}
+                        onPress={() => {setModalVisible(false); setShowReport(true)}}
                     >
                         <Oct name="report" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         <View>
-                            <Text style={{ fontSize: 16 }}>Tìm hỗ trợ hoặc báo cáo bài viết</Text>
+                            <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
                             <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
                         </View>
                     </Pressable>:null
@@ -196,11 +217,72 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
             >
                 <Comment liked={isLike} likes={likes}/>
             </Modal>
+            <Modal
+                style={{margin: 0, backgroundColor: Colors.WHITE}}
+                isVisible={showReport}
+                onBackButtonPress={() => setShowReport(false)}
+                onSwipeComplete={() => setShowReport(false)}
+                swipeDirection="down"
+                onModalHide={() => setSelectedType(-1)}
+            >
+                <View style={{flex: 1}}>
+                    <View style={styles.reportHead}>
+                        <Text style={{fontWeight: "bold", fontSize: 16}}>Báo cáo</Text>
+                        <Pressable 
+                            style={[styles.exitReport, {backgroundColor: press == 8 ? Colors.WHITESMOKE : Colors.WHITE}]}
+                            onTouchStart={() => setPress(8)}
+                            onTouchEnd={() => setPress(0)}
+                            onPressOut={() => setPress(0)}
+                            onPress={() => setShowReport(false)}
+                        >
+                            <Ent name="cross" color={Colors.DARKGRAY} size={30}/>
+                        </Pressable>
+                    </View>
+                    <View style={styles.listReport}>
+                        <Mat name="chat-alert" size={28} color={Colors.ORANGE}/>
+                        <Text style={{fontSize: 17, fontWeight: "bold"}}>Vui lòng chọn vấn đề để tiếp tục</Text>
+                        <Text style={{color: Colors.DARKGRAY, marginBottom: 10, fontSize: 15}}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề.</Text>
+                        <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                            {typesReport.map((value, index) =>
+                                <Pressable onPress={() => selectType(index)} key={value}>
+                                    <ReportItem type={value} active={selectedType == index}/>
+                                </Pressable>
+                            )}
+                        </View>
+                        {selectedType >= 0 && !emptyDetail.includes(selectedType) ?
+                            <View>
+                                <Text style={{marginBottom: 15}}>Hãy giúp chúng tôi hiểu vấn đề.</Text>
+                                <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                    {detailsReport[selectedType].map((value, index) =>
+                                        <Pressable onPress={() => selectDetail(index)} key={value}>
+                                            <ReportItem type={value} active={selectedDetail == index}/>
+                                        </Pressable>
+                                    )}
+                                </View>
+                            </View> : null
+                        }
+                    </View>
+                    <View style={styles.action}>
+                        <Text style={{fontWeight: "bold"}}>Các bước khác mà bạn có thể thực hiện</Text>
+                    </View>
+                </View>
+            </Modal>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    action: {
+        paddingHorizontal: 10,
+        paddingTop: 15,
+    },
+    listReport: {
+        paddingTop: 7, 
+        paddingBottom: 5,
+        paddingHorizontal: 10,
+        borderBottomWidth: 0.5,
+        borderBottomColor: Colors.LIGHTGRAY
+    },
     wrap: {
         flex: 1,
         backgroundColor: Colors.WHITE,
@@ -308,6 +390,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         position: 'absolute',
         right: 5,
+    },
+    reportHead: {
+        alignItems: "center", 
+        justifyContent: "center",
+        height: 50, 
+        borderBottomColor: Colors.LIGHTGRAY,
+        borderBottomWidth: 0.5,
+        width: "100%",
+    },
+    exitReport: {
+        position: "absolute", 
+        right: 0,
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 10,
     }
 });
 
