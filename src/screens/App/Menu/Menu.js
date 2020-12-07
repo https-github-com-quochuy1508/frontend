@@ -11,7 +11,7 @@ import {
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Octicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
 
@@ -53,7 +53,7 @@ function Menu({logout}) {
         <View style={styles.menu}>
           <Text style={styles.menu_text}>Menu</Text>
           <TouchableOpacity style={styles.menu_button}>
-            <Icon name="search-outline" size={22} />
+            <Icon name="search" size={20} />
           </TouchableOpacity>
         </View>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>

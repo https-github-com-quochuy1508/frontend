@@ -13,14 +13,14 @@ export default function ReportType({active, type}) {
             fontSize: 13,
             marginRight: 5,
             marginBottom: 10,
-            backgroundColor: active == 1 ? Colors.BLUE : Colors.GAINSBORO, 
+            backgroundColor: active == 1 ? Colors.BLUE : Colors.GRAY91, 
             color: active == 1 ? Colors.WHITE : Colors.BLACK
         },
     });
 
     if(type == " Vấn đề khác") 
         return(
-            <View style={[styles.reportItem, {flexDirection: "row", backgroundColor: Colors.GAINSBORO}]}>
+            <View style={[styles.reportItem, {flexDirection: "row", backgroundColor: Colors.GRAY91}]}>
                 <Oct name="search" color={Colors.DARKGRAY} size={20}/>
                 <Text style={{fontSize: 13, fontWeight: "bold", color: Colors.BLACK}}>{type}</Text>
             </View>

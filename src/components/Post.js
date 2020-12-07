@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, Pressable, Dimensions} from 'react-native';
+import { View, Image, Text, StyleSheet, Pressable, Dimensions, TouchableHighlight} from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
 import Ion from 'react-native-vector-icons/Ionicons';
@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Comment from './comment';
 import ReportItem from './ReportItem'
 import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost'
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -20,10 +21,13 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const [noti, setNoti] = useState(true);
     const [isLike, setLike] = useState(liked);
     const [uid, setUid] = useState(0);
+    const [uAvt, setUavt] = useState("");
     const [height, setHeight]  =useState(300);
     const [showReport, setShowReport] = useState(false);
     const [selectedType, setSelectedType] = useState(-1);
     const [selectedDetail, setSelectedDetail] = useState(-1);  
+    const [showBlock, setShowBlock] = useState(false);
+
     
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -31,9 +35,11 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
 
     const getData = async () => {
         try {
-          const uuid = await AsyncStorage.getItem('userId')
-          if(uuid !== null) {
+          const uuid = await AsyncStorage.getItem('userId');
+          const uavt = await AsyncStorage.getItem('avatar');
+          if(uuid !== null && uavt !== null) {
             setUid(uuid);
+            setUavt(uavt);
           }
         } catch(e) {
           // error reading value
@@ -238,32 +244,118 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                             <Ent name="cross" color={Colors.DARKGRAY} size={30}/>
                         </Pressable>
                     </View>
-                    <View style={styles.listReport}>
-                        <Mat name="chat-alert" size={28} color={Colors.ORANGE}/>
-                        <Text style={{fontSize: 17, fontWeight: "bold"}}>Vui lòng chọn vấn đề để tiếp tục</Text>
-                        <Text style={{color: Colors.DARKGRAY, marginBottom: 10, fontSize: 15}}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề.</Text>
-                        <View style={{flexDirection: "row", flexWrap: "wrap"}}>
-                            {typesReport.map((value, index) =>
-                                <Pressable onPress={() => selectType(index)} key={value}>
-                                    <ReportItem type={value} active={selectedType == index}/>
-                                </Pressable>
-                            )}
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={styles.listReport}>
+                            <Mat name="chat-alert" size={28} color={Colors.ORANGE1}/>
+                            <Text style={{fontSize: 17, fontWeight: "bold"}}>Vui lòng chọn vấn đề để tiếp tục</Text>
+                            <Text style={{color: Colors.DARKGRAY, marginBottom: 10, fontSize: 15}}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề.</Text>
+                            <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                {typesReport.map((value, index) =>
+                                    <Pressable onPress={() => selectType(index)} key={value}>
+                                        <ReportItem type={value} active={selectedType == index}/>
+                                    </Pressable>
+                                )}
+                            </View>
+                            {selectedType >= 0 && !emptyDetail.includes(selectedType) ?
+                                <View>
+                                    <Text style={{marginBottom: 15}}>Hãy giúp chúng tôi hiểu vấn đề.</Text>
+                                    <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                        {detailsReport[selectedType].map((value, index) =>
+                                            <Pressable onPress={() => selectDetail(index)} key={value}>
+                                                <ReportItem type={value} active={selectedDetail == index}/>
+                                            </Pressable>
+                                        )}
+                                    </View>
+                                </View> : null
+                            }
                         </View>
-                        {selectedType >= 0 && !emptyDetail.includes(selectedType) ?
-                            <View>
-                                <Text style={{marginBottom: 15}}>Hãy giúp chúng tôi hiểu vấn đề.</Text>
-                                <View style={{flexDirection: "row", flexWrap: "wrap"}}>
-                                    {detailsReport[selectedType].map((value, index) =>
-                                        <Pressable onPress={() => selectDetail(index)} key={value}>
-                                            <ReportItem type={value} active={selectedDetail == index}/>
-                                        </Pressable>
-                                    )}
+                        <View>
+                            <Text style={styles.actionTitle}>Các bước khác mà bạn có thể thực hiện</Text>
+                            <Pressable 
+                                style={[styles.action, {backgroundColor: press == 9 ? Colors.GRAY91 : Colors.WHITE}]}
+                                onTouchStart={() => setPress(9)}
+                                onTouchEnd={() => setPress(0)}
+                                onPressOut={() => setPress(0)}
+                                onPress={() => setShowBlock(true)}
+                            >
+                                <Ent name="block" size={24} style={{margin: 10}}/>
+                                <View>
+                                    <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                    <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                                 </View>
-                            </View> : null
-                        }
+                            </Pressable>
+                            <Pressable 
+                                style={[styles.action, {backgroundColor: press == 10 ? Colors.GRAY91 : Colors.WHITE}]}
+                                onTouchStart={() => setPress(10)}
+                                onTouchEnd={() => setPress(0)}
+                                onPressOut={() => setPress(0)}
+                            >
+                                <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
+                                <View>
+                                    <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                    <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
+                                </View>
+                            </Pressable>
+                            <View style={styles.noti}>
+                                <Ion name="information-circle" color={Colors.LIGHTGRAY} size={24}/>
+                                <Text style={{color: Colors.DARKGRAY, margin: 10}}>Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ    cấp cứu tại địa phương.</Text>
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <View style={styles.nextContainer}>
+                        <Pressable 
+                            style={[styles.nextButton, {backgroundColor: selectedDetail != -1 || emptyDetail.includes(selectedType) ? Colors.BLUE : Colors.GRAY91}]}
+                            disabled={(selectedDetail == -1 || emptyDetail.includes(selectedType))}
+                        >
+                            <Text 
+                                style={[styles.nextText, 
+                                    {color: selectedDetail != -1 || emptyDetail.includes(selectedType) ? Colors.WHITE : Colors.GRAY,
+                                     opacity: selectedDetail != -1 || emptyDetail.includes(selectedType) ? 1 : 0.5,
+                                }]}
+                            >
+                                Tiếp
+                            </Text>
+                        </Pressable>
                     </View>
-                    <View style={styles.action}>
-                        <Text style={{fontWeight: "bold"}}>Các bước khác mà bạn có thể thực hiện</Text>
+                </View>
+            </Modal>
+            <Modal
+                style={{alignItems: 'center'}}
+                isVisible={showBlock}
+                onBackButtonPress={() => setShowBlock(false)}
+                onBackdropPress={() => setShowBlock(false)}
+                backdropOpacity={0.6}
+                animationIn="fadeIn"
+                animationOut="fadeOut"
+            >
+                <View style={styles.blockContainer}>
+                    <Ent name="block" size={24}/>
+                    <Text style={{fontWeight: 'bold', fontSize: 17}}>Chặn {userInfo.name}?</Text>
+                    <Text style={styles.happenText}>Điều sẽ diễn ra với bạn</Text>
+                    <View style={styles.happenContainer}>
+                        <Image source={{uri: uAvt}} style={styles.uImage}/>
+                        <Text style={styles.happenContent}>Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho {userInfo.name.split(" ")[0]} nữa.</Text>
+                    </View>
+                    <Text style={styles.happenText}>Điều sẽ diễn ra với {userInfo.name.split(" ")[0]}</Text>
+                    <View style={styles.happenContainer}>
+                        <Image source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} style={styles.uImage}/>
+                        <Text style={styles.happenContent}>Dù không biết là đã bị chặn nhưng {userInfo.name.split(" ")[0]} sẽ không xem được trang cá nhân của bạn, gắn thẻ bạn trong bài viết, nhắn tin hay thêm bạn làm bạn bè.</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                        <TouchableHighlight 
+                            style={[styles.actionButton, {backgroundColor: Colors.GRAY91}]}
+                            onPress={() => setShowBlock(false)}
+                            underlayColor={Colors.GAINSBORO}
+                        >
+                            <Text style={{fontWeight: "bold"}}>Hủy</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight 
+                            style={[styles.actionButton, {backgroundColor: Colors.BLUE}]}
+                            onPress={() => setShowBlock(false)}
+                            underlayColor="#185df3"
+                        >
+                            <Text style={{fontWeight: "bold", color: Colors.WHITE}}>Chặn</Text>
+                        </TouchableHighlight>
                     </View>
                 </View>
             </Modal>
@@ -272,15 +364,83 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
 }
 
 const styles = StyleSheet.create({
-    action: {
+    actionButton: {
+        width: 120,
+        height: 35,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
+        marginTop: 15,
+    },
+    happenContainer: {
+        flexDirection: "row", 
+        marginTop: 5,
+        marginBottom: 10,
+    },
+    happenContent: {
+        color: Colors.DARKGRAY,
+        fontSize: 13,
+        width: "79%"
+    },
+    uImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        marginRight: 10,
+    },
+    happenText: {
+        fontWeight: "bold",
+        marginTop: 7,
+        color: Colors.BLACK
+    },
+    blockContainer: {
+        padding: 10,
+        backgroundColor: Colors.WHITE,
+        width: "80%",
+        borderRadius: 3,
+    },
+    nextContainer: {
+        padding: 10, 
+        borderTopColor: Colors.GAINSBORO, 
+        borderTopWidth: 0.6
+    },
+    nextButton: {
+        width: "100%",
+        height: 35,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    nextText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        opacity: 0.5
+    },
+    noti: {
+        flexDirection: 'row', 
+        margin: 10,
         paddingHorizontal: 10,
-        paddingTop: 15,
+        borderRadius: 5,
+        borderColor: Colors.GAINSBORO,
+        borderWidth: 1,
+        alignItems: 'center'
+    },
+    actionTitle: {
+        fontWeight: "bold", 
+        margin: 10,
+        marginTop: 15,
+    },
+    action: {
+        flexDirection: "row", 
+        alignItems: "center", 
+        paddingVertical: 10,
     },
     listReport: {
         paddingTop: 7, 
         paddingBottom: 5,
         paddingHorizontal: 10,
-        borderBottomWidth: 0.5,
+        borderBottomWidth: 0.6,
         borderBottomColor: Colors.LIGHTGRAY
     },
     wrap: {
