@@ -22,12 +22,12 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const [isLike, setLike] = useState(liked);
     const [uid, setUid] = useState(0);
     const [uAvt, setUavt] = useState("");
-    const [height, setHeight]  =useState(300);
+    const [height, setHeight] = useState(300);
     const [showReport, setShowReport] = useState(false);
     const [selectedType, setSelectedType] = useState(-1);
     const [selectedDetail, setSelectedDetail] = useState(-1);  
     const [showBlock, setShowBlock] = useState(false);
-
+    const [showDelete, setShowDelete] = useState(false);
     
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -83,14 +83,13 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     <Text style={styles.name}>{userInfo.name}</Text>
                     <Text style={styles.time}>{time} <Text style={styles.dot}>•</Text> <Oct name="globe" color={Colors.DARKGRAY} size={13} /></Text>
                 </View>
-                <Pressable style={[styles.dotButton, {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE}]}
-                    onTouchStart={() => setPress(7)}
-                    onTouchEnd={() => setPress(0)}
-                    onPressOut={() => setPress(0)}
+                <TouchableHighlight 
+                    style={styles.dotButton}
+                    underlayColor={Colors.GAINSBORO}
                     onPress={() => toggleModal()}
                 >
                     <Ent name="dots-three-horizontal" size={18} color={Colors.DARKGRAY}/>
-                </Pressable>
+                </TouchableHighlight>
             </View>
             {content.length > 0 ?
                 <Text style={[styles.content, {fontSize: medias.length > 0 ? 16 : 24}]}>{content}</Text> : null
@@ -135,26 +134,22 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 }
             </View>
             <View style={styles.buttonWrap}>
-                <Pressable 
-                    style={[styles.button, { backgroundColor: press == 4 ? Colors.WHITESMOKE : Colors.WHITE },]}
-                    onTouchStart={() => setPress(4)}
-                    onTouchEnd={() => setPress(0)}
-                    onPressOut={() => setPress(0)}
+                <TouchableHighlight 
+                    style={styles.button}
+                    underlayColor={Colors.WHITESMOKE}
                     onPress={() => setLike(!isLike)}
                 >
                     <Ant name={isLike ? "like1" : "like2"} size={24} color={isLike ? Colors.BLUE : Colors.DARKGRAY}/>
                     <Text style={[styles.likeText, {color: isLike ? Colors.BLUE : Colors.DARKGRAY}]}>  Thích</Text>
-                </Pressable>
-                <Pressable 
-                    style={[styles.button, { backgroundColor: press == 5 ? Colors.WHITESMOKE : Colors.WHITE },]}
-                    onTouchStart={() => setPress(5)}
-                    onTouchEnd={() => setPress(0)}
-                    onPressOut={() => setPress(0)}
-                    onPress={() => setShowComment(true)}
+                </TouchableHighlight>
+                <TouchableHighlight 
+                    style={styles.button}
+                    underlayColor={Colors.WHITESMOKE}
+                    onPress={() => setLike(!isLike)}
                 >
                     <Ion name="chatbox-outline" size={24} style={{ alignSelf: "center", color: Colors.DARKGRAY }}/>
                     <Text style={styles.likeText}>  Bình luận</Text>
-                </Pressable>
+                </TouchableHighlight>
             </View>
 
             <Modal
@@ -165,44 +160,37 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <View style={{ padding: 0 }}>
                     {uid == userInfo.id ?
                     <View>
-                    <Pressable
-                        style={[styles.saveContainer, { backgroundColor: press == 1 ? Colors.GAINSBORO : Colors.WHITE }]}
-                        onTouchStart={() => setPress(1)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
+                    <TouchableHighlight
+                        style={styles.saveContainer}
+                        underlayColor={Colors.GAINSBORO}
                     >
                         <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
-                    </Pressable>
-                    <Pressable
-                        style={[styles.saveContainer, { backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE }]}
-                        onTouchStart={() => setPress(2)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.saveContainer}
+                        underlayColor={Colors.GAINSBORO}
+                        onPress={() => {setModalVisible(false); setShowDelete(true)}}
                     >
                         <Ion name="trash-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         <Text style={{ fontSize: 16 }}>Xóa</Text>
-                    </Pressable>
+                    </TouchableHighlight>
                     </View> : null
                     }
-                    <Pressable
-                        style={[styles.saveContainer, { backgroundColor: press == 3 ? Colors.GAINSBORO : Colors.WHITE }]}
-                        onTouchStart={() => setPress(3)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
+                    <TouchableHighlight
+                        style={styles.saveContainer}
+                        underlayColor={Colors.GAINSBORO}
                         onPress={() => {
                             setModalVisible(false);
                             setNoti(!noti);
                         }}>
                         <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                         {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
-                    </Pressable>
+                    </TouchableHighlight>
                     {uid != userInfo.id ? 
-                    <Pressable
-                        style={[styles.saveContainer, { backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE }]}
-                        onTouchStart={() => setPress(6)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
+                    <TouchableHighlight
+                        style={styles.saveContainer}
+                        underlayColor={Colors.GAINSBORO}
                         onPress={() => {setModalVisible(false); setShowReport(true)}}
                     >
                         <Oct name="report" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
@@ -210,7 +198,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                             <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
                             <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
                         </View>
-                    </Pressable>:null
+                    </TouchableHighlight>:null
                     }   
                 </View>
             </Modal>
@@ -234,15 +222,13 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <View style={{flex: 1}}>
                     <View style={styles.reportHead}>
                         <Text style={{fontWeight: "bold", fontSize: 16}}>Báo cáo</Text>
-                        <Pressable 
-                            style={[styles.exitReport, {backgroundColor: press == 8 ? Colors.WHITESMOKE : Colors.WHITE}]}
-                            onTouchStart={() => setPress(8)}
-                            onTouchEnd={() => setPress(0)}
-                            onPressOut={() => setPress(0)}
+                        <TouchableHighlight 
+                            style={styles.exitReport}
+                            underlayColor={Colors.WHITESMOKE}
                             onPress={() => setShowReport(false)}
                         >
                             <Ent name="cross" color={Colors.DARKGRAY} size={30}/>
-                        </Pressable>
+                        </TouchableHighlight>
                     </View>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={styles.listReport}>
@@ -271,11 +257,9 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         </View>
                         <View>
                             <Text style={styles.actionTitle}>Các bước khác mà bạn có thể thực hiện</Text>
-                            <Pressable 
-                                style={[styles.action, {backgroundColor: press == 9 ? Colors.GRAY91 : Colors.WHITE}]}
-                                onTouchStart={() => setPress(9)}
-                                onTouchEnd={() => setPress(0)}
-                                onPressOut={() => setPress(0)}
+                            <TouchableHighlight 
+                                style={styles.action}
+                                underlayColor={Colors.GRAY91}
                                 onPress={() => setShowBlock(true)}
                             >
                                 <Ent name="block" size={24} style={{margin: 10}}/>
@@ -283,19 +267,18 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                     <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
                                     <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                                 </View>
-                            </Pressable>
-                            <Pressable 
-                                style={[styles.action, {backgroundColor: press == 10 ? Colors.GRAY91 : Colors.WHITE}]}
-                                onTouchStart={() => setPress(10)}
-                                onTouchEnd={() => setPress(0)}
-                                onPressOut={() => setPress(0)}
+                            </TouchableHighlight>
+                            <TouchableHighlight 
+                                style={styles.action}
+                                underlayColor={Colors.GRAY91}
+                                onPress={() => setShowBlock(true)}
                             >
                                 <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
                                 <View>
                                     <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
                                     <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
                                 </View>
-                            </Pressable>
+                            </TouchableHighlight>
                             <View style={styles.noti}>
                                 <Ion name="information-circle" color={Colors.LIGHTGRAY} size={24}/>
                                 <Text style={{color: Colors.DARKGRAY, margin: 10}}>Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ    cấp cứu tại địa phương.</Text>
@@ -359,11 +342,51 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     </View>
                 </View>
             </Modal>
+            <Modal
+                style={{alignItems: 'center'}}
+                isVisible={showDelete}
+                onBackButtonPress={() => setShowDelete(false)}
+                onBackdropPress={() => setShowDelete(false)}
+                backdropOpacity={0.6}
+                animationIn="zoomIn"
+                animationOut="zoomOut"
+            >
+                <View style={styles.deleteContainer}>
+                    <Text style={{fontSize: 18, marginBottom: 20}}>Xóa bài viết?</Text>
+                    <Text style={{fontSize: 15 ,color: Colors.DARKGRAY}}>Bạn có thể chỉnh sửa bài viết nếu cần thay đổi.</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+                        <TouchableHighlight 
+                            style={styles.deleteAction} 
+                            underlayColor={Colors.GRAY91}
+                            onPress={() => setShowDelete(false)}>
+                            <Text style={{color: Colors.BLUE}}>XÓA</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight 
+                            style={styles.deleteAction} 
+                            underlayColor={Colors.GRAY91}
+                            onPress={() => setShowDelete(false)}>
+                            <Text>CHỈNH SỬA</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight 
+                            style={styles.deleteAction} 
+                            underlayColor={Colors.GRAY91}
+                            onPress={() => setShowDelete(false)}>
+                            <Text>HỦY</Text>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    deleteAction: {
+        padding: 10, 
+        height: 50, 
+        justifyContent: "center", 
+        borderRadius: 3,
+    },
     actionButton: {
         width: 120,
         height: 35,
@@ -399,6 +422,14 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.WHITE,
         width: "80%",
         borderRadius: 3,
+    },
+    deleteContainer: {
+        padding: 20,
+        backgroundColor: Colors.WHITE,
+        width: "90%",
+        borderRadius: 3,
+        paddingBottom: 10,
+        paddingRight: 10,
     },
     nextContainer: {
         padding: 10, 
