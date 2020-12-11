@@ -17,7 +17,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [showComment, setShowComment] = useState(false);
-    const [press, setPress] = useState(0);
     const [noti, setNoti] = useState(true);
     const [isLike, setLike] = useState(liked);
     const [uid, setUid] = useState(0);
@@ -28,6 +27,9 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const [selectedDetail, setSelectedDetail] = useState(-1);  
     const [showBlock, setShowBlock] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [reportComplete, showReportComplete] = useState(false);
+    const [reportedType, setReportedType] = useState(-1);
+    const [reportedDetail, setReportedDetail] = useState(-1);
     
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -62,7 +64,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
 
         }
     }
-    
+
     const selectType = (id) =>{
         if(selectedType != id)
             setSelectedType(id);
@@ -74,6 +76,12 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
         if(selectedDetail != id)
             setSelectedDetail(id);
         else setSelectedDetail(-1);
+    }
+
+    const modalHide = () => {
+        setReportedType(selectedType);
+        setReportedDetail(selectedDetail);
+        setSelectedType(-1);
     }
     return (
         <View style={styles.wrap}>
@@ -135,20 +143,24 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
             </View>
             <View style={styles.buttonWrap}>
                 <TouchableHighlight 
-                    style={styles.button}
                     underlayColor={Colors.WHITESMOKE}
                     onPress={() => setLike(!isLike)}
+                    style={{width: "50%", alignItems: 'center'}}
                 >
-                    <Ant name={isLike ? "like1" : "like2"} size={24} color={isLike ? Colors.BLUE : Colors.DARKGRAY}/>
-                    <Text style={[styles.likeText, {color: isLike ? Colors.BLUE : Colors.DARKGRAY}]}>  Thích</Text>
+                    <View style={styles.button}>
+                        <Ant name={isLike ? "like1" : "like2"} size={24} color={isLike ? Colors.BLUE : Colors.DARKGRAY}/>
+                        <Text style={[styles.likeText, {color: isLike ? Colors.BLUE : Colors.DARKGRAY}]}>  Thích</Text>
+                    </View>      
                 </TouchableHighlight>
                 <TouchableHighlight 
-                    style={styles.button}
                     underlayColor={Colors.WHITESMOKE}
-                    onPress={() => setLike(!isLike)}
+                    onPress={() => setShowComment(true)}
+                    style={{width: "50%", alignItems: 'center'}}
                 >
-                    <Ion name="chatbox-outline" size={24} style={{ alignSelf: "center", color: Colors.DARKGRAY }}/>
-                    <Text style={styles.likeText}>  Bình luận</Text>
+                    <View style={styles.button}>
+                        <Ion name="chatbox-outline" size={24} style={{ alignSelf: "center", color: Colors.DARKGRAY }}/>
+                        <Text style={styles.likeText}>  Bình luận</Text>
+                    </View>
                 </TouchableHighlight>
             </View>
 
@@ -160,43 +172,45 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <View style={{ padding: 0 }}>
                     {uid == userInfo.id ?
                     <View>
-                    <TouchableHighlight
-                        style={styles.saveContainer}
-                        underlayColor={Colors.GAINSBORO}
-                    >
-                        <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
-                        <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
+                    <TouchableHighlight underlayColor={Colors.GAINSBORO}>
+                        <View style={styles.saveContainer}>
+                            <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
+                        </View>
                     </TouchableHighlight>
                     <TouchableHighlight
-                        style={styles.saveContainer}
                         underlayColor={Colors.GAINSBORO}
                         onPress={() => {setModalVisible(false); setShowDelete(true)}}
                     >
-                        <Ion name="trash-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
-                        <Text style={{ fontSize: 16 }}>Xóa</Text>
+                        <View style={styles.saveContainer}>
+                            <Ion name="trash-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <Text style={{ fontSize: 16 }}>Xóa</Text>
+                        </View>
                     </TouchableHighlight>
                     </View> : null
                     }
                     <TouchableHighlight
-                        style={styles.saveContainer}
                         underlayColor={Colors.GAINSBORO}
                         onPress={() => {
                             setModalVisible(false);
                             setNoti(!noti);
                         }}>
-                        <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
-                        {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
+                            <View style={styles.saveContainer}>
+                                <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                                {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
+                            </View>
                     </TouchableHighlight>
                     {uid != userInfo.id ? 
                     <TouchableHighlight
-                        style={styles.saveContainer}
                         underlayColor={Colors.GAINSBORO}
                         onPress={() => {setModalVisible(false); setShowReport(true)}}
                     >
-                        <Oct name="report" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
-                        <View>
-                            <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
-                            <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
+                        <View style={styles.saveContainer}>
+                            <Oct name="report" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <View>
+                                <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
+                                <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
+                            </View>
                         </View>
                     </TouchableHighlight>:null
                     }   
@@ -217,7 +231,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 onBackButtonPress={() => setShowReport(false)}
                 onSwipeComplete={() => setShowReport(false)}
                 swipeDirection="down"
-                onModalHide={() => setSelectedType(-1)}
+                onModalHide={() => modalHide()}
             >
                 <View style={{flex: 1}}>
                     <View style={styles.reportHead}>
@@ -258,25 +272,27 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         <View>
                             <Text style={styles.actionTitle}>Các bước khác mà bạn có thể thực hiện</Text>
                             <TouchableHighlight 
-                                style={styles.action}
                                 underlayColor={Colors.GRAY91}
                                 onPress={() => setShowBlock(true)}
                             >
-                                <Ent name="block" size={24} style={{margin: 10}}/>
-                                <View>
-                                    <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
-                                    <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
+                                <View style={styles.action}>
+                                    <Ent name="block" size={24} style={{margin: 10}}/>
+                                    <View>
+                                        <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
+                                    </View>
                                 </View>
                             </TouchableHighlight>
                             <TouchableHighlight 
-                                style={styles.action}
                                 underlayColor={Colors.GRAY91}
                                 onPress={() => setShowBlock(true)}
                             >
-                                <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
-                                <View>
-                                    <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
-                                    <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
+                                <View style={styles.action}>
+                                    <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
+                                    <View>
+                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
+                                    </View>
                                 </View>
                             </TouchableHighlight>
                             <View style={styles.noti}>
@@ -288,7 +304,8 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     <View style={styles.nextContainer}>
                         <Pressable 
                             style={[styles.nextButton, {backgroundColor: selectedDetail != -1 || emptyDetail.includes(selectedType) ? Colors.BLUE : Colors.GRAY91}]}
-                            disabled={(selectedDetail == -1 || emptyDetail.includes(selectedType))}
+                            disabled={!(selectedDetail != -1 || emptyDetail.includes(selectedType))}
+                            onPress={() => {setShowReport(false); showReportComplete(true)}}
                         >
                             <Text 
                                 style={[styles.nextText, 
@@ -376,11 +393,116 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                     </View>
                 </View>
             </Modal>
+            <Modal
+                style={styles.reportComplete}
+                isVisible={reportComplete}
+                onBackButtonPress={() => showReportComplete(false)}
+                onSwipeComplete={() => showReportComplete(false)}
+                swipeDirection="down"
+            >
+                <View style={styles.reportCompleteLogo}>
+                    <Mat name="chat-alert" size={28} color={Colors.WHITE}/>
+                </View>
+                <Text style={{fontWeight: "bold", fontSize: 16, margin: 10}}>Cảm ơn bạn đã cho chúng tôi biết.</Text>
+                <View style={styles.reportedButton}>
+                    <Ion name="checkmark" color={Colors.WHITE} size={20}/>
+                    <Text style={styles.reportedText}>  {typesReport[reportedType]}</Text>
+                </View>
+                {reportedDetail != -1 ? 
+                <View style={styles.reportedButton}>
+                    <Ion name="checkmark" color={Colors.WHITE} size={20}/>
+                    <Text style={styles.reportedText}>  {detailsReport[reportedType][reportedDetail]}</Text>
+                </View> : null
+                }
+                <Text style={styles.help}>Ý kiến đóng góp của bạn giúp hệ thống của chúng tôi biết khi có gì đó không ổn.</Text>
+                <View style={styles.actionComplete}>
+                    <Text style={styles.actionTitle}>Các bước khác mà bạn có thể thực hiện</Text>
+                    <TouchableHighlight 
+                        underlayColor={Colors.GRAY91}
+                        onPress={() => setShowBlock(true)}
+                    >
+                        <View style={styles.action}>
+                            <Ent name="block" size={24} style={{margin: 10}}/>
+                            <View>
+                                <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
+                            </View>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight 
+                        underlayColor={Colors.GRAY91}
+                        onPress={() => setShowBlock(true)}
+                    >
+                        <View style={styles.action}>
+                            <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
+                            <View>
+                                <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
+                            </View>
+                        </View>
+                    </TouchableHighlight>
+                </View>
+                <View style={styles.completeReportButton}>
+                    <Pressable 
+                        style={[styles.nextButton, {backgroundColor: Colors.BLUE}]}
+                        onPress={() => showReportComplete(false)}
+                    >
+                        <Text style={[styles.nextText, {color: Colors.WHITE}]}>Xong</Text>
+                    </Pressable>
+                </View>
+            </Modal>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    completeReportButton: {
+        position: 'absolute', 
+        bottom: 0, 
+        width: '100%', 
+        borderTopWidth: 0.5, 
+        padding: 10, 
+        borderTopColor: Colors.LIGHTGRAY
+    },
+    actionComplete: {
+        borderTopColor: Colors.LIGHTGRAY,
+        borderTopWidth: 0.6,
+        marginTop: 20,
+    },
+    help: {
+        color: Colors.DARKGRAY, 
+        textAlign: 'center', 
+        width: "90%", 
+        fontSize: 15
+    },
+    reportedText: {
+        color: Colors.WHITE, 
+        fontWeight: "bold", 
+        fontSize: 13
+    },
+    reportedButton: {
+        flexDirection: 'row',
+        borderRadius: 25,
+        backgroundColor: Colors.BLUE,
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        marginBottom: 10,
+    },
+    reportCompleteLogo: {
+        backgroundColor: Colors.ORANGE1, 
+        width: 55, 
+        height: 55, 
+        borderRadius: 35, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        marginTop: 20
+    },
+    reportComplete: {
+        margin: 0, 
+        backgroundColor: Colors.WHITE, 
+        alignItems: 'center', 
+        justifyContent: 'flex-start'
+    },
     deleteAction: {
         padding: 10, 
         height: 50, 
@@ -446,7 +568,6 @@ const styles = StyleSheet.create({
     nextText: {
         fontWeight: 'bold',
         fontSize: 16,
-        opacity: 0.5
     },
     noti: {
         flexDirection: 'row', 
