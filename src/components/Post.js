@@ -81,7 +81,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const modalHide = () => {
         setReportedType(selectedType);
         setReportedDetail(selectedDetail);
-        setSelectedType(-1);
+        selectType(-1);
     }
     return (
         <View style={styles.wrap}>
