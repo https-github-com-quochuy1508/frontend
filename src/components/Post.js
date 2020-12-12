@@ -13,6 +13,7 @@ import Comment from './comment';
 import ReportItem from './ReportItem'
 import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost'
 import { ScrollView } from 'react-native-gesture-handler';
+import { navigation } from '../../rootNavigation';
 
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -55,7 +56,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
 
     const calHeight = async () => {
         try {
-            Image.getSize("http://" + medias[0].path, (width, height) => {
+            Image.getSize(medias[0].path, (width, height) => {
                 let h = Dimensions.get("window").width*height/width;
                 if(h > 500) h = 500;
                 setHeight(h);
@@ -83,6 +84,14 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
         setReportedDetail(selectedDetail);
         selectType(-1);
     }
+
+    const updatePost = () => {
+        toggleModal();
+        navigation.navigate("UpdatePostTool", {
+            content: content,
+            medias: medias
+        })
+    }
     return (
         <View style={styles.wrap}>
             <View style={styles.headWrap}>
@@ -103,30 +112,30 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <Text style={[styles.content, {fontSize: medias.length > 0 ? 16 : 24}]}>{content}</Text> : null
             }
             {medias.length == 1 ?
-                <Image style={{height: height}} source={{ uri: "http://" + medias[0].path}}/> : null
+                <Image style={{height: height}} source={{ uri: medias[0].path}}/> : null
             }
             {medias.length == 2 ?
                 <View>
-                    <Image style={{height: 250, width: "100%", marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
-                    <Image style={{height: 250, width: "100%"}} source={{ uri: "http://" + medias[1].path}}/>
+                    <Image style={{height: 250, width: "100%", marginBottom: 5}} source={{ uri: medias[0].path}}/>
+                    <Image style={{height: 250, width: "100%"}} source={{ uri: medias[1].path}}/>
                 </View>: null
             }
             {medias.length == 3 ?
                 <View>
-                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: medias[0].path}}/>
                     <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[1].path}}/>
-                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[2].path}}/>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: medias[1].path}}/>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: medias[2].path}}/>
                     </View>
                 </View>: null
             }
             {medias.length == 4 ?
                 <View>
-                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: medias[0].path}}/>
                     <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[1].path}}/>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[2].path}}/>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[3].path}}/> 
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[1].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[2].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[3].path}}/> 
                     </View>
                 </View>: null
             }
@@ -172,7 +181,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <View style={{ padding: 0 }}>
                     {uid == userInfo.id ?
                     <View>
-                    <TouchableHighlight underlayColor={Colors.GAINSBORO}>
+                    <TouchableHighlight underlayColor={Colors.GAINSBORO} onPress={() => updatePost()}>
                         <View style={styles.saveContainer}>
                             <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                             <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
