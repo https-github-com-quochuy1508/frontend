@@ -20,7 +20,7 @@ import ImagePicker from 'react-native-image-picker';
 import AliasImage from '../../../components/AliasImage';
 import mediaServices from '../../../redux/services/mediaServices';
 import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
-import {requestUpdatePost} from '../../../redux/actions/postAction';
+import {requestUpdatePost, requestDeletePost} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -30,6 +30,7 @@ function FullPostTool({
   deleteMediaPost,
   requestUpdatePost,
   hasUpdate,
+  requestDeletePost
 }) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
@@ -50,7 +51,8 @@ function FullPostTool({
 
   useEffect(() => {
     if (hasUpdate) {
-      navigation.navigate('Home');
+      console.log("hasUpdate: ", hasUpdate);
+      // navigation.navigate('Home');
     }
   }, [hasUpdate]);
 
@@ -72,6 +74,7 @@ function FullPostTool({
       setModalVisible(true);
     } else {
       navigation.goBack();
+      requestDeletePost(valuePost.id);
     }
     return true;
   };
@@ -153,11 +156,12 @@ function FullPostTool({
   };
 
   const updatePost = () => {
-    // console.log('valuePost: ', valuePost);
+    console.log('valuePost: ', valuePost);
     const param = {
       id: valuePost.id,
       content: content || '',
     };
+    console.log("param: ", param);
     requestUpdatePost(param);
   };
   const Remove = ({id}) => {
@@ -538,8 +542,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  // console.log("state: ", state);
   const post = (state.post && state.post.result) || {};
-  // console.log('state: ', state);
+  // // console.log('state: ', state);
   let valuePost = null;
   let hasUpdate = false;
   if (post.success) {
@@ -561,6 +566,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     requestUpdatePost: (data) => {
       dispatch(requestUpdatePost(data));
+    },
+    requestDeletePost: (data) => {
+      dispatch(requestDeletePost(data));
     },
   };
 };

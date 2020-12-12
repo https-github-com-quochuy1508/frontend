@@ -18,7 +18,7 @@ const loginEpic = (action$) =>
           if (response.success) {
             userApi.setToken(response.token);
             userApi.setName(response.name);
-            userApi.setAvatar(response.avatar);
+            userApi.setAvatar(response.avatar || "https://i.pravatar.cc/300");
             userApi.setUserId(response.userId.toString());
             userApi.setTelephone(response.telephone);
             return authenticateSuccess(response);
