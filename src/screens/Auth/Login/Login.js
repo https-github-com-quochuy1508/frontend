@@ -48,7 +48,6 @@ function Login({navigation, login, users}) {
       if(id !== null && tel !== null) {
         navigation.navigate("Login2");
       }
-      await AsyncStorage.setItem("userId", " ");
     } catch(e) {
       // error reading value
     }
