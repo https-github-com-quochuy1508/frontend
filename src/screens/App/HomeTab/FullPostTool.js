@@ -20,7 +20,7 @@ import ImagePicker from 'react-native-image-picker';
 import AliasImage from '../../../components/AliasImage';
 import mediaServices from '../../../redux/services/mediaServices';
 import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
-import {requestUpdatePost} from '../../../redux/actions/postAction';
+import {requestUpdatePost, requestDeletePost} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -30,6 +30,7 @@ function FullPostTool({
   deleteMediaPost,
   requestUpdatePost,
   hasUpdate,
+  requestDeletePost
 }) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
@@ -65,6 +66,7 @@ function FullPostTool({
   };
 
   const onGoBack = () => {
+    requestDeletePost((valuePost && valuePost.id) || 0);
     if (show) {
       setShow(false);
     } else if (content.length > 0 || avtSource.length > 0) {
@@ -153,11 +155,12 @@ function FullPostTool({
   };
 
   const updatePost = () => {
-    // console.log('valuePost: ', valuePost);
+    console.log('valuePost: ', valuePost);
     const param = {
       id: valuePost.id,
       content: content || '',
     };
+    console.log("param: ", param);
     requestUpdatePost(param);
   };
   const Remove = ({id}) => {
@@ -538,19 +541,20 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const post = (state.post && state.post.result) || {};
-  // console.log('state: ', state);
+  console.log("state: ", state);
+  const posts = (state.post && state.post.result) || {};
+  // // console.log('state: ', state);
   let valuePost = null;
   let hasUpdate = false;
-  if (post.success) {
-    valuePost = post.result;
-    if (valuePost.hasOwnProperty('content')) {
-      hasUpdate = true;
-    } else {
-      hasUpdate = false;
-    }
-  } else {
-  }
+  // if (post.success) {
+  //   valuePost = post.result;
+  //   if (valuePost.hasOwnProperty('content')) {
+  //     hasUpdate = true;
+  //   } else {
+  //     hasUpdate = false;
+  //   }
+  // } else {
+  // }
   return {valuePost, hasUpdate};
 };
 
@@ -561,6 +565,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     requestUpdatePost: (data) => {
       dispatch(requestUpdatePost(data));
+    },
+    requestDeletePost: (data) => {
+      dispatch(requestDeletePost(data));
     },
   };
 };

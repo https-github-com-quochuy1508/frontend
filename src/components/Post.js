@@ -86,9 +86,9 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     return (
         <View style={styles.wrap}>
             <View style={styles.headWrap}>
-                <Image style={styles.avatar} source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} />
+                <Image style={styles.avatar} source={{uri: (userInfo && userInfo.avatar) || "https://i.stack.imgur.com/l60Hf.png"}} />
                 <View style={styles.nameWrap}>
-                    <Text style={styles.name}>{userInfo.name}</Text>
+                    <Text style={styles.name}>{userInfo && userInfo.name}</Text>
                     <Text style={styles.time}>{time} <Text style={styles.dot}>•</Text> <Oct name="globe" color={Colors.DARKGRAY} size={13} /></Text>
                 </View>
                 <TouchableHighlight 
@@ -170,7 +170,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 onBackdropPress={() => setModalVisible(false)}
                 style={styles.modal}>
                 <View style={{ padding: 0 }}>
-                    {uid == userInfo.id ?
+                    {uid == (userInfo && userInfo.id) ?
                     <View>
                     <TouchableHighlight underlayColor={Colors.GAINSBORO}>
                         <View style={styles.saveContainer}>
@@ -200,7 +200,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
                             </View>
                     </TouchableHighlight>
-                    {uid != userInfo.id ? 
+                    {uid == (userInfo && userInfo.id) ? 
                     <TouchableHighlight
                         underlayColor={Colors.GAINSBORO}
                         onPress={() => {setModalVisible(false); setShowReport(true)}}
@@ -278,7 +278,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 <View style={styles.action}>
                                     <Ent name="block" size={24} style={{margin: 10}}/>
                                     <View>
-                                        <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{fontSize: 16}}>Chặn {userInfo && userInfo.name.split(" ")[0]}</Text>
                                         <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                                     </View>
                                 </View>
@@ -290,7 +290,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 <View style={styles.action}>
                                     <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
                                     <View>
-                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo && userInfo.name.split(" ")[0]}</Text>
                                         <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
                                     </View>
                                 </View>
@@ -330,16 +330,16 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
             >
                 <View style={styles.blockContainer}>
                     <Ent name="block" size={24}/>
-                    <Text style={{fontWeight: 'bold', fontSize: 17}}>Chặn {userInfo.name}?</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 17}}>Chặn {userInfo && userInfo.name}?</Text>
                     <Text style={styles.happenText}>Điều sẽ diễn ra với bạn</Text>
                     <View style={styles.happenContainer}>
                         <Image source={{uri: uAvt}} style={styles.uImage}/>
-                        <Text style={styles.happenContent}>Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho {userInfo.name.split(" ")[0]} nữa.</Text>
+                        <Text style={styles.happenContent}>Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho {userInfo && userInfo.name.split(" ")[0]} nữa.</Text>
                     </View>
-                    <Text style={styles.happenText}>Điều sẽ diễn ra với {userInfo.name.split(" ")[0]}</Text>
+                    <Text style={styles.happenText}>Điều sẽ diễn ra với {userInfo && userInfo.name.split(" ")[0]}</Text>
                     <View style={styles.happenContainer}>
-                        <Image source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} style={styles.uImage}/>
-                        <Text style={styles.happenContent}>Dù không biết là đã bị chặn nhưng {userInfo.name.split(" ")[0]} sẽ không xem được trang cá nhân của bạn, gắn thẻ bạn trong bài viết, nhắn tin hay thêm bạn làm bạn bè.</Text>
+                        <Image source={{uri: userInfo && userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} style={styles.uImage}/>
+                        <Text style={styles.happenContent}>Dù không biết là đã bị chặn nhưng {userInfo && userInfo.name.split(" ")[0]} sẽ không xem được trang cá nhân của bạn, gắn thẻ bạn trong bài viết, nhắn tin hay thêm bạn làm bạn bè.</Text>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                         <TouchableHighlight 
@@ -424,7 +424,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         <View style={styles.action}>
                             <Ent name="block" size={24} style={{margin: 10}}/>
                             <View>
-                                <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{fontSize: 16}}>Chặn {userInfo && userInfo.name.split(" ")[0]}</Text>
                                 <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                             </View>
                         </View>
@@ -436,7 +436,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         <View style={styles.action}>
                             <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
                             <View>
-                                <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo && userInfo.name.split(" ")[0]}</Text>
                                 <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
                             </View>
                         </View>
@@ -720,4 +720,3 @@ const styles = StyleSheet.create({
         padding: 10,
     }
 });
-

@@ -13,6 +13,11 @@ export const REQUEST_UPDATE_POST = 'REQUEST_UPDATE_POST';
 export const UPDATE_POST_SUCCESS = `UPDATE_POST_SUCCESS`;
 export const UPDATE_POST_FAIL = `UPDATE_POST_FAIL`;
 
+// delete post
+export const REQUEST_DELETE_POST = 'REQUEST_DELETE_POST';
+export const DELETE_POST_SUCCESS = `DELETE_POST_SUCCESS`;
+export const DELETE_POST_FAIL = `DELETE_POST_FAIL`;
+
 export const requestCreatePost = (data) => ({
   type: REQUEST_CREATE_POST,
   payload: data,
@@ -66,6 +71,25 @@ export const getPostsSuccess = (response = null) => {
 export const getPostsFail = (response = null) => {
   return {
     type: GET_POSTS_FAIL,
+    error: response,
+  };
+};
+
+export const requestDeletePost = (data) => ({
+  type: REQUEST_DELETE_POST,
+  payload: data,
+});
+
+export const deletePostSuccess = (response = null) => {
+  return {
+    type: DELETE_POST_SUCCESS,
+    result: response,
+  };
+};
+
+export const deletePostFail = (response = null) => {
+  return {
+    type: DELETE_POST_FAIL,
     error: response,
   };
 };

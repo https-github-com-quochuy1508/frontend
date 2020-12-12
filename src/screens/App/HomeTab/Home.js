@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {  
+const mapStateToProps = (state) => {
   let listPosts;
-  if(state.post != null) listPosts = state.post.result;
+  if(state.posts != null) listPosts = state.posts.result;
   return {
     listPosts,
   };
