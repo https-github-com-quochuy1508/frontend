@@ -179,7 +179,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 onBackdropPress={() => setModalVisible(false)}
                 style={styles.modal}>
                 <View style={{ padding: 0 }}>
-                    {uid == (userInfo && userInfo.id) ?
+                    {uid == userInfo.id ?
                     <View>
                     <TouchableHighlight underlayColor={Colors.GAINSBORO} onPress={() => updatePost()}>
                         <View style={styles.saveContainer}>
@@ -209,7 +209,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
                             </View>
                     </TouchableHighlight>
-                    {uid == (userInfo && userInfo.id) ? 
+                    {uid != userInfo.id ? 
                     <TouchableHighlight
                         underlayColor={Colors.GAINSBORO}
                         onPress={() => {setModalVisible(false); setShowReport(true)}}

@@ -4,7 +4,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './HomeTab/Home';
 import Notifications from './Notifications';
-import Personal from './PersonalTab/Personal';
+import Friend from './FriendTab';
+import Wall from './PersonalTab';
 import Menu from './Menu';
 import Icon from '../../components/TabBarIcon';
 import * as Colors from '../../assets/Colors';
@@ -24,9 +25,9 @@ function AppTabs() {
         },
       })}
     >
-			<Tab.Screen name="Home" component={Personal} />
-      <Tab.Screen name="Friend" component={Notifications} />
-      <Tab.Screen name="Group" component={Notifications} />
+			<Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Friend" component={Friend} />
+      <Tab.Screen name="Wall" component={Wall} />
       <Tab.Screen name="Watch" component={Notifications} />
       <Tab.Screen name="Notification" component={Notifications} />
       <Tab.Screen name="Menu" component={Menu} />
@@ -55,7 +56,7 @@ export default function AppStack() {
             },
             headerRight: () => 
               <View style={{flexDirection: 'row'}}>
-                <Search/>
+                <Search bgColor={Colors.WHITESMOKE}/>
                 <Messenger/>
               </View>
           }

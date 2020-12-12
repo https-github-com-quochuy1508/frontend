@@ -8,6 +8,7 @@ import UpdatePostTool from './src/components/PostTool/UpdatePost'
 import {navigationRef} from './rootNavigation';
 import SplashScreen from 'react-native-splash-screen';
 import { createStackNavigator} from '@react-navigation/stack';
+import Wall from './src/screens/App/PersonalTab';
 
 const rootStack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const App: () => React$Node = () => {
           <rootStack.Screen name="Tabs" component={Tabs}/>
           <rootStack.Screen name="FullPostTool" component={FullPostTool}/>
           <rootStack.Screen name="UpdatePostTool" component={UpdatePostTool}/>
+          <rootStack.Screen name="Wall" component={Wall}/>
         </rootStack.Navigator>
       </NavigationContainer>
     </Provider>
