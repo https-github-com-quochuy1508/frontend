@@ -51,7 +51,8 @@ function FullPostTool({
 
   useEffect(() => {
     if (hasUpdate) {
-      navigation.navigate('Home');
+      console.log("hasUpdate: ", hasUpdate);
+      // navigation.navigate('Home');
     }
   }, [hasUpdate]);
 
@@ -66,7 +67,6 @@ function FullPostTool({
   };
 
   const onGoBack = () => {
-    requestDeletePost((valuePost && valuePost.id) || 0);
     if (show) {
       setShow(false);
     } else if (content.length > 0 || avtSource.length > 0) {
@@ -74,6 +74,7 @@ function FullPostTool({
       setModalVisible(true);
     } else {
       navigation.goBack();
+      requestDeletePost(valuePost.id);
     }
     return true;
   };
@@ -541,20 +542,20 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("state: ", state);
-  const posts = (state.post && state.post.result) || {};
+  // console.log("state: ", state);
+  const post = (state.post && state.post.result) || {};
   // // console.log('state: ', state);
   let valuePost = null;
   let hasUpdate = false;
-  // if (post.success) {
-  //   valuePost = post.result;
-  //   if (valuePost.hasOwnProperty('content')) {
-  //     hasUpdate = true;
-  //   } else {
-  //     hasUpdate = false;
-  //   }
-  // } else {
-  // }
+  if (post.success) {
+    valuePost = post.result;
+    if (valuePost.hasOwnProperty('content')) {
+      hasUpdate = true;
+    } else {
+      hasUpdate = false;
+    }
+  } else {
+  }
   return {valuePost, hasUpdate};
 };
 

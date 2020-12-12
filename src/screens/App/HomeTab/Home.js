@@ -5,12 +5,22 @@ import Post from '../../../components/Post';
 import {requestGetPosts} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 
-function Home({requestGetPosts, listPosts}) {
+function Home({requestGetPosts, listPosts, postChange}) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     requestGetPosts({});
   }, []);
+
+  useEffect(() => {
+    if (postChange) {
+      
+      if (postChange.result.result && postChange.result.result.hasOwnProperty('content')) {
+        console.log("postChange: ", postChange);
+        requestGetPosts({});
+      }
+    }
+  }, [postChange]);
 
   useEffect(() => {
     if (listPosts != null && listPosts.success) {
@@ -56,9 +66,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   let listPosts;
-  if(state.posts != null) listPosts = state.posts.result;
+  let postChange;
+  if (state.posts != null) {
+    listPosts = state.posts.result;
+  }
+  if (state.post) {
+    postChange = state.post;
+  }
   return {
     listPosts,
+    postChange
   };
 };
 
