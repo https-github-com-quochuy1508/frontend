@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
@@ -14,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Octicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
+import SearchForm from '../../../components/search/SearchForm';
 
 function Menu({logout}) {
   const [avt, setAvt] = useState(" ");
@@ -44,24 +46,53 @@ function Menu({logout}) {
   })
 
   const onPress = () => {};
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
+      <Modal 
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        // onRequestClose={() => {
+        //   Alert.alert('Modal has been closed.');
+        // }}
+        >
+        <View style={styles.modal}>
+            <SearchForm
+            // style={styles}
+            />
+            <TouchableHighlight
+                style={styles.hideModal}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+        </View>
+      </Modal>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={styles.menu}>
           <Text style={styles.menu_text}>Menu</Text>
-          <TouchableOpacity style={styles.menu_button}>
+          <TouchableOpacity
+            style={styles.menu_button}
+            onPress={() => {
+              setModalVisible(true);
+            }}>
             <Icon name="search" size={20} />
           </TouchableOpacity>
         </View>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <View style={styles.btnProfile}>
-            <Image style={styles.avatar} source={{ uri: avt }}/>
+            <Image style={styles.avatar} source={{uri: avt}} />
             <View style={styles.text}>
               <Text style={styles.name}>{name}</Text>
-              <Text style={{color: Colors.DARKGRAY}}>Xem trang cá nhân của bạn</Text>
+              <Text style={{color: Colors.DARKGRAY}}>
+                Xem trang cá nhân của bạn
+              </Text>
             </View>
           </View>
         </TouchableHighlight>
@@ -162,5 +193,15 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  modal:{
+    flex: 1,
+    backgroundColor:'#FFF',
+    height:500,
+    position:'relative',
+  },
+  hideModal:{
+    position:'absolute',
+    bottom:5,
   },
 });
