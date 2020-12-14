@@ -10,6 +10,8 @@ import SplashScreen from 'react-native-splash-screen';
 import { createStackNavigator} from '@react-navigation/stack';
 import Wall from './src/screens/App/PersonalTab';
 import AllFriendScreen from './src/screens/App/FriendTab/AllFriendScreen';
+import Search from './src/components/search/SearchForm';
+import SearchDiary from './src/components/search/SearchDiary';
 const rootStack = createStackNavigator();
 
 const App: () => React$Node = () => {
@@ -25,6 +27,8 @@ const App: () => React$Node = () => {
           <rootStack.Screen name="UpdatePostTool" component={UpdatePostTool}/>
           <rootStack.Screen name="Wall" component={Wall}/>
           <rootStack.Screen name="AllFriend" component={AllFriendScreen}/>
+          <rootStack.Screen name="Search" component={Search}/>
+          <rootStack.Screen name="SearchDiary" component={SearchDiary}/>
         </rootStack.Navigator>
       </NavigationContainer>
     </Provider>

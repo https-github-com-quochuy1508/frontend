@@ -42,7 +42,7 @@ export default function SearchForm({navigation}){
             <Text style={{fontWeight: '600'}}>Mới đây </Text>
             <TouchableHighlight
               style={styles.editButton}
-              onPress={() => navigation.navigate("Nhật ký hoạt động")} activeOpacity={0.8}
+              onPress={() => navigation.navigate("SearchDiary")} activeOpacity={0.8}
               underlayColor={'#ccc'}>
               <Text style={{color: '#666'}}>CHỈNH SỬA</Text>
             </TouchableHighlight>

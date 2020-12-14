@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
 import {TouchableOpacity} from 'react-native';
+import {navigation} from '../../rootNavigation';
 function SearchButton({bgColor}) {
   return(
     <TouchableOpacity 
@@ -13,6 +14,7 @@ function SearchButton({bgColor}) {
         justifyContent: 'center',
         alignItems: 'center'
       }}
+      onPress={() => navigation.navigate("Search")}
     >
       <Icon name="search" size={24}/>
     </TouchableOpacity>
