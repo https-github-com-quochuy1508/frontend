@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,8 +10,23 @@ import {
 import Search from '../../../components/SearchButton';
 import * as Colors from '../../../assets/Colors';
 import FriendRequest from './FriendRequest';
+import {connect} from 'react-redux';
+import moment from 'moment';
+import {requestListFriendRequest} from '../../../redux/actions/friendAction';
 
-export default function FriendScreen({navigation}) {
+function FriendScreen({
+  navigation,
+  requestListFriendRequest,
+  friendRequestValue,
+}) {
+  useEffect(() => {
+    const param = {
+      filter: {
+        status: 1,
+      }, // status 1 is pending wating for accept
+    };
+    requestListFriendRequest(param);
+  }, []);
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.header}>
@@ -30,7 +45,10 @@ export default function FriendScreen({navigation}) {
       </View>
       <View style={styles.requestHeader}>
         <Text style={styles.suggestText}>Lời mời kết bạn</Text>
-        <Text style={styles.count}> 10</Text>
+        <Text style={styles.count}>
+          {' '}
+          {friendRequestValue.count ? friendRequestValue.count : 0}
+        </Text>
         <TouchableHighlight
           style={styles.buttonSeeAll}
           onPress={() => {}}
@@ -38,15 +56,11 @@ export default function FriendScreen({navigation}) {
           <Text style={styles.seeAll}>Xem tất cả</Text>
         </TouchableHighlight>
       </View>
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
-      <FriendRequest />
+      {friendRequestValue.rows &&
+        Array.isArray(friendRequestValue.rows) &&
+        friendRequestValue.rows.map((e) => {
+          return <FriendRequest key={e.id} />;
+        })}
     </ScrollView>
   );
 }
@@ -106,3 +120,27 @@ const styles = StyleSheet.create({
     color: Colors.BLUE,
   },
 });
+
+const mapStateToProps = (state) => {
+  console.log('state: ', state.friend);
+  let friendRequestValue = {};
+  if (state.friend) {
+    friendRequestValue = state.friend && state.friend.result;
+  }
+  return {friendRequestValue};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    requestListFriendRequest: (params) => {
+      dispatch(requestListFriendRequest(params));
+    },
+  };
+};
+
+const FriendConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FriendScreen);
+
+export default FriendConnected;
