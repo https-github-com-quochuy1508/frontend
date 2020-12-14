@@ -2,15 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View, FlatList} from 'react-native';
 import PostTool from '../../../components/PostTool';
 import Post from '../../../components/Post';
-import {requestGetPosts} from '../../../redux/actions/postAction';
+import {
+  requestGetPosts,
+  requestCountPost,
+} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import moment from 'moment';
 
-function Home({requestGetPosts, listPosts, postChange}) {
+function Home({
+  requestGetPosts,
+  listPosts,
+  postChange,
+  requestCountPost,
+  countPost,
+}) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     requestGetPosts({});
+    requestCountPost({});
   }, []);
 
   useEffect(() => {
@@ -37,9 +47,29 @@ function Home({requestGetPosts, listPosts, postChange}) {
 
   const renderItem = ({item}) => {
     const timeAgo = moment(item.createAt).fromNow();
+    let valueCountOfPost = {
+      liked: false,
+      countLike: 0,
+      countComment: 0,
+    };
+    if (countPost.hasOwnProperty(item.id)) {
+      valueCountOfPost.liked = countPost[item.id].isLike ? true : false;
+      valueCountOfPost.countLike = countPost[item.id].countLike
+        ? countPost[item.id].countLike
+        : 0;
+      valueCountOfPost.countComment = countPost[item.id].countComment
+        ? countPost[item.id].countComment
+        : 0;
+    }
+    console.log(
+      'valueCountOfPost: ' + item.id + ' - ' + JSON.stringify(valueCountOfPost),
+    );
     if (item.id == 0) return <PostTool />;
     return (
       <Post
+        liked={valueCountOfPost.liked}
+        countLike={valueCountOfPost.countLike}
+        countComment={valueCountOfPost.countComment}
         postId={item.id}
         userInfo={item.users}
         time={timeAgo}
@@ -72,8 +102,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   let listPosts;
   let postChange;
+  let countPost = {};
   if (state.posts != null) {
     listPosts = state.posts.result;
+  }
+  if (state.count) {
+    countPost = state.count.result;
   }
   if (state.post) {
     postChange = state.post;
@@ -81,6 +115,7 @@ const mapStateToProps = (state) => {
   return {
     listPosts,
     postChange,
+    countPost,
   };
 };
 
@@ -88,6 +123,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     requestGetPosts: (params) => {
       dispatch(requestGetPosts(params));
+    },
+    requestCountPost: (params) => {
+      dispatch(requestCountPost(params));
     },
   };
 };

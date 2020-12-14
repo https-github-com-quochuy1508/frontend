@@ -101,7 +101,7 @@ const countPostsEpic = (action$) =>
       return from(postApi.count(action.payload)).pipe(
         map((response) => {
           console.log('response: ', response);
-          if (response.success) {
+          if (response) {
             return countPostSuccess(response);
           } else {
             return countPostFail(response.error);

@@ -98,9 +98,9 @@ export const deletePostFail = (response = null) => {
     error: response,
   };
 };
-export const requestCountPost = (id) => ({
+export const requestCountPost = (data) => ({
   type: REQUEST_COUNT_POST,
-  payload: id,
+  payload: data,
 });
 
 export const countPostSuccess = (response = null) => {
