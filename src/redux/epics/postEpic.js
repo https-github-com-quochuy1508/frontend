@@ -13,13 +13,15 @@ import {
   getPostsFail,
   REQUEST_DELETE_POST,
   deletePostSuccess,
-  deletePostFail
+  deletePostFail,
+  REQUEST_COUNT_POST,
+  countPostSuccess,
+  countPostFail,
 } from '../actions/postAction';
 import {combineEpics} from 'redux-observable';
 import postApi from '../services/postServices';
 import {from} from 'rxjs';
 import {navigate} from '../../../rootNavigation';
-
 
 const createPostEpic = (action$) =>
   action$.pipe(
@@ -47,7 +49,7 @@ const updatePostEpic = (action$) =>
         map((response) => {
           // console.log('response: ', response);
           if (response.success) {
-            navigate("Home");
+            navigate('Home');
             return updatePostSuccess(response);
           } else {
             return updatePostFail(response.error);
@@ -91,4 +93,28 @@ const getPostsEpic = (action$) =>
     }),
   );
 
-export default combineEpics(createPostEpic, updatePostEpic, getPostsEpic, deletePostEpic);
+const countPostsEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_COUNT_POST),
+    switchMap((action) => {
+      console.log('action: ', action);
+      return from(postApi.count(action.payload)).pipe(
+        map((response) => {
+          console.log('response: ', response);
+          if (response) {
+            return countPostSuccess(response);
+          } else {
+            return countPostFail(response.error);
+          }
+        }),
+      );
+    }),
+  );
+
+export default combineEpics(
+  createPostEpic,
+  updatePostEpic,
+  getPostsEpic,
+  deletePostEpic,
+  countPostsEpic,
+);
