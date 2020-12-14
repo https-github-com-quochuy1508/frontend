@@ -18,7 +18,7 @@ const likeEpic = (action$) =>
     switchMap((action) => {
       return from(likeApi.create(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response.success) {
             return likePostSuccess(response);
           } else {
@@ -35,7 +35,7 @@ const unlikeEpic = (action$) =>
     switchMap((action) => {
       return from(likeApi.delete(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response.success) {
             return unLikePostSuccess(response);
           } else {

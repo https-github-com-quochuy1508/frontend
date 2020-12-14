@@ -61,9 +61,9 @@ function Home({
         ? countPost[item.id].countComment
         : 0;
     }
-    console.log(
-      'valueCountOfPost: ' + item.id + ' - ' + JSON.stringify(valueCountOfPost),
-    );
+    // console.log(
+    //   'valueCountOfPost: ' + item.id + ' - ' + JSON.stringify(valueCountOfPost),
+    // );
     if (item.id == 0) return <PostTool />;
     return (
       <Post
