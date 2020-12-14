@@ -265,6 +265,7 @@ function Post({
         </TouchableHighlight>
       </View>
 
+<<<<<<< HEAD
       <Modal
         isVisible={isModalVisible}
         backdropOpacity={0.6}
@@ -284,6 +285,161 @@ function Post({
                     style={{marginRight: 10}}
                   />
                   <Text style={{fontSize: 16}}>Chỉnh sửa bài viết</Text>
+=======
+            <Modal
+                isVisible={isModalVisible}
+                backdropOpacity={0.6}
+                onBackdropPress={() => setModalVisible(false)}
+                style={styles.modal}>
+                <View style={{ padding: 0 }}>
+                    {uid == userInfo.id ?
+                    <View>
+                    <TouchableHighlight underlayColor={Colors.GAINSBORO} onPress={() => updatePost()}>
+                        <View style={styles.saveContainer}>
+                            <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
+                        </View>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        underlayColor={Colors.GAINSBORO}
+                        onPress={() => {setModalVisible(false); setShowDelete(true)}}
+                    >
+                        <View style={styles.saveContainer}>
+                            <Ion name="trash-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <Text style={{ fontSize: 16 }}>Xóa</Text>
+                        </View>
+                    </TouchableHighlight>
+                    </View> : null
+                    }
+                    <TouchableHighlight
+                        underlayColor={Colors.GAINSBORO}
+                        onPress={() => {
+                            setModalVisible(false);
+                            setNoti(!noti);
+                        }}>
+                            <View style={styles.saveContainer}>
+                                <Ion name="notifications-outline" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                                {noti == true ? <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text> : <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>}
+                            </View>
+                    </TouchableHighlight>
+                    {uid != userInfo.id ? 
+                    <TouchableHighlight
+                        underlayColor={Colors.GAINSBORO}
+                        onPress={() => {setModalVisible(false); setShowReport(true)}}
+                    >
+                        <View style={styles.saveContainer}>
+                            <Oct name="report" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
+                            <View>
+                                <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
+                                <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
+                            </View>
+                        </View>
+                    </TouchableHighlight>:null
+                    }   
+                </View>
+            </Modal>
+            <Modal
+                style={[styles.modal, {height: "100%"}]}
+                isVisible={showComment}
+                onBackButtonPress={() => setShowComment(false)}
+                onSwipeComplete={() => setShowComment(false)}
+                swipeDirection="down"
+            >
+                <Comment liked={isLike} likes={likes}/>
+            </Modal>
+            <Modal
+                style={{margin: 0, backgroundColor: Colors.WHITE}}
+                isVisible={showReport}
+                onBackButtonPress={() => setShowReport(false)}
+                onSwipeComplete={() => setShowReport(false)}
+                swipeDirection="down"
+                onModalHide={() => modalHide()}
+            >
+                <View style={{flex: 1}}>
+                    <View style={styles.reportHead}>
+                        <Text style={{fontWeight: "bold", fontSize: 16}}>Báo cáo</Text>
+                        <TouchableHighlight 
+                            style={styles.exitReport}
+                            underlayColor={Colors.WHITESMOKE}
+                            onPress={() => setShowReport(false)}
+                        >
+                            <Ent name="cross" color={Colors.DARKGRAY} size={30}/>
+                        </TouchableHighlight>
+                    </View>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={styles.listReport}>
+                            <Mat name="chat-alert" size={28} color={Colors.ORANGE1}/>
+                            <Text style={{fontSize: 17, fontWeight: "bold"}}>Vui lòng chọn vấn đề để tiếp tục</Text>
+                            <Text style={{color: Colors.DARKGRAY, marginBottom: 10, fontSize: 15}}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề.</Text>
+                            <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                {typesReport.map((value, index) =>
+                                    <Pressable onPress={() => selectType(index)} key={value}>
+                                        <ReportItem type={value} active={selectedType == index}/>
+                                    </Pressable>
+                                )}
+                            </View>
+                            {selectedType >= 0 && !emptyDetail.includes(selectedType) ?
+                                <View>
+                                    <Text style={{marginBottom: 15}}>Hãy giúp chúng tôi hiểu vấn đề.</Text>
+                                    <View style={{flexDirection: "row", flexWrap: "wrap"}}>
+                                        {detailsReport[selectedType].map((value, index) =>
+                                            <Pressable onPress={() => selectDetail(index)} key={value}>
+                                                <ReportItem type={value} active={selectedDetail == index}/>
+                                            </Pressable>
+                                        )}
+                                    </View>
+                                </View> : null
+                            }
+                        </View>
+                        <View>
+                            <Text style={styles.actionTitle}>Các bước khác mà bạn có thể thực hiện</Text>
+                            <TouchableHighlight 
+                                underlayColor={Colors.GRAY91}
+                                onPress={() => setShowBlock(true)}
+                            >
+                                <View style={styles.action}>
+                                    <Ent name="block" size={24} style={{margin: 10}}/>
+                                    <View>
+                                        <Text style={{fontSize: 16}}>Chặn {userInfo && userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                            <TouchableHighlight 
+                                underlayColor={Colors.GRAY91}
+                                onPress={() => setShowBlock(true)}
+                            >
+                                <View style={styles.action}>
+                                    <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
+                                    <View>
+                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo && userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
+                                    </View>
+                                </View>
+                            </TouchableHighlight>
+                            <View style={styles.noti}>
+                                <Ion name="information-circle" color={Colors.LIGHTGRAY} size={24}/>
+                                <Text style={{color: Colors.DARKGRAY, margin: 10}}>Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ    cấp cứu tại địa phương.</Text>
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <View style={styles.nextContainer}>
+                        <Pressable 
+                            style={[styles.nextButton, {backgroundColor: selectedDetail != -1 || emptyDetail.includes(selectedType) ? Colors.BLUE : Colors.GRAY91}]}
+                            disabled={!(selectedDetail != -1 || emptyDetail.includes(selectedType))}
+                            onPress={() => {setShowReport(false); showReportComplete(true)}}
+                        >
+                            <Text 
+                                style={[styles.nextText, 
+                                    {color: selectedDetail != -1 || emptyDetail.includes(selectedType) ? Colors.WHITE : Colors.GRAY,
+                                     opacity: selectedDetail != -1 || emptyDetail.includes(selectedType) ? 1 : 0.5,
+                                }]}
+                            >
+                                Tiếp
+                            </Text>
+                        </Pressable>
+                    </View>
+>>>>>>> a23b140452e55d8f528de06499331c6c69a27fef
                 </View>
               </TouchableHighlight>
               <TouchableHighlight

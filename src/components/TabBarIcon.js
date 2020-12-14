@@ -11,8 +11,8 @@ function TabBarIcon({color, focused, name}) {
     case "Friend":
       iconName = focused ? 'people' : 'people-outline'; 
       break;
-    case "Group":
-      iconName = focused ? 'people-circle' : 'people-circle-outline';  
+    case "Wall":
+      iconName = focused ? 'person-circle' : 'person-circle-outline';  
       break;
     case "Watch":
       iconName = focused ? 'tv' : 'tv-outline';  
