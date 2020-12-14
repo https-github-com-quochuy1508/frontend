@@ -18,6 +18,11 @@ export const REQUEST_DELETE_POST = 'REQUEST_DELETE_POST';
 export const DELETE_POST_SUCCESS = `DELETE_POST_SUCCESS`;
 export const DELETE_POST_FAIL = `DELETE_POST_FAIL`;
 
+// count like comment isLike post
+export const REQUEST_COUNT_POST = 'REQUEST_COUNT_POST';
+export const COUNT_POST_SUCCESS = `COUNT_POST_SUCCESS`;
+export const COUNT_POST_FAIL = `COUNT_POST_FAIL`;
+
 export const requestCreatePost = (data) => ({
   type: REQUEST_CREATE_POST,
   payload: data,
@@ -90,6 +95,24 @@ export const deletePostSuccess = (response = null) => {
 export const deletePostFail = (response = null) => {
   return {
     type: DELETE_POST_FAIL,
+    error: response,
+  };
+};
+export const requestCountPost = (id) => ({
+  type: REQUEST_COUNT_POST,
+  payload: id,
+});
+
+export const countPostSuccess = (response = null) => {
+  return {
+    type: COUNT_POST_SUCCESS,
+    result: response,
+  };
+};
+
+export const countPostFail = (response = null) => {
+  return {
+    type: COUNT_POST_FAIL,
     error: response,
   };
 };
