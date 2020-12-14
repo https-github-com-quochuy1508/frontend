@@ -25,4 +25,9 @@ export default {
       params: params,
     });
   },
+  delete: (id) => {
+    return request(varEnv.apiUrlBackend + `/api/posts/` + id, {
+      method: 'DELETE',
+    });
+  },
 };

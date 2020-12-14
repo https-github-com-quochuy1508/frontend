@@ -1,12 +1,11 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
 import {TouchableOpacity} from 'react-native';
-import * as Colors from '../assets/Colors';
-function SearchButton() {
+function SearchButton({bgColor}) {
   return(
     <TouchableOpacity 
       style={{
-        backgroundColor: Colors.WHITESMOKE, 
+        backgroundColor: bgColor, 
         borderRadius: 20, 
         marginRight: 10, 
         width: 40, 

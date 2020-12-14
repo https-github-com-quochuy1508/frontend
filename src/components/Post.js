@@ -13,6 +13,7 @@ import Comment from './comment';
 import ReportItem from './ReportItem'
 import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost'
 import { ScrollView } from 'react-native-gesture-handler';
+import { navigation } from '../../rootNavigation';
 
 export default function Post({userInfo, time, content, medias, likes, comments ,liked}) {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -55,7 +56,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
 
     const calHeight = async () => {
         try {
-            Image.getSize("http://" + medias[0].path, (width, height) => {
+            Image.getSize(medias[0].path, (width, height) => {
                 let h = Dimensions.get("window").width*height/width;
                 if(h > 500) h = 500;
                 setHeight(h);
@@ -81,14 +82,22 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
     const modalHide = () => {
         setReportedType(selectedType);
         setReportedDetail(selectedDetail);
-        setSelectedType(-1);
+        selectType(-1);
+    }
+
+    const updatePost = () => {
+        toggleModal();
+        navigation.navigate("UpdatePostTool", {
+            content: content,
+            medias: medias
+        })
     }
     return (
         <View style={styles.wrap}>
             <View style={styles.headWrap}>
-                <Image style={styles.avatar} source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} />
+                <Image style={styles.avatar} source={{uri: (userInfo && userInfo.avatar) || "https://i.stack.imgur.com/l60Hf.png"}} />
                 <View style={styles.nameWrap}>
-                    <Text style={styles.name}>{userInfo.name}</Text>
+                    <Text style={styles.name}>{userInfo && userInfo.name}</Text>
                     <Text style={styles.time}>{time} <Text style={styles.dot}>•</Text> <Oct name="globe" color={Colors.DARKGRAY} size={13} /></Text>
                 </View>
                 <TouchableHighlight 
@@ -103,30 +112,30 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <Text style={[styles.content, {fontSize: medias.length > 0 ? 16 : 24}]}>{content}</Text> : null
             }
             {medias.length == 1 ?
-                <Image style={{height: height}} source={{ uri: "http://" + medias[0].path}}/> : null
+                <Image style={{height: height}} source={{ uri: medias[0].path}}/> : null
             }
             {medias.length == 2 ?
                 <View>
-                    <Image style={{height: 250, width: "100%", marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
-                    <Image style={{height: 250, width: "100%"}} source={{ uri: "http://" + medias[1].path}}/>
+                    <Image style={{height: 250, width: "100%", marginBottom: 5}} source={{ uri: medias[0].path}}/>
+                    <Image style={{height: 250, width: "100%"}} source={{ uri: medias[1].path}}/>
                 </View>: null
             }
             {medias.length == 3 ?
                 <View>
-                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: medias[0].path}}/>
                     <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[1].path}}/>
-                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: "http://" + medias[2].path}}/>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: medias[1].path}}/>
+                        <Image style={{height: 200, width: "49.4%"}} source={{ uri: medias[2].path}}/>
                     </View>
                 </View>: null
             }
             {medias.length == 4 ?
                 <View>
-                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: "http://" + medias[0].path}}/>
+                    <Image style={{height: 250, marginBottom: 5}} source={{ uri: medias[0].path}}/>
                     <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[1].path}}/>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[2].path}}/>
-                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: "http://" + medias[3].path}}/> 
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[1].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[2].path}}/>
+                        <Image style={{height: 130, width: "32.6%"}} source={{ uri: medias[3].path}}/> 
                     </View>
                 </View>: null
             }
@@ -172,7 +181,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                 <View style={{ padding: 0 }}>
                     {uid == userInfo.id ?
                     <View>
-                    <TouchableHighlight underlayColor={Colors.GAINSBORO}>
+                    <TouchableHighlight underlayColor={Colors.GAINSBORO} onPress={() => updatePost()}>
                         <View style={styles.saveContainer}>
                             <Sim name="pencil" size={28} color={Colors.BLACK} style={{ marginRight: 10 }}/>
                             <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
@@ -278,7 +287,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 <View style={styles.action}>
                                     <Ent name="block" size={24} style={{margin: 10}}/>
                                     <View>
-                                        <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{fontSize: 16}}>Chặn {userInfo && userInfo.name.split(" ")[0]}</Text>
                                         <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                                     </View>
                                 </View>
@@ -290,7 +299,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                                 <View style={styles.action}>
                                     <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
                                     <View>
-                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                        <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo && userInfo.name.split(" ")[0]}</Text>
                                         <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
                                     </View>
                                 </View>
@@ -330,16 +339,16 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
             >
                 <View style={styles.blockContainer}>
                     <Ent name="block" size={24}/>
-                    <Text style={{fontWeight: 'bold', fontSize: 17}}>Chặn {userInfo.name}?</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 17}}>Chặn {userInfo && userInfo.name}?</Text>
                     <Text style={styles.happenText}>Điều sẽ diễn ra với bạn</Text>
                     <View style={styles.happenContainer}>
                         <Image source={{uri: uAvt}} style={styles.uImage}/>
-                        <Text style={styles.happenContent}>Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho {userInfo.name.split(" ")[0]} nữa.</Text>
+                        <Text style={styles.happenContent}>Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho {userInfo && userInfo.name.split(" ")[0]} nữa.</Text>
                     </View>
-                    <Text style={styles.happenText}>Điều sẽ diễn ra với {userInfo.name.split(" ")[0]}</Text>
+                    <Text style={styles.happenText}>Điều sẽ diễn ra với {userInfo && userInfo.name.split(" ")[0]}</Text>
                     <View style={styles.happenContainer}>
-                        <Image source={{uri: userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} style={styles.uImage}/>
-                        <Text style={styles.happenContent}>Dù không biết là đã bị chặn nhưng {userInfo.name.split(" ")[0]} sẽ không xem được trang cá nhân của bạn, gắn thẻ bạn trong bài viết, nhắn tin hay thêm bạn làm bạn bè.</Text>
+                        <Image source={{uri: userInfo && userInfo.avatar || "https://i.stack.imgur.com/l60Hf.png"}} style={styles.uImage}/>
+                        <Text style={styles.happenContent}>Dù không biết là đã bị chặn nhưng {userInfo && userInfo.name.split(" ")[0]} sẽ không xem được trang cá nhân của bạn, gắn thẻ bạn trong bài viết, nhắn tin hay thêm bạn làm bạn bè.</Text>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                         <TouchableHighlight 
@@ -424,7 +433,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         <View style={styles.action}>
                             <Ent name="block" size={24} style={{margin: 10}}/>
                             <View>
-                                <Text style={{fontSize: 16}}>Chặn {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{fontSize: 16}}>Chặn {userInfo && userInfo.name.split(" ")[0]}</Text>
                                 <Text style={{color: Colors.DARKGRAY, width: "90%"}}>Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.</Text>
                             </View>
                         </View>
@@ -436,7 +445,7 @@ export default function Post({userInfo, time, content, medias, likes, comments ,
                         <View style={styles.action}>
                             <Ion name="person-remove-outline" size={24} style={{margin: 10}}/>
                             <View>
-                                <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo.name.split(" ")[0]}</Text>
+                                <Text style={{fontSize: 16}}>Bỏ theo dõi {userInfo && userInfo.name.split(" ")[0]}</Text>
                                 <Text style={{color: Colors.DARKGRAY}}>Dừng xem bài viết nhưng vẫn là bạn bè.</Text>
                             </View>
                         </View>
@@ -720,4 +729,3 @@ const styles = StyleSheet.create({
         padding: 10,
     }
 });
-

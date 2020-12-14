@@ -1,37 +1,20 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TextInput,
-  Pressable,
-  Keyboard,
-  BackHandler,
-} from 'react-native';
+import { View, StyleSheet, Text, Image, TextInput, Pressable, Keyboard, BackHandler, TouchableHighlight} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import En from 'react-native-vector-icons/Entypo';
 import Oct from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Ion from 'react-native-vector-icons/Ionicons';
-import * as Colors from '../../../assets/Colors';
+import * as Colors from '../../assets/Colors';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-picker';
-import AliasImage from '../../../components/AliasImage';
-import mediaServices from '../../../redux/services/mediaServices';
-import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
-import {requestUpdatePost, requestDeletePost} from '../../../redux/actions/postAction';
+import AliasImage from '../AliasImage';
+import mediaServices from '../../redux/services/mediaServices';
+import {requestDeleteMedia} from '../../redux/actions/mediaAction';
+import {requestUpdatePost} from '../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-function FullPostTool({
-  navigation,
-  valuePost,
-  deleteMediaPost,
-  requestUpdatePost,
-  hasUpdate,
-  requestDeletePost
-}) {
+function UpdatePostTool({navigation, route, valuePost, deleteMediaPost, requestUpdatePost}) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
   const [content, setContent] = useState('');
@@ -50,11 +33,14 @@ function FullPostTool({
   }, []);
 
   useEffect(() => {
-    if (hasUpdate) {
-      console.log("hasUpdate: ", hasUpdate);
-      // navigation.navigate('Home');
-    }
-  }, [hasUpdate]);
+    setContent(route.params.content);
+    let images = [];
+    route.params.medias.map((value) => {
+      images.push(value.path)
+    });
+    setAvtSource(images);
+  },[])
+
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', onGoBack);
@@ -74,7 +60,6 @@ function FullPostTool({
       setModalVisible(true);
     } else {
       navigation.goBack();
-      requestDeletePost(valuePost.id);
     }
     return true;
   };
@@ -156,12 +141,11 @@ function FullPostTool({
   };
 
   const updatePost = () => {
-    console.log('valuePost: ', valuePost);
+    // console.log('valuePost: ', valuePost);
     const param = {
       id: valuePost.id,
       content: content || '',
     };
-    console.log("param: ", param);
     requestUpdatePost(param);
   };
   const Remove = ({id}) => {
@@ -205,7 +189,7 @@ function FullPostTool({
           onTouchEnd={() => setPress(0)}>
           <Ant name="arrowleft" size={24} />
         </Pressable>
-        <Text style={styles.title}>Tạo bài viết</Text>
+        <Text style={styles.title}>Chỉnh sửa bài viết</Text>
         <Pressable
           disabled={content.length == 0 && avtSource.length == 0}
           style={[
@@ -224,7 +208,7 @@ function FullPostTool({
                   ? Colors.BLUE
                   : Colors.GAINSBORO,
             }}>
-            ĐĂNG
+            LƯU
           </Text>
         </Pressable>
       </View>
@@ -250,8 +234,9 @@ function FullPostTool({
             ? {fontSize: 15, paddingLeft: 15}
             : {fontSize: 25, paddingLeft: 15}
         }
-        onChangeText={(text) => setContent(text.trim())}
+        onChangeText={(text) => setContent(text)}
         multiline={true}
+        value={content}
       />
       {avtSource.length > 0 ? (
         <View style={styles.imageContainer}>
@@ -336,84 +321,52 @@ function FullPostTool({
         </Pressable>
       )}
       <Modal
+        style={{alignItems: 'center'}}
         isVisible={isModalVisible}
-        backdropOpacity={0.35}
+        onBackButtonPress={() => setModalVisible(false)}
         onBackdropPress={() => setModalVisible(false)}
-        style={styles.modal}>
-        <View style={{padding: 10}}>
-          <Text style={{fontSize: 15, marginBottom: 5}}>
-            Bạn muốn hoàn thành bài viết của mình sau?
-          </Text>
-          <Text style={{color: Colors.DARKGRAY, fontSize: 13.5}}>
-            Lưu làm bản nháp hoặc bạn có thể tiếp tục chỉnh sửa.
-          </Text>
-        </View>
-        <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => setPress(5)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}>
-          <Ion
-            name="bookmark-outline"
-            size={28}
-            color={Colors.DARKGRAY}
-            style={{marginRight: 10}}
-          />
-          <View>
-            <Text style={{fontSize: 15}}>Lưu làm bản nháp</Text>
-            <Text style={{color: Colors.DARKGRAY, fontSize: 12}}>
-              Bạn sẽ nhận được thông báo về bản nháp.
-            </Text>
+        backdropOpacity={0.6}
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+    >
+        <View style={styles.deleteContainer}>
+          <Text style={{fontSize: 18, marginBottom: 20}}>Bỏ thay đổi?</Text>
+          <Text style={{fontSize: 15 ,color: Colors.DARKGRAY}}>Nếu bỏ bây giờ thì bạn sẽ mất mọi thay đổi trên bài viết này</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
+            <TouchableHighlight 
+                style={styles.deleteAction} 
+                underlayColor={Colors.GRAY91}
+                onPress={() => setModalVisible(false)}>
+                <Text style={{color: Colors.BLACK}}>TIẾP TỤC CHỈNH SỬA</Text>
+            </TouchableHighlight>
+            <TouchableHighlight 
+                style={styles.deleteAction} 
+                underlayColor={Colors.GRAY91}
+                onPress={() => {setModalVisible(false); navigation.goBack()}}>
+                <Text style={{color: Colors.BLUE}}>BỎ</Text>
+            </TouchableHighlight>
           </View>
-        </Pressable>
-        <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 6 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => setPress(6)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}
-          onPress={() => {
-            setModalVisible(false);
-            navigation.goBack();
-          }}>
-          <Ion
-            name="trash-outline"
-            size={28}
-            color={Colors.DARKGRAY}
-            style={{marginRight: 10}}
-          />
-          <Text style={{fontSize: 15}}>Bỏ bài viết</Text>
-        </Pressable>
-        <Pressable
-          style={[
-            styles.saveContainer,
-            {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => setPress(7)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}
-          onPress={() => setModalVisible(false)}>
-          <Ion
-            name="checkmark"
-            size={28}
-            color={isModalVisible ? Colors.BLUE : Colors.DARKGRAY}
-            style={{marginRight: 10}}
-          />
-          <Text style={{fontSize: 15, color: Colors.BLUE}}>
-            Tiếp tục chỉnh sửa
-          </Text>
-        </Pressable>
+        </View>
       </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  deleteAction: {
+    padding: 10, 
+    height: 50, 
+    justifyContent: "center", 
+    borderRadius: 3,
+  },
+  deleteContainer: {
+      padding: 20,
+      backgroundColor: Colors.WHITE,
+      width: "90%",
+      borderRadius: 3,
+      paddingBottom: 10,
+      paddingRight: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.WHITE,
@@ -511,19 +464,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
   },
-  modal: {
-    margin: 0,
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: Colors.WHITE,
-  },
-  saveContainer: {
-    flexDirection: 'row',
-    paddingLeft: 10,
-    alignItems: 'center',
-    height: 70,
-  },
   imageContainer: {
     flexDirection: 'row',
     width: '100%',
@@ -542,9 +482,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  // console.log("state: ", state);
   const post = (state.post && state.post.result) || {};
-  // // console.log('state: ', state);
+  // console.log('state: ', state);
   let valuePost = null;
   let hasUpdate = false;
   if (post.success) {
@@ -567,14 +506,11 @@ const mapDispatchToProps = (dispatch) => {
     requestUpdatePost: (data) => {
       dispatch(requestUpdatePost(data));
     },
-    requestDeletePost: (data) => {
-      dispatch(requestDeletePost(data));
-    },
   };
 };
 
 const NavigationConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FullPostTool);
+)(UpdatePostTool);
 export default NavigationConnected;
