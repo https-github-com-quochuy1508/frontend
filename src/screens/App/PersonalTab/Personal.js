@@ -9,7 +9,7 @@ import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
 
-export default function Personal({navigation}) {
+export default function Personal({ navigation }) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
@@ -39,7 +39,7 @@ export default function Personal({navigation}) {
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}
           onPress={() => navigation.navigate("Setting")}
-          >
+        >
           <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: 'bold', marginBottom: 12 }}>
             …
           </Text>
@@ -128,6 +128,16 @@ export default function Personal({navigation}) {
 
       <View style={styles.infoWrap}>
         <Text style={styles.infoText}><FA5 name='home' size={20} color={'#8a8d92'} />  Sống tại <Text style={{ fontWeight: 'bold' }}>Hà Nội</Text></Text>
+        <Pressable style={[styles.editBtn,
+        { backgroundColor: press == 8 ? Colors.PALEBLUE91 : Colors.ALICEBLUE97 },
+        ]}
+          onTouchStart={() => setPress(8)}
+          onTouchEnd={() => setPress(0)}
+          onPressOut={() => setPress(0)}
+          onPress={() => navigation.navigate('Edit')}
+        >
+          <Text style={{ color: Colors.AZURE91, alignSelf: 'center' }}>Chỉnh sửa chi tiết công khai</Text>
+        </Pressable>
       </View>
 
       <View >
@@ -218,6 +228,15 @@ export default function Personal({navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
+  },
+
+  editBtn: {
+    width: '100%',
+    backgroundColor: Colors.ALICEBLUE97,
+    justifyContent: 'center',
+    height: 35,
+    borderRadius: 5,
+    marginBottom: 15,
   },
 
   cover: {

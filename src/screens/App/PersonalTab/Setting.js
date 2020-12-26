@@ -10,7 +10,7 @@ import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
 
-export default function Setting() {
+export default function Setting({ navigation }) {
     const [press, setPress] = useState(0);
     return (
         <View style={styles.container}>
@@ -19,7 +19,8 @@ export default function Setting() {
             ]}
                 onTouchStart={() => setPress(1)}
                 onTouchEnd={() => setPress(0)}
-                onPressOut={() => setPress(0)}>
+                onPressOut={() => setPress(0)}
+                onPress={() => navigation.navigate('Edit')}>
                 <Sim name='pencil' size={22} style={{ alignSelf: 'center' }} />
                 <Text style={{ fontSize: 16, alignSelf: 'center', marginLeft: '5%' }}>Chỉnh sửa trang cá nhân</Text>
             </Pressable>
