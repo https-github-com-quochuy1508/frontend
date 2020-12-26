@@ -82,7 +82,7 @@ const getPostsEpic = (action$) =>
       // console.log('action: ', action);
       return from(postApi.get(action.payload)).pipe(
         map((response) => {
-          if (response.success) {
+          if (response && response.success) {
             // console.log('response: ', response);
             return getPostsSuccess(response);
           } else {

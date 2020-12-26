@@ -20,7 +20,7 @@ const getListRequestFriendEpic = (action$) =>
           if (response) {
             return getListFriendRequestSuccess(response);
           } else {
-            return getListFriendRequestFail(response.error);
+            // return getListFriendRequestFail(response);
           }
         }),
       );
