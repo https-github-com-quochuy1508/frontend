@@ -143,7 +143,7 @@ function UpdatePostTool({navigation, route, valuePost, deleteMediaPost, requestU
   const updatePost = () => {
     // console.log('valuePost: ', valuePost);
     const param = {
-      id: valuePost.id,
+      id: route.params.id,
       content: content || '',
     };
     requestUpdatePost(param);

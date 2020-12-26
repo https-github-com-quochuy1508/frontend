@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
@@ -15,9 +14,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Octicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
-import SearchForm from '../../../components/search/SearchForm';
 
-function Menu({logout}) {
+function Menu({logout, navigation}) {
   const [avt, setAvt] = useState(" ");
   const [name, setName] = useState("");
   const removeToken = async () => {
@@ -50,27 +48,6 @@ function Menu({logout}) {
 
   return (
     <View style={styles.container}>
-      <Modal 
-        animationType="none"
-        transparent={true}
-        visible={modalVisible}
-        // onRequestClose={() => {
-        //   Alert.alert('Modal has been closed.');
-        // }}
-        >
-        <View style={styles.modal}>
-            <SearchForm
-            // style={styles}
-            />
-            <TouchableHighlight
-                style={styles.hideModal}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-        </View>
-      </Modal>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -80,7 +57,7 @@ function Menu({logout}) {
           <TouchableOpacity
             style={styles.menu_button}
             onPress={() => {
-              setModalVisible(true);
+              navigation.navigate("Search")
             }}>
             <Icon name="search" size={20} />
           </TouchableOpacity>

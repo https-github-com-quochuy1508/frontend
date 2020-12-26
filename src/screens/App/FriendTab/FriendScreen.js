@@ -34,7 +34,10 @@ function FriendScreen({
         <Search bgColor={Colors.GRAY91} />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.friendButton}>
+        <TouchableOpacity 
+          style={styles.friendButton}
+          onPress={() => navigation.navigate('FriendSuggest')}
+        >
           <Text style={styles.buttonText}>Gợi ý</Text>
         </TouchableOpacity>
         <TouchableOpacity

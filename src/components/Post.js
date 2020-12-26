@@ -108,6 +108,7 @@ function Post({
   const updatePost = () => {
     toggleModal();
     navigation.navigate('UpdatePostTool', {
+      id: postId,
       content: content,
       medias: medias,
     });
