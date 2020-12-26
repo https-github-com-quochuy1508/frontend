@@ -97,10 +97,10 @@ const countPostsEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_COUNT_POST),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(postApi.count(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response) {
             return countPostSuccess(response);
           } else {

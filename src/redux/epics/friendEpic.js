@@ -4,6 +4,9 @@ import {
   GET_LIST_FRIEND_REQUEST,
   getListFriendRequestSuccess,
   getListFriendRequestFail,
+  UPDATE_STATUS_FRIEND_REQUEST,
+  updateStatusFriendSuccess,
+  updateStatusFriendFail,
 } from '../actions/friendAction';
 import {combineEpics} from 'redux-observable';
 import friendApi from '../services/friendServices';
@@ -16,7 +19,7 @@ const getListRequestFriendEpic = (action$) =>
       console.log('action: ', action);
       return from(friendApi.get(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response) {
             return getListFriendRequestSuccess(response);
           } else {
@@ -27,4 +30,20 @@ const getListRequestFriendEpic = (action$) =>
     }),
   );
 
-export default combineEpics(getListRequestFriendEpic);
+const changeStatusFriendEpic = (action$) =>
+  action$.pipe(
+    ofType(UPDATE_STATUS_FRIEND_REQUEST),
+    switchMap((action) => {
+      // console.log('action: ', action);
+      return from(friendApi.update(action.payload.id, action.payload)).pipe(
+        map((response) => {
+          // console.log('response: ', response);
+          if (response && response.success) {
+            return updateStatusFriendSuccess(response.result);
+          }
+        }),
+      );
+    }),
+  );
+
+export default combineEpics(getListRequestFriendEpic, changeStatusFriendEpic);

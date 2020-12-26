@@ -11,13 +11,13 @@ import Search from '../../../components/SearchButton';
 import * as Colors from '../../../assets/Colors';
 import FriendRequest from './FriendRequest';
 import {connect} from 'react-redux';
-import moment from 'moment';
 import {requestListFriendRequest} from '../../../redux/actions/friendAction';
 
 function FriendScreen({
   navigation,
   requestListFriendRequest,
   friendRequestValue,
+  dataUpdate,
 }) {
   useEffect(() => {
     const param = {
@@ -27,6 +27,16 @@ function FriendScreen({
     };
     requestListFriendRequest(param);
   }, []);
+
+  useEffect(() => {
+    // console.log('dataUpdate: ', dataUpdate);
+    const param = {
+      filter: {
+        status: 1,
+      }, // status 1 is pending wating for accept
+    };
+    requestListFriendRequest(param);
+  }, [dataUpdate]);
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={styles.header}>
@@ -34,10 +44,9 @@ function FriendScreen({
         <Search bgColor={Colors.GRAY91} />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.friendButton}
-          onPress={() => navigation.navigate('FriendSuggest')}
-        >
+          onPress={() => navigation.navigate('FriendSuggest')}>
           <Text style={styles.buttonText}>Gợi ý</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -61,8 +70,8 @@ function FriendScreen({
       </View>
       {friendRequestValue.rows &&
         Array.isArray(friendRequestValue.rows) &&
-        friendRequestValue.rows.map((e) => {
-          return <FriendRequest key={e.id} />;
+        friendRequestValue.rows.map((friend) => {
+          return <FriendRequest key={friend.id} data={friend} />;
         })}
     </ScrollView>
   );
@@ -125,12 +134,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log('state: ', state.friend);
+  // console.log('state: ', state.friend);
   let friendRequestValue = {};
+  let dataUpdate = null;
   if (state.friend) {
     friendRequestValue = state.friend && state.friend.result;
+    if (state.friend.dataUpdate) {
+      dataUpdate = state.friend.dataUpdate;
+    }
   }
-  return {friendRequestValue};
+  return {friendRequestValue, dataUpdate};
 };
 
 const mapDispatchToProps = (dispatch) => {
