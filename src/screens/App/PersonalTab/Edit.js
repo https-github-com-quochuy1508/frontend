@@ -56,9 +56,9 @@ export default function Edit() {
             <View style={[styles.titleWrap, styles.borderWrap]}>
                 <Text style={styles.title}>Chi tiết</Text>
                 <Pressable style={[styles.editBtn,
-                { backgroundColor: press == 4 ? Colors.GAINSBORO : Colors.WHITE },
+                { backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE },
                 ]}
-                    onTouchStart={() => setPress(4)}
+                    onTouchStart={() => setPress(5)}
                     onTouchEnd={() => setPress(0)}
                     onPressOut={() => setPress(0)}
                 >
