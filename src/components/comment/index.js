@@ -81,7 +81,7 @@ export default function Comment({countLike, liked, comments}) {
             {width: 0, height: 0},
             !isEmpty && {width: 25, height: 25, position: 'absolute', right: 0},
           ]}
-          onPress={() => {}}>
+          onPress={() => {console.log("Create comment ************************");}}>
           <Image
             style={styles.send}
             source={require('../../assets/images/send.png')}
