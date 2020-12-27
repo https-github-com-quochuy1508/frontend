@@ -17,14 +17,33 @@ import Oct from 'react-native-vector-icons/Octicons';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
-import {requestGetCurrentUser} from '../../../redux/actions/userAction';
+import {
+  requestGetCurrentUser,
+  requestChangeUser,
+} from '../../../redux/actions/userAction';
 import {connect} from 'react-redux';
 import Post from '../../../components/Post';
 import countTimeAgo from '../../../utils/countTimeAgo';
 import ImagePicker from 'react-native-image-picker';
 import mediaServices from '../../../redux/services/mediaServices';
 
-function Personal({navigation, requestGetCurrentUser, currentUser}) {
+const options = {
+  title: 'Chọn ảnh',
+  takePhotoButtonTitle: 'Chụp ảnh',
+  chooseFromLibraryButtonTitle: 'Tải ảnh lên từ thư viện',
+  cancelButtonTitle: 'Thoát',
+  storageOptions: {
+    skipBackup: true,
+    path: 'Fakebook',
+  },
+};
+
+function Personal({
+  navigation,
+  requestGetCurrentUser,
+  currentUser,
+  requestChangeUser,
+}) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
@@ -40,8 +59,9 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
     }
   }, [currentUser]);
 
-  const changeAvatar = () => {
+  const changeAvatar = (isCover) => {
     ImagePicker.showImagePicker(options, async (response) => {
+      // console.log('response: ', response);
       if (response.didCancel) {
       } else if (response.error) {
       } else if (response.customButton) {
@@ -54,10 +74,22 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
 
         let formdata = new FormData();
         formdata.append('myFiles', photo);
+        setAvatarModalVisible(false);
+        setCoverModalVisible(false);
         await mediaServices
           .uploadAvatar(formdata)
           .then((response) => {
-            console.log('response: ', response);
+            // Case avatar cover
+            const dataUserChange = {
+              id: dataUser.id,
+            };
+            if (isCover) {
+              dataUserChange.avatarCover = response.path;
+            } else {
+              // case avatar nomal
+              dataUserChange.avatar = response.path;
+            }
+            requestChangeUser(dataUserChange);
           })
           .catch((err) => {
             console.log(err);
@@ -153,9 +185,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
             onTouchStart={() => setPress(2)}
             onTouchEnd={() => setPress(0)}
             onPressOut={() => setPress(0)}
-            onPress={() => {
-              setCoverModalVisible(false);
-            }}>
+            onPress={() => changeAvatar(true)}>
             <View style={styles.grayCircle}>
               <Ent
                 name="upload"
@@ -183,9 +213,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
             onTouchStart={() => setPress(3)}
             onTouchEnd={() => setPress(0)}
             onPressOut={() => setPress(0)}
-            onPress={() => {
-              setAvatarModalVisible(false);
-            }}>
+            onPress={() => changeAvatar(false)}>
             <View style={styles.grayCircle}>
               <Ion
                 name="images"
@@ -587,8 +615,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  // console.log('state: ', state.currentUser);
+  console.log('state: ', state.currentUser);
   let currentUser = state.currentUser;
+  if (state.currentUser && currentUser.resultChange) {
+    currentUser = {
+      ...currentUser.result,
+      ...currentUser.resultChange,
+    };
+  }
+
   return {currentUser};
 };
 
@@ -596,6 +631,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     requestGetCurrentUser: () => {
       dispatch(requestGetCurrentUser());
+    },
+    requestChangeUser: (data) => {
+      dispatch(requestChangeUser(data));
     },
   };
 };
