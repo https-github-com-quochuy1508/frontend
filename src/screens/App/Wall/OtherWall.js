@@ -15,22 +15,31 @@ import Oct from 'react-native-vector-icons/Octicons';
 import Font from 'react-native-vector-icons/Fontisto';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
-import {requestGetCurrentUser} from '../../../redux/actions/userAction';
+import {requestGetInfoFriend} from '../../../redux/actions/userAction';
 import {connect} from 'react-redux';
 
-function Personal({navigation, requestGetCurrentUser}) {
+function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
   const [press, setPress] = useState(0);
   const [friend, setFriend] = useState(0);
+  const [info, setInfo] = useState(null);
   const [requestModal, setRequestModal] = useState(false);
   const [answerModal, setAnswerModal] = useState(false);
 
   useEffect(() => {
-    requestGetCurrentUser();
+    const {userId} = route.params;
+    console.log('userId: ', userId);
+    requestGetInfoFriend(userId);
   }, []);
+
+  useEffect(() => {
+    if (infoFriends) {
+      setInfo(infoFriends);
+    }
+  }, [infoFriends]);
 
   const blueButtonHandle = () => {
     switch (friend) {
-      case 0: 
+      case 0:
         setFriend(1);
         break;
       case 1:
@@ -40,313 +49,340 @@ function Personal({navigation, requestGetCurrentUser}) {
         setAnswerModal(true);
         break;
     }
-  }
+  };
+
   return (
     <View>
-        <View style={styles.header}>
-            <TouchableHighlight
-                onPress={() => navigation.goBack()}
-                underlayColor={Colors.LIGHTGRAY}
-                style={styles.backButton}
-            >
-                <Ant name="arrowleft" size={24}/>
-            </TouchableHighlight>
-            <TouchableHighlight
-                onPress={() => navigation.navigate("Search")}
-                underlayColor={Colors.GAINSBORO}
-                style={styles.searchButton}
-            >
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Oct name="search" size={16} color={Colors.DARKGRAY} style={{marginHorizontal: 10}}/>
-                    <Text style={{color: Colors.DARKGRAY, fontSize: 16}}>Tìm kiếm</Text>
-                </View>
-            </TouchableHighlight>
-        </View>
-        <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableHighlight
+          onPress={() => navigation.goBack()}
+          underlayColor={Colors.LIGHTGRAY}
+          style={styles.backButton}>
+          <Ant name="arrowleft" size={24} />
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Search')}
+          underlayColor={Colors.GAINSBORO}
+          style={styles.searchButton}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Oct
+              name="search"
+              size={16}
+              color={Colors.DARKGRAY}
+              style={{marginHorizontal: 10}}
+            />
+            <Text style={{color: Colors.DARKGRAY, fontSize: 16}}>Tìm kiếm</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+      <ScrollView style={styles.container}>
         <View>
-            <Image
+          <Image
             style={styles.cover}
             source={{
-                uri:
-                'https://cdn.cnn.com/cnnnext/dam/assets/181010131059-australia-best-beaches-cossies-beach-cocos3.jpg',
+              uri: info.avatarCover,
             }}
-            />
-            <Image
+          />
+          <Image
             style={styles.avatar}
             source={{
-                uri:
-                'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
+              uri: info.avatar,
             }}
-            />
+          />
         </View>
-        <Text style={styles.name}>Quân Nguyễn</Text>
+        <Text style={styles.name}>{info.name}</Text>
         <View style={{flexDirection: 'row'}}>
-            {friend == 4 ?
+          {friend == 4 ? (
             <View style={{flexDirection: 'row'}}>
-              <TouchableHighlight 
-                style={styles.storyBtn} 
+              <TouchableHighlight
+                style={styles.storyBtn}
                 underlayColor="#185df3"
-                onPress={() => {}}
-              >
-                <Text style={{color: Colors.WHITE, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
-                    <Font name="messenger" size={18}/> Nhắn tin
+                onPress={() => {}}>
+                <Text
+                  style={{
+                    color: Colors.WHITE,
+                    alignSelf: 'center',
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                  }}>
+                  <Font name="messenger" size={18} /> Nhắn tin
                 </Text>
               </TouchableHighlight>
-              <TouchableHighlight 
-                style={styles.messBtn} 
+              <TouchableHighlight
+                style={styles.messBtn}
                 underlayColor={Colors.GAINSBORO}
-                onPress={() => {}}
-              >
-                <Ion name="person" size={18}/>
-              </TouchableHighlight>
-            </View> :
-            <View style={{flexDirection: 'row'}}>
-              <TouchableHighlight 
-                style={styles.storyBtn} 
-                underlayColor="#185df3"
-                onPress={() => blueButtonHandle()}
-              >
-                <Text style={{color: Colors.WHITE, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
-                    <Ion name="person-add" size={18}/>{friend == 0 ? " Thêm bạn bè" : (friend == 1 ? " Đã gửi lời mời" : " Trả lời")}
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight 
-                style={styles.messBtn} 
-                underlayColor={Colors.GAINSBORO}
-                onPress={() => {}}
-              >
-                <Font name="messenger" size={18}/>
+                onPress={() => {}}>
+                <Ion name="person" size={18} />
               </TouchableHighlight>
             </View>
-            }
-            <Pressable
-              style={[
-                  styles.ellipsis,
-                  {backgroundColor: press == 7 ? Colors.GAINSBORO : '#e5e6eb'},
-              ]}
-              onTouchStart={() => setPress(7)}
-              onTouchEnd={() => setPress(0)}
-              onPressOut={() => setPress(0)}
-              onPress={() => {}}>
-              <Text
+          ) : (
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight
+                style={styles.storyBtn}
+                underlayColor="#185df3"
+                onPress={() => blueButtonHandle()}>
+                <Text
                   style={{
-                  alignSelf: 'center',
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  marginBottom: 12,
+                    color: Colors.WHITE,
+                    alignSelf: 'center',
+                    fontSize: 15,
+                    fontWeight: 'bold',
                   }}>
-                  …
-              </Text>
-            </Pressable>
+                  <Ion name="person-add" size={18} />
+                  {friend == 0
+                    ? ' Thêm bạn bè'
+                    : friend == 1
+                    ? ' Đã gửi lời mời'
+                    : ' Trả lời'}
+                </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.messBtn}
+                underlayColor={Colors.GAINSBORO}
+                onPress={() => {}}>
+                <Font name="messenger" size={18} />
+              </TouchableHighlight>
+            </View>
+          )}
+          <Pressable
+            style={[
+              styles.ellipsis,
+              {backgroundColor: press == 7 ? Colors.GAINSBORO : '#e5e6eb'},
+            ]}
+            onTouchStart={() => setPress(7)}
+            onTouchEnd={() => setPress(0)}
+            onPressOut={() => setPress(0)}
+            onPress={() => {}}>
+            <Text
+              style={{
+                alignSelf: 'center',
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginBottom: 12,
+              }}>
+              …
+            </Text>
+          </Pressable>
         </View>
         <View style={styles.infoWrap}>
-            <Text style={styles.infoText}>
+          <Text style={styles.infoText}>
             <FA5 name="home" size={20} color={'#8a8d92'} /> Sống tại{' '}
             <Text style={{fontWeight: 'bold'}}>Hà Nội</Text>
-            </Text>
+          </Text>
         </View>
 
         <View>
-            <Pressable
+          <Pressable
             disabled={true}
             style={[
-                {backgroundColor: press == 4 ? Colors.GAINSBORO : Colors.WHITE},
-                {paddingTop: '4%'},
-                styles.friendWrap,
+              {backgroundColor: press == 4 ? Colors.GAINSBORO : Colors.WHITE},
+              {paddingTop: '4%'},
+              styles.friendWrap,
             ]}
             // onTouchStart={() => setPress(4)}
             // onTouchEnd={() => setPress(0)}
             // onPressOut={() => setPress(0)}
-            >
+          >
             <View style={{flexDirection: 'row'}}>
-                <Text style={{fontWeight: 'bold', fontSize: 19}}>Bạn bè</Text>
+              <Text style={{fontWeight: 'bold', fontSize: 19}}>Bạn bè</Text>
             </View>
 
             <Text style={{fontSize: 17, color: '#6b6b6f'}}>362 người bạn</Text>
-            </Pressable>
+          </Pressable>
         </View>
 
         <View style={{marginTop: 10, paddingLeft: '4%', paddingRight: '4%'}}>
-            <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <Pressable style={styles.friend}>
-                <Image
+              <Image
                 style={styles.friendAvatar}
                 source={{
-                    uri:
+                  uri:
                     'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
                 }}
-                />
-                <Text style={styles.friendName}>Quân Nguyễn</Text>
+              />
+              <Text style={styles.friendName}>Quân Nguyễn</Text>
             </Pressable>
             <View style={styles.friend}>
-                <Image
+              <Image
                 style={styles.friendAvatar}
                 source={{
-                    uri:
+                  uri:
                     'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
                 }}
-                />
-                <Text style={styles.friendName}>Phạm Đình Thắng</Text>
+              />
+              <Text style={styles.friendName}>Phạm Đình Thắng</Text>
             </View>
             <View style={styles.friend}>
-                <Image
+              <Image
                 style={styles.friendAvatar}
                 source={{
-                    uri:
+                  uri:
                     'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
                 }}
-                />
-                <Text style={styles.friendName}>Nguyễn Xuân Hoạt</Text>
+              />
+              <Text style={styles.friendName}>Nguyễn Xuân Hoạt</Text>
             </View>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 10}}>
             <View style={styles.friend}>
-                <Image
+              <Image
                 style={styles.friendAvatar}
                 source={{
-                    uri:
+                  uri:
                     'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
                 }}
-                />
-                <Text style={styles.friendName}>Quân Nguyễn</Text>
-            </View>
-            <View style={styles.friend}>
-                <Image
-                style={styles.friendAvatar}
-                source={{
-                    uri:
-                    'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
-                }}
-                />
-                <Text style={styles.friendName}>Hồ Quốc Huy</Text>
+              />
+              <Text style={styles.friendName}>Quân Nguyễn</Text>
             </View>
             <View style={styles.friend}>
-                <Image
+              <Image
                 style={styles.friendAvatar}
                 source={{
-                    uri:
+                  uri:
                     'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
                 }}
-                />
-                <Text style={styles.friendName}>Lê Minh Đức</Text>
+              />
+              <Text style={styles.friendName}>Hồ Quốc Huy</Text>
             </View>
+            <View style={styles.friend}>
+              <Image
+                style={styles.friendAvatar}
+                source={{
+                  uri:
+                    'https://scontent-hkg4-2.xx.fbcdn.net/v/t1.15752-9/131236710_1339039849761962_4246873994153994660_n.jpg?_nc_cat=104&ccb=2&_nc_sid=ae9488&_nc_ohc=xVWpaB-rLjwAX_98mUL&_nc_ht=scontent-hkg4-2.xx&oh=e23018e2f55a11f8fc4055b91a3c627d&oe=5FF846BD',
+                }}
+              />
+              <Text style={styles.friendName}>Lê Minh Đức</Text>
             </View>
+          </View>
         </View>
 
         <Pressable
-            style={[
+          style={[
             styles.seeMoreBtn,
             {backgroundColor: press == 6 ? Colors.GAINSBORO : '#e5e6eb'},
-            ]}
-            onTouchStart={() => setPress(6)}
-            onTouchEnd={() => setPress(0)}
-            onPressOut={() => setPress(0)}>
-            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Xem tất cả bạn bè</Text>
+          ]}
+          onTouchStart={() => setPress(6)}
+          onTouchEnd={() => setPress(0)}
+          onPressOut={() => setPress(0)}>
+          <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>
+            Xem tất cả bạn bè
+          </Text>
         </Pressable>
         <View style={styles.posting}>
-            <Text style={{fontWeight: 'bold', fontSize: 20, marginLeft: '4%'}}>
+          <Text style={{fontWeight: 'bold', fontSize: 20, marginLeft: '4%'}}>
             Bài viết
-            </Text>
-            {friend == 4 ?
+          </Text>
+          {friend == 4 ? (
             <TouchableHighlight
-                style={styles.postWrap}
-                onPress={() => {}}
-                underlayColor={Colors.WHITESMOKE}
-            >
-                <View style={{flexDirection: 'row'}}>
-                    <Image
-                        style={styles.postAvatar}
-                        source={{
-                        uri:
-                            'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
-                        }}
-                    />
-                    <Text
-                        style={{
-                        fontSize: 15,
-                        marginLeft: '4%',
-                        color: '#8c8f94',
-                        alignSelf: 'center',
-                        marginTop: '2%',
-                        }}>
-                        Viết điều gì đó cho Quân?
-                    </Text>
-                </View>
-            </TouchableHighlight> : null}
+              style={styles.postWrap}
+              onPress={() => {}}
+              underlayColor={Colors.WHITESMOKE}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  style={styles.postAvatar}
+                  source={{
+                    uri:
+                      'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginLeft: '4%',
+                    color: '#8c8f94',
+                    alignSelf: 'center',
+                    marginTop: '2%',
+                  }}>
+                  Viết điều gì đó cho Quân?
+                </Text>
+              </View>
+            </TouchableHighlight>
+          ) : null}
         </View>
-        </ScrollView>
-        <Modal
-          style={{alignItems: 'center'}}
-          isVisible={requestModal}
-          onBackButtonPress={() => setRequestModal(false)}
-          onBackdropPress={() => setRequestModal(false)}
-          backdropOpacity={0.6}
-          animationIn="zoomIn"
-          animationOut="zoomOut">
-          <View style={styles.deleteContainer}>
-            <Text style={{fontSize: 18, marginBottom: 20}}>
-              Huỷ yêu cầu kết bạn?
-            </Text>
-            <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
-              Bạn không muốn thêm người ngày làm bạn bè trên Fakebook nữa.
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginTop: 10,
+      </ScrollView>
+      <Modal
+        style={{alignItems: 'center'}}
+        isVisible={requestModal}
+        onBackButtonPress={() => setRequestModal(false)}
+        onBackdropPress={() => setRequestModal(false)}
+        backdropOpacity={0.6}
+        animationIn="zoomIn"
+        animationOut="zoomOut">
+        <View style={styles.deleteContainer}>
+          <Text style={{fontSize: 18, marginBottom: 20}}>
+            Huỷ yêu cầu kết bạn?
+          </Text>
+          <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
+            Bạn không muốn thêm người ngày làm bạn bè trên Fakebook nữa.
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              marginTop: 10,
+            }}>
+            <TouchableHighlight
+              style={styles.deleteAction}
+              underlayColor={Colors.GRAY91}
+              onPress={() => {
+                setFriend(0);
+                setRequestModal(false);
               }}>
-              <TouchableHighlight
-                style={styles.deleteAction}
-                underlayColor={Colors.GRAY91}
-                onPress={() => {setFriend(0); setRequestModal(false)}}>
-                <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.deleteAction}
-                underlayColor={Colors.GRAY91}
-                onPress={() => setRequestModal(false)}>
-                <Text>HỦY</Text>
-              </TouchableHighlight>
-            </View>
+              <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.deleteAction}
+              underlayColor={Colors.GRAY91}
+              onPress={() => setRequestModal(false)}>
+              <Text>HỦY</Text>
+            </TouchableHighlight>
           </View>
-        </Modal>
-        <Modal
-          style={{alignItems: 'center'}}
-          isVisible={answerModal}
-          onBackButtonPress={() => setAnswerModal(false)}
-          onBackdropPress={() => setAnswerModal(false)}
-          backdropOpacity={0.6}
-          animationIn="zoomIn"
-          animationOut="zoomOut">
-          <View style={styles.deleteContainer}>
-            <Text style={{fontSize: 18, marginBottom: 20}}>
-              Chấp nhận lời mời kết bạn?
-            </Text>
-            <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
-              Chấp nhận người ngày làm bạn bè trên Fakebook.
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginTop: 10,
+        </View>
+      </Modal>
+      <Modal
+        style={{alignItems: 'center'}}
+        isVisible={answerModal}
+        onBackButtonPress={() => setAnswerModal(false)}
+        onBackdropPress={() => setAnswerModal(false)}
+        backdropOpacity={0.6}
+        animationIn="zoomIn"
+        animationOut="zoomOut">
+        <View style={styles.deleteContainer}>
+          <Text style={{fontSize: 18, marginBottom: 20}}>
+            Chấp nhận lời mời kết bạn?
+          </Text>
+          <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
+            Chấp nhận người ngày làm bạn bè trên Fakebook.
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              marginTop: 10,
+            }}>
+            <TouchableHighlight
+              style={styles.deleteAction}
+              underlayColor={Colors.GRAY91}
+              onPress={() => {
+                setFriend(4);
+                setAnswerModal(false);
               }}>
-              <TouchableHighlight
-                style={styles.deleteAction}
-                underlayColor={Colors.GRAY91}
-                onPress={() => {setFriend(4); setAnswerModal(false)}}>
-                <Text style={{color: Colors.BLUE}}>CHẤP NHẬN</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.deleteAction}
-                underlayColor={Colors.GRAY91}
-                onPress={() => {setFriend(0); setAnswerModal(false)}}>
-                <Text>XÓA LỜI MỜI</Text>
-              </TouchableHighlight>
-            </View>
+              <Text style={{color: Colors.BLUE}}>CHẤP NHẬN</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.deleteAction}
+              underlayColor={Colors.GRAY91}
+              onPress={() => {
+                setFriend(0);
+                setAnswerModal(false);
+              }}>
+              <Text>XÓA LỜI MỜI</Text>
+            </TouchableHighlight>
           </View>
-        </Modal>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -371,11 +407,11 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   header: {
-    flexDirection: 'row', 
-    backgroundColor: Colors.WHITE, 
+    flexDirection: 'row',
+    backgroundColor: Colors.WHITE,
     paddingVertical: 7,
     borderBottomColor: Colors.LIGHTGRAY,
-    borderBottomWidth: 0.6
+    borderBottomWidth: 0.6,
   },
   backButton: {
     width: 40,
@@ -388,7 +424,7 @@ const styles = StyleSheet.create({
   searchButton: {
     backgroundColor: Colors.WHITESMOKE,
     padding: 10,
-    width: "83%",
+    width: '83%',
     borderRadius: 20,
   },
   editBtn: {
@@ -596,20 +632,27 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return {};
+  console.log('state: ', state.friend);
+  const friend = state.friend;
+  let infoFriends = null;
+  if (friend && friend.infoFriends) {
+    infoFriends = friend.infoFriends;
+  }
+
+  return {infoFriends};
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    requestGetCurrentUser: () => {
-      dispatch(requestGetCurrentUser());
+    requestGetInfoFriend: (id) => {
+      dispatch(requestGetInfoFriend(id));
     },
   };
 };
 
-const PersonalConnected = connect(
+const OtherWallConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Personal);
+)(OtherWall);
 
-export default PersonalConnected;
+export default OtherWallConnected;

@@ -159,7 +159,7 @@ function FullPostTool({
   };
 
   const updatePost = () => {
-    // console.log('valuePost: ', valuePost);
+    console.log('valuePost: ', valuePost);
     const param = {
       id: valuePost.id,
       content: content || '',

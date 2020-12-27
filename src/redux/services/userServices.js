@@ -38,6 +38,12 @@ export default {
     });
   },
 
+  getInfoFriend: async (id) => {
+    return request(varEnv.apiUrlBackend + `/api/users/` + id, {
+      method: 'GET',
+    });
+  },
+
   setToken: async (token) => {
     try {
       await AsyncStorage.setItem('token', token);
