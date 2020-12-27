@@ -4,6 +4,9 @@ import {
   REQUEST_GET_CURRENT_USER,
   getCurrentUserSuccess,
   getCurrentUserFail,
+  REQUEST_CHANGE_USER,
+  changeUserSuccess,
+  changeUserFail,
 } from '../actions/userAction';
 import {combineEpics} from 'redux-observable';
 import userApi from '../services/userServices';
@@ -20,11 +23,29 @@ const getCurrentUserEpic = (action$) =>
           if (response) {
             return getCurrentUserSuccess(response);
           } else {
-            return getCurrentUserFail(response);
+            return getCurrentUserFail(null);
           }
         }),
       );
     }),
   );
 
-export default combineEpics(getCurrentUserEpic);
+const changeUserEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_CHANGE_USER),
+    switchMap((action) => {
+      console.log('action: ', action);
+      return from(userApi.update(action.payload.id, action.payload)).pipe(
+        map((response) => {
+          console.log('response: ', response);
+          if (response && response.success) {
+            return changeUserSuccess(response);
+          } else {
+            return changeUserFail(response);
+          }
+        }),
+      );
+    }),
+  );
+
+export default combineEpics(getCurrentUserEpic, changeUserEpic);
