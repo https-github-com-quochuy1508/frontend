@@ -5,6 +5,7 @@ import postReducer from './postReducer';
 import postsReducer from './postsReducer';
 import countReducer from './countReducer';
 import friendReducer from './friendReducer';
+import currentUserReducer from './currentUserReducer';
 
 const rootReducer = combineReducers({
   users: loginReducer,
@@ -13,5 +14,6 @@ const rootReducer = combineReducers({
   post: postReducer,
   count: countReducer,
   friend: friendReducer,
+  currentUser: currentUserReducer,
 });
 export default rootReducer;
