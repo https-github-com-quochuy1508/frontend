@@ -14,7 +14,6 @@ import Messenger from '../../components/MessengerButton';
 import Setting from './PersonalTab/Setting';
 import Edit from './PersonalTab/Edit';
 import Chat from './Chat/Chat';
-import Friend from './FriendTab';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 

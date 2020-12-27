@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 export default function FriendSuggest() {
     const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
     const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
+    const [decision, setDecision] = useState(0);
     return (
         <View>
             <TouchableHighlight
@@ -22,9 +23,16 @@ export default function FriendSuggest() {
                                 Phạm Đình Lực
                             </Text>
                             <Text style={{color: Colors.DARKGRAY, fontSize: 15}}>
-                                10 bạn chung
+                                {decision == 0 ? "10 bạn chung" : (decision == 1 ? "Đã gửi yêu cầu" : "Đã hủy yêu cầu")}
                             </Text>
                         </View>
+                        {decision == 1 ?
+                        <TouchableHighlight 
+                            style={[styles.actionButton, {backgroundColor: Colors.GAINSBORO, width: 250}]}
+                            underlayColor={Colors.GAINSBORO}
+                            onPress={() => setDecision(-1)}>
+                            <Text style={{fontWeight: "bold", color: Colors.BLACK}}>Hủy</Text>
+                        </TouchableHighlight> :
                         <View style={{flexDirection: 'row'}}>
                             <TouchableHighlight 
                                 style={[styles.actionButton, {backgroundColor: Colors.BLUE}]}
@@ -40,6 +48,7 @@ export default function FriendSuggest() {
                                 <Text style={{fontWeight: "bold", color: Colors.BLACK}}>Gỡ</Text>
                             </TouchableHighlight>
                         </View>
+                        }
                     </View>
                 </View>
             </TouchableHighlight>
@@ -68,7 +77,7 @@ export default function FriendSuggest() {
                         <TouchableHighlight
                             style={styles.deleteAction}
                             underlayColor={Colors.GRAY91}
-                            onPress={() => setShowAcceptConfirm(false)}>
+                            onPress={() => {setShowAcceptConfirm(false); setDecision(1)}}>
                             <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
@@ -118,7 +127,6 @@ export default function FriendSuggest() {
                 </View>
             </Modal>
         </View>
-        
     )
 }
 

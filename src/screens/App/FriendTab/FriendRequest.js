@@ -9,12 +9,13 @@ import {updateStatusFriendRequest} from '../../../redux/actions/friendAction';
 function FriendRequest({data, updateStatusFriendRequest}) {
   const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
   const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
-
+  const [decision, setDecision] = useState(0);
   /**
    * Function used for accept friend when clicked button Chấp nhận
    */
   const acceptRequestFriend = () => {
     setShowAcceptConfirm(false);
+    setDecision(1);
     updateStatusFriendRequest({id: data.id, status: 2});
   };
 
@@ -23,6 +24,7 @@ function FriendRequest({data, updateStatusFriendRequest}) {
    */
   const rejectRequestFriend = () => {
     setShowDeclineConfirm(false);
+    setDecision(-1);
     updateStatusFriendRequest({id: data.id, status: 0});
   };
 
@@ -44,31 +46,38 @@ function FriendRequest({data, updateStatusFriendRequest}) {
               <Text style={{fontWeight: 'bold', fontSize: 16}}>
                 {data.you.name}
               </Text>
+              {decision == 0 ? 
               <Text style={{color: Colors.GRAY}}>
                 {countTimeAgo(data.createAt)}
-              </Text>
+              </Text> : null
+            }
             </View>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableHighlight
-                style={[styles.actionButton, {backgroundColor: Colors.BLUE}]}
-                onPress={() => setShowAcceptConfirm(true)}
-                underlayColor="#185df3">
-                <Text style={{fontWeight: 'bold', color: Colors.WHITE}}>
-                  Chấp nhận
-                </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={[
-                  styles.actionButton,
-                  {backgroundColor: Colors.GAINSBORO},
-                ]}
-                underlayColor={Colors.GAINSBORO}
-                onPress={() => setShowDeclineConfirm(true)}>
-                <Text style={{fontWeight: 'bold', color: Colors.BLACK}}>
-                  Xóa
-                </Text>
-              </TouchableHighlight>
-            </View>
+            {decision > 0 ?
+            <Text style={{color: Colors.DARKGRAY, fontSize: 15}}>Các bạn đã là bạn bè</Text> : 
+              (decision < 0 ? <Text style={{color: Colors.DARKGRAY, fontSize: 15}}>Đã gỡ lời mời</Text> : 
+              <View style={{flexDirection: 'row'}}>
+                <TouchableHighlight
+                  style={[styles.actionButton, {backgroundColor: Colors.BLUE}]}
+                  onPress={() => setShowAcceptConfirm(true)}
+                  underlayColor="#185df3">
+                  <Text style={{fontWeight: 'bold', color: Colors.WHITE}}>
+                    Chấp nhận
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[
+                    styles.actionButton,
+                    {backgroundColor: Colors.GAINSBORO},
+                  ]}
+                  underlayColor={Colors.GAINSBORO}
+                  onPress={() => setShowDeclineConfirm(true)}>
+                  <Text style={{fontWeight: 'bold', color: Colors.BLACK}}>
+                    Xóa
+                  </Text>
+                </TouchableHighlight>
+              </View>
+              )
+            }
           </View>
         </View>
       </TouchableHighlight>
