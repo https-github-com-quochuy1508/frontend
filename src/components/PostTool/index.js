@@ -35,7 +35,7 @@ function PostTool({createPost}) {
   })
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("YourWall")}>
         <Image source={{uri: avt}} style={styles.userAvatar}/>
       </TouchableOpacity>
       <Pressable

@@ -1,18 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   TouchableHighlight,
-  TouchableOpacity,
-  Modal,
   TextInput,
-  Button,
   ActivityIndicator,
 } from 'react-native';
 import * as Colors from '../../assets/Colors';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import SearchHistoryPane from './SearchHistoryPane';
 import SearchResultPane from './SearchResult';
 import {connect} from 'react-redux';
