@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -66,7 +66,7 @@ function SearchForm({navigation, requestSearchPost, searchReturn}) {
           style={styles.back_button}
           onPress={() => navigation.goBack()}
           underlayColor={'#ccc'}>
-          <Icon name="arrow-back" size={25} />
+          <Icon name="arrowleft" size={25} />
         </TouchableHighlight>
         <TextInput
           style={styles.inputForm}
