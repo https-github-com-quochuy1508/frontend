@@ -13,6 +13,7 @@ import Messenger from '../../components/MessengerButton';
 import Setting from './PersonalTab/Setting';
 import Edit from './PersonalTab/Edit';
 import Chat from './Chat/Chat';
+import Friend from './FriendTab';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -29,9 +30,9 @@ function AppTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Personal} />
-      <Tab.Screen name="Friend" component={Notifications} />
-      <Tab.Screen name="Group" component={Notifications} />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Friend" component={Friend} />
+      <Tab.Screen name="Wall" component={Personal} />
       <Tab.Screen name="Watch" component={Notifications} />
       <Tab.Screen name="Notification" component={Notifications} />
       <Tab.Screen name="Menu" component={Menu} />
@@ -44,6 +45,29 @@ export default function AppStack({ navigation }) {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="App"
+        component={AppTabs}
+        options={
+          {
+            headerTitle: "fakebook",
+            headerTitleStyle: {
+              color: Colors.BLUE,
+              fontWeight: "bold",
+              fontSize: 28,
+              fontFamily: "Roboto",
+            },
+            headerStyle: {
+              elevation: 0
+            },
+            headerRight: () =>
+              <View style={{ flexDirection: 'row' }}>
+                <Search />
+                <Messenger />
+              </View>
+          }
+        }
+      />
       <Stack.Screen name="Chat" component={Chat} options={{
         headerTitle: '',
         headerRight: () => (
@@ -74,29 +98,6 @@ export default function AppStack({ navigation }) {
           fontWeight: 'bold',
         }
       }} />
-      <Stack.Screen
-        name="App"
-        component={AppTabs}
-        options={
-          {
-            headerTitle: "fakebook",
-            headerTitleStyle: {
-              color: Colors.BLUE,
-              fontWeight: "bold",
-              fontSize: 28,
-              fontFamily: "Roboto",
-            },
-            headerStyle: {
-              elevation: 0
-            },
-            headerRight: () =>
-              <View style={{ flexDirection: 'row' }}>
-                <Search />
-                <Messenger />
-              </View>
-          }
-        }
-      />
       <Stack.Screen name="Setting" component={Setting} options={{
         headerTitle: 'Cài đặt trang cá nhân',
         headerTitleStyle: {
