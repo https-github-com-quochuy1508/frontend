@@ -7,6 +7,7 @@ import {
   Pressable,
   Dimensions,
   TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
@@ -127,19 +128,29 @@ function Post({
       setLike(true);
     }
   };
+
+  const goToWall = () => {
+    if(userInfo.id == uid)
+      navigation.navigate("YourWall");
+    else navigation.navigate("OtherWall");
+  };
   return (
     <View style={styles.wrap}>
       <View style={styles.headWrap}>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              (userInfo && userInfo.avatar) ||
-              'https://i.stack.imgur.com/l60Hf.png',
-          }}
-        />
+        <TouchableOpacity onPress={() => goToWall()}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri:
+                (userInfo && userInfo.avatar) ||
+                'https://i.stack.imgur.com/l60Hf.png',
+            }}
+          />
+        </TouchableOpacity>
         <View style={styles.nameWrap}>
-          <Text style={styles.name}>{userInfo && userInfo.name}</Text>
+          <TouchableOpacity onPress={() => goToWall()}>
+            <Text style={styles.name}>{userInfo && userInfo.name}</Text>
+          </TouchableOpacity>
           <Text style={styles.time}>
             {time} <Text style={styles.dot}>•</Text>{' '}
             <Oct name="globe" color={Colors.DARKGRAY} size={13} />
@@ -1077,7 +1088,6 @@ const styles = StyleSheet.create({
   avatar: {
     height: 40,
     width: 40,
-    marginLeft: 6,
     marginRight: 8,
     borderRadius: 50,
   },

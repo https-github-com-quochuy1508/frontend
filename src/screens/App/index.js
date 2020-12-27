@@ -11,8 +11,6 @@ import Icon from '../../components/TabBarIcon';
 import * as Colors from '../../assets/Colors';
 import Search from '../../components/SearchButton';
 import Messenger from '../../components/MessengerButton';
-import Setting from './PersonalTab/Setting';
-import Edit from './PersonalTab/Edit';
 import Chat from './Chat/Chat';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -65,7 +63,7 @@ export default function AppStack({navigation}) {
             },
             headerRight: () =>
               <View style={{ flexDirection: 'row' }}>
-                <Search />
+                <Search bgColor={Colors.WHITESMOKE}/>
                 <Messenger />
               </View>
           }
@@ -100,15 +98,6 @@ export default function AppStack({navigation}) {
         headerTitleStyle: {
           fontWeight: 'bold',
         }
-      }} />
-      <Stack.Screen name="Setting" component={Setting} options={{
-        headerTitle: 'Cài đặt trang cá nhân',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
-      <Stack.Screen name="Edit" component={Edit} options={{
-        headerTitle: 'Chỉnh sửa trang cá nhân',
       }} />
     </Stack.Navigator>
   );

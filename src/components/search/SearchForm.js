@@ -1,17 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   TouchableHighlight,
-  TouchableOpacity,
-  Modal,
   TextInput,
-  Button,
 } from 'react-native';
 import * as Colors from '../../assets/Colors';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import SearchHistoryPane from './SearchHistoryPane';
 
 export default function SearchForm({navigation}){
@@ -23,8 +20,8 @@ export default function SearchForm({navigation}){
           <TouchableHighlight
             style={styles.back_button}
             onPress={() => navigation.goBack()}
-            underlayColor={'#ccc'}>
-            <Icon name="arrow-back" size={25} />
+            underlayColor={Colors.LIGHTGRAY}>
+            <Icon name="arrowleft" size={25} />
           </TouchableHighlight>
           <TextInput
             style={styles.inputForm}
@@ -63,33 +60,32 @@ const styles = StyleSheet.create({
       flex:1,
     },
     inputForm:{
-        height:'78%',
-        width:'88%',
-        borderRadius:30,
-        fontSize:16,
-        backgroundColor: Colors.WHITESMOKE,
-        paddingHorizontal: 20,
-      },
-      inputSearch:{
-        width:'100%',
-        flexDirection:'row',
-        justifyContent:'space-around',
-        height: 52,
-        backgroundColor:Colors.WHITE,
-        alignItems:'center',
-        paddingHorizontal:10,
-        borderBottomColor:'#ccc',
-        borderBottomWidth:0.5, 
-      },
-      back_button:{
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-        borderRadius: 100,
-        // backgroundColor: Colors.GAINSBORO,
-      },
+      height:'78%',
+      width:'88%',
+      borderRadius:30,
+      fontSize:16,
+      backgroundColor: Colors.WHITESMOKE,
+      paddingHorizontal: 20,
+    },
+    inputSearch:{
+      width:'100%',
+      flexDirection:'row',
+      justifyContent:'space-around',
+      height: 52,
+      backgroundColor:Colors.WHITE,
+      alignItems:'center',
+      paddingHorizontal:10,
+      borderBottomColor:'#ccc',
+      borderBottomWidth:0.5, 
+    },
+    back_button:{
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 10,
+      borderRadius: 100,
+    },
       recent:{
         flexDirection:'row',
         justifyContent:'space-between',
