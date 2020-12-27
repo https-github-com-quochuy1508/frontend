@@ -14,6 +14,7 @@ import {
 import * as Colors from '../../assets/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchHistoryPane from './SearchHistoryPane';
+import SearchResultPane from './SearchResult';
 import {connect} from 'react-redux';
 import {requestSearchPost} from '../../redux/actions/searchAction';
 
@@ -99,7 +100,7 @@ function SearchForm({navigation, requestSearchPost, searchReturn}) {
           </View>
         ) : (
           dataSearch.map((data) => (
-            <SearchHistoryPane key={data.id} keyword={data.content} />
+            <SearchResultPane key={data.id} keyword={data.content} />
           ))
         )}
       </ScrollView>
