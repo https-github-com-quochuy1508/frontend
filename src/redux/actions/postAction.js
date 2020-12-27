@@ -86,6 +86,7 @@ export const requestDeletePost = (data) => ({
 });
 
 export const deletePostSuccess = (response = null) => {
+  console.log("Duc******************* ", response);
   return {
     type: DELETE_POST_SUCCESS,
     result: response,

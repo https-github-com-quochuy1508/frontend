@@ -1,6 +1,8 @@
 import {
   GET_POSTS_SUCCESS,
   GET_POSTS_FAIL,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAIL
 } from '../actions/postAction';
 
 const register = (state = null, action) => {
@@ -14,6 +16,29 @@ const register = (state = null, action) => {
       return {
         ...state,
       };
+
+    case DELETE_POST_SUCCESS:
+      let postId = action.result;
+      let postList = state.result.result.list;
+
+      for (let i = postList.length - 1; i >= 0; i--) {
+        if (postList[i].id === postId) {
+          newList = postList.splice(i, 1);
+        }
+      }
+
+      let result = {
+        list: newList
+      }
+      return {
+        ...state,
+        result: result,
+      };
+    case DELETE_POST_FAIL:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }
