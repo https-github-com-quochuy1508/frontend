@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StatusBar, StyleSheet, View, FlatList} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {StatusBar, StyleSheet, View, FlatList ,RefreshControl} from 'react-native';
 import PostTool from '../../../components/PostTool';
 import Post from '../../../components/Post';
 import {
@@ -8,7 +8,7 @@ import {
 } from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import moment from 'moment';
-
+import * as Colors from '../../../assets/Colors';
 function Home({
   requestGetPosts,
   listPosts,
@@ -17,6 +17,19 @@ function Home({
   countPost,
 }) {
   const [posts, setPosts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+  
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    requestGetPosts({});
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     requestGetPosts({});
@@ -86,6 +99,7 @@ function Home({
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.BLUE]}/>}
       />
       <StatusBar barStyle="dark-content" />
     </View>
