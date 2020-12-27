@@ -29,7 +29,7 @@ function Home({
         postChange.result.result &&
         postChange.result.result.hasOwnProperty('content')
       ) {
-        console.log('postChange: ', postChange);
+        // console.log('postChange: ', postChange);
         requestGetPosts({});
       }
     }

@@ -2,10 +2,30 @@ import React, {useState} from 'react';
 import {TouchableHighlight, Text, View, Image, StyleSheet} from 'react-native';
 import * as Colors from '../../../assets/Colors';
 import Modal from 'react-native-modal';
+import countTimeAgo from '../../../utils/countTimeAgo';
+import {connect} from 'react-redux';
+import {updateStatusFriendRequest} from '../../../redux/actions/friendAction';
 
-export default function FriendRequest() {
+function FriendRequest({data, updateStatusFriendRequest}) {
   const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
   const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
+
+  /**
+   * Function used for accept friend when clicked button Chấp nhận
+   */
+  const acceptRequestFriend = () => {
+    setShowAcceptConfirm(false);
+    updateStatusFriendRequest({id: data.id, status: 2});
+  };
+
+  /**
+   * Function used for reject friend when clicked button Xóa
+   */
+  const rejectRequestFriend = () => {
+    setShowDeclineConfirm(false);
+    updateStatusFriendRequest({id: data.id, status: 0});
+  };
+
   return (
     <View>
       <TouchableHighlight underlayColor={Colors.GRAY91} onPress={() => {}}>
@@ -13,7 +33,8 @@ export default function FriendRequest() {
           <Image
             source={{
               uri:
-                'https://scontent.fhan7-1.fna.fbcdn.net/v/t1.0-9/88156367_918464705252110_7654917145054150656_n.jpg?_nc_cat=105&ccb=2&_nc_sid=09cbfe&_nc_ohc=QEbZLWudpYcAX96k52q&_nc_ht=scontent.fhan7-1.fna&oh=106fa940f199f46440821e4b97ad9cae&oe=5FF8EB2B',
+                data.you.avatar ||
+                'https://i1.wp.com/www.labelprint.co.za/wp-content/uploads/2018/11/user-icon-image-placeholder-300-grey.jpg?w=300&ssl=1',
             }}
             style={styles.image}
           />
@@ -21,9 +42,11 @@ export default function FriendRequest() {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{fontWeight: 'bold', fontSize: 16}}>
-                Xuân Dương Hoa
+                {data.you.name}
               </Text>
-              <Text style={{color: Colors.GRAY}}>2 năm</Text>
+              <Text style={{color: Colors.GRAY}}>
+                {countTimeAgo(data.createAt)}
+              </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
@@ -73,7 +96,7 @@ export default function FriendRequest() {
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
-              onPress={() => setShowAcceptConfirm(false)}>
+              onPress={acceptRequestFriend}>
               <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
             </TouchableHighlight>
             <TouchableHighlight
@@ -109,7 +132,7 @@ export default function FriendRequest() {
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
-              onPress={() => setShowDeclineConfirm(false)}>
+              onPress={rejectRequestFriend}>
               <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
             </TouchableHighlight>
             <TouchableHighlight
@@ -157,3 +180,22 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStatusFriendRequest: (params) => {
+      dispatch(updateStatusFriendRequest(params));
+    },
+  };
+};
+
+const FriendRequestConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FriendRequest);
+
+export default FriendRequestConnected;

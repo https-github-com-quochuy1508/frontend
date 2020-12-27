@@ -14,7 +14,7 @@ import * as Colors from '../../assets/Colors';
 
 export default function Comment({countLike, liked, comments}) {
   const [isLike, setLike] = useState(liked);
-  console.log('comments: ', comments);
+  // console.log('comments: ', comments);
   return (
     <View style={styles.container}>
       <View style={styles.headComment}>

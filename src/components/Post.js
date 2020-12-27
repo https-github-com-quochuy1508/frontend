@@ -73,7 +73,7 @@ function Post({
   };
 
   useEffect(() => {
-    console.log('HELLO');
+    // console.log('HELLO');
     getData();
     calHeight();
   }, []);
