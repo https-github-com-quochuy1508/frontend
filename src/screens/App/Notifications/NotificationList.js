@@ -8,7 +8,7 @@ export default function NotificationList() {
     return (
         <View >
             {notifications.map((item, index) => (
-                <NotificationItemContainer key={index} />
+                <NotificationItemContainer key={index}  />
             ))}
         </View>
     )

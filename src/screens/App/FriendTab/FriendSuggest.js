@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TouchableHighlight, Text, View, Image, StyleSheet} from 'react-native'
 import * as Colors from '../../../assets/Colors';
 import Modal from 'react-native-modal';
-
+import {navigation} from '../../../../rootNavigation';
 export default function FriendSuggest() {
     const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
     const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
@@ -11,7 +11,7 @@ export default function FriendSuggest() {
         <View>
             <TouchableHighlight
                 underlayColor={Colors.GRAY91}
-                onPress={() => {}}
+                onPress={() => navigation.navigate("OtherWall")}
             >
                 <View style={{flexDirection: 'row', paddingVertical: 10}}>
                     <Image source={{uri: 'https://scontent.fhan7-1.fna.fbcdn.net/v/t1.0-9/88156367_918464705252110_7654917145054150656_n.jpg?_nc_cat=105&ccb=2&_nc_sid=09cbfe&_nc_ohc=QEbZLWudpYcAX96k52q&_nc_ht=scontent.fhan7-1.fna&oh=106fa940f199f46440821e4b97ad9cae&oe=5FF8EB2B'}}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Image,
@@ -7,6 +7,7 @@ import {
   Pressable,
   Dimensions,
   TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
@@ -19,13 +20,12 @@ import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 import Comment from './comment';
 import ReportItem from './ReportItem';
-import { typesReport, detailsReport, emptyDetail } from '../assets/TypeRepost';
-import { ScrollView } from 'react-native-gesture-handler';
-import { navigation } from '../../rootNavigation';
-import { requestLikePost, requestUnlikePost } from '../redux/actions/likeAction';
-import { requestDeletePost, requestGetPosts } from '../redux/actions/postAction';
-import { requestCountPost } from '../redux/actions/postAction';
-import { connect } from 'react-redux';
+import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost';
+import {ScrollView} from 'react-native-gesture-handler';
+import {navigation} from '../../rootNavigation';
+import {requestLikePost, requestUnlikePost} from '../redux/actions/likeAction';
+import {requestCountPost} from '../redux/actions/postAction';
+import {connect} from 'react-redux';
 
 function Post({
   userInfo,
@@ -36,8 +36,6 @@ function Post({
   postId,
   requestLikePost,
   requestUnlikePost,
-  requestDeletePost,
-  requestGetPosts,
   liked,
   countLike,
   countComment,
@@ -88,7 +86,7 @@ function Post({
         if (h > 500) h = 500;
         setHeight(h);
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const selectType = (id) => {
@@ -130,19 +128,29 @@ function Post({
       setLike(true);
     }
   };
+
+  const goToWall = () => {
+    if(userInfo.id == uid)
+      navigation.navigate("YourWall");
+    else navigation.navigate("OtherWall");
+  };
   return (
     <View style={styles.wrap}>
       <View style={styles.headWrap}>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri:
-              (userInfo && userInfo.avatar) ||
-              'https://i.stack.imgur.com/l60Hf.png',
-          }}
-        />
+        <TouchableOpacity onPress={() => goToWall()}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri:
+                (userInfo && userInfo.avatar) ||
+                'https://i.stack.imgur.com/l60Hf.png',
+            }}
+          />
+        </TouchableOpacity>
         <View style={styles.nameWrap}>
-          <Text style={styles.name}>{userInfo && userInfo.name}</Text>
+          <TouchableOpacity onPress={() => goToWall()}>
+            <Text style={styles.name}>{userInfo && userInfo.name}</Text>
+          </TouchableOpacity>
           <Text style={styles.time}>
             {time} <Text style={styles.dot}>•</Text>{' '}
             <Oct name="globe" color={Colors.DARKGRAY} size={13} />
@@ -156,39 +164,39 @@ function Post({
         </TouchableHighlight>
       </View>
       {content.length > 0 ? (
-        <Text style={[styles.content, { fontSize: medias.length > 0 ? 16 : 24 }]}>
+        <Text style={[styles.content, {fontSize: medias.length > 0 ? 16 : 24}]}>
           {content}
         </Text>
       ) : null}
       {medias.length == 1 ? (
-        <Image style={{ height: height }} source={{ uri: medias[0].path }} />
+        <Image style={{height: height}} source={{uri: medias[0].path}} />
       ) : null}
       {medias.length == 2 ? (
         <View>
           <Image
-            style={{ height: 250, width: '100%', marginBottom: 5 }}
-            source={{ uri: medias[0].path }}
+            style={{height: 250, width: '100%', marginBottom: 5}}
+            source={{uri: medias[0].path}}
           />
           <Image
-            style={{ height: 250, width: '100%' }}
-            source={{ uri: medias[1].path }}
+            style={{height: 250, width: '100%'}}
+            source={{uri: medias[1].path}}
           />
         </View>
       ) : null}
       {medias.length == 3 ? (
         <View>
           <Image
-            style={{ height: 250, marginBottom: 5 }}
-            source={{ uri: medias[0].path }}
+            style={{height: 250, marginBottom: 5}}
+            source={{uri: medias[0].path}}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Image
-              style={{ height: 200, width: '49.4%' }}
-              source={{ uri: medias[1].path }}
+              style={{height: 200, width: '49.4%'}}
+              source={{uri: medias[1].path}}
             />
             <Image
-              style={{ height: 200, width: '49.4%' }}
-              source={{ uri: medias[2].path }}
+              style={{height: 200, width: '49.4%'}}
+              source={{uri: medias[2].path}}
             />
           </View>
         </View>
@@ -196,28 +204,28 @@ function Post({
       {medias.length == 4 ? (
         <View>
           <Image
-            style={{ height: 250, marginBottom: 5 }}
-            source={{ uri: medias[0].path }}
+            style={{height: 250, marginBottom: 5}}
+            source={{uri: medias[0].path}}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Image
-              style={{ height: 130, width: '32.6%' }}
-              source={{ uri: medias[1].path }}
+              style={{height: 130, width: '32.6%'}}
+              source={{uri: medias[1].path}}
             />
             <Image
-              style={{ height: 130, width: '32.6%' }}
-              source={{ uri: medias[2].path }}
+              style={{height: 130, width: '32.6%'}}
+              source={{uri: medias[2].path}}
             />
             <Image
-              style={{ height: 130, width: '32.6%' }}
-              source={{ uri: medias[3].path }}
+              style={{height: 130, width: '32.6%'}}
+              source={{uri: medias[3].path}}
             />
           </View>
         </View>
       ) : null}
       <View style={styles.likeComment}>
         {countLike > 0 || isLike ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={styles.like}
               source={{
@@ -238,7 +246,7 @@ function Post({
         <TouchableHighlight
           underlayColor={Colors.WHITESMOKE}
           onPress={likePost}
-          style={{ width: '50%', alignItems: 'center' }}>
+          style={{width: '50%', alignItems: 'center'}}>
           <View style={styles.button}>
             <Ant
               name={isLike ? 'like1' : 'like2'}
@@ -248,7 +256,7 @@ function Post({
             <Text
               style={[
                 styles.likeText,
-                { color: isLike ? Colors.BLUE : Colors.DARKGRAY },
+                {color: isLike ? Colors.BLUE : Colors.DARKGRAY},
               ]}>
               {' '}
               Thích
@@ -258,12 +266,12 @@ function Post({
         <TouchableHighlight
           underlayColor={Colors.WHITESMOKE}
           onPress={() => setShowComment(true)}
-          style={{ width: '50%', alignItems: 'center' }}>
+          style={{width: '50%', alignItems: 'center'}}>
           <View style={styles.button}>
             <Ion
               name="chatbox-outline"
               size={24}
-              style={{ alignSelf: 'center', color: Colors.DARKGRAY }}
+              style={{alignSelf: 'center', color: Colors.DARKGRAY}}
             />
             <Text style={styles.likeText}> Bình luận</Text>
           </View>
@@ -275,7 +283,7 @@ function Post({
         backdropOpacity={0.6}
         onBackdropPress={() => setModalVisible(false)}
         style={styles.modal}>
-        <View style={{ padding: 0 }}>
+        <View style={{padding: 0}}>
           {uid == userInfo.id ? (
             <View>
               <TouchableHighlight
@@ -286,9 +294,9 @@ function Post({
                     name="pencil"
                     size={28}
                     color={Colors.BLACK}
-                    style={{ marginRight: 10 }}
+                    style={{marginRight: 10}}
                   />
-                  <Text style={{ fontSize: 16 }}>Chỉnh sửa bài viết</Text>
+                  <Text style={{fontSize: 16}}>Chỉnh sửa bài viết</Text>
                 </View>
               </TouchableHighlight>
               <TouchableHighlight
@@ -302,9 +310,9 @@ function Post({
                     name="trash-outline"
                     size={28}
                     color={Colors.BLACK}
-                    style={{ marginRight: 10 }}
+                    style={{marginRight: 10}}
                   />
-                  <Text style={{ fontSize: 16 }}>Xóa</Text>
+                  <Text style={{fontSize: 16}}>Xóa</Text>
                 </View>
               </TouchableHighlight>
             </View>
@@ -320,17 +328,17 @@ function Post({
                 name="notifications-outline"
                 size={28}
                 color={Colors.BLACK}
-                style={{ marginRight: 10 }}
+                style={{marginRight: 10}}
               />
               {noti == true ? (
-                <Text style={{ fontSize: 16 }}>
+                <Text style={{fontSize: 16}}>
                   Tắt thông báo về bài viết này
                 </Text>
               ) : (
-                  <Text style={{ fontSize: 15 }}>
-                    Bật thông báo về bài viết này
-                  </Text>
-                )}
+                <Text style={{fontSize: 15}}>
+                  Bật thông báo về bài viết này
+                </Text>
+              )}
             </View>
           </TouchableHighlight>
           {uid != userInfo.id ? (
@@ -345,11 +353,11 @@ function Post({
                   name="report"
                   size={28}
                   color={Colors.BLACK}
-                  style={{ marginRight: 10 }}
+                  style={{marginRight: 10}}
                 />
                 <View>
-                  <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
-                  <Text style={{ fontSize: 12 }}>
+                  <Text style={{fontSize: 16}}>Báo cáo bài viết</Text>
+                  <Text style={{fontSize: 12}}>
                     Tôi lo ngại về bài viết này.
                   </Text>
                 </View>
@@ -367,15 +375,15 @@ function Post({
         <Comment liked={isLike} likes={countLike} />
       </Modal> */}
       <Modal
-        style={{ margin: 0, backgroundColor: Colors.WHITE }}
+        style={{margin: 0, backgroundColor: Colors.WHITE}}
         isVisible={showReport}
         onBackButtonPress={() => setShowReport(false)}
         onSwipeComplete={() => setShowReport(false)}
         swipeDirection="down"
         onModalHide={() => modalHide()}>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <View style={styles.reportHead}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Báo cáo</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Báo cáo</Text>
             <TouchableHighlight
               style={styles.exitReport}
               underlayColor={Colors.WHITESMOKE}
@@ -386,7 +394,7 @@ function Post({
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.listReport}>
               <Mat name="chat-alert" size={28} color={Colors.ORANGE1} />
-              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
+              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
                 Vui lòng chọn vấn đề để tiếp tục
               </Text>
               <Text
@@ -397,7 +405,7 @@ function Post({
                 }}>
                 Bạn có thể báo cáo bài viết sau khi chọn vấn đề.
               </Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {typesReport.map((value, index) => (
                   <Pressable onPress={() => selectType(index)} key={value}>
                     <ReportItem type={value} active={selectedType == index} />
@@ -406,10 +414,10 @@ function Post({
               </View>
               {selectedType >= 0 && !emptyDetail.includes(selectedType) ? (
                 <View>
-                  <Text style={{ marginBottom: 15 }}>
+                  <Text style={{marginBottom: 15}}>
                     Hãy giúp chúng tôi hiểu vấn đề.
                   </Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                     {detailsReport[selectedType].map((value, index) => (
                       <Pressable
                         onPress={() => selectDetail(index)}
@@ -432,12 +440,12 @@ function Post({
                 underlayColor={Colors.GRAY91}
                 onPress={() => setShowBlock(true)}>
                 <View style={styles.action}>
-                  <Ent name="block" size={24} style={{ margin: 10 }} />
+                  <Ent name="block" size={24} style={{margin: 10}} />
                   <View>
-                    <Text style={{ fontSize: 16 }}>
+                    <Text style={{fontSize: 16}}>
                       Chặn {userInfo && userInfo.name.split(' ')[0]}
                     </Text>
-                    <Text style={{ color: Colors.DARKGRAY, width: '90%' }}>
+                    <Text style={{color: Colors.DARKGRAY, width: '90%'}}>
                       Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.
                     </Text>
                   </View>
@@ -450,13 +458,13 @@ function Post({
                   <Ion
                     name="person-remove-outline"
                     size={24}
-                    style={{ margin: 10 }}
+                    style={{margin: 10}}
                   />
                   <View>
-                    <Text style={{ fontSize: 16 }}>
+                    <Text style={{fontSize: 16}}>
                       Bỏ theo dõi {userInfo && userInfo.name.split(' ')[0]}
                     </Text>
-                    <Text style={{ color: Colors.DARKGRAY }}>
+                    <Text style={{color: Colors.DARKGRAY}}>
                       Dừng xem bài viết nhưng vẫn là bạn bè.
                     </Text>
                   </View>
@@ -468,7 +476,7 @@ function Post({
                   color={Colors.LIGHTGRAY}
                   size={24}
                 />
-                <Text style={{ color: Colors.DARKGRAY, margin: 10 }}>
+                <Text style={{color: Colors.DARKGRAY, margin: 10}}>
                   Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà
                   hãy báo ngay cho dịch vụ cấp cứu tại địa phương.
                 </Text>
@@ -523,9 +531,9 @@ function Post({
               name="trash-outline"
               size={28}
               color={Colors.BLACK}
-              style={{ marginRight: 10 }}
+              style={{marginRight: 10}}
             />
-            <Text style={{ fontSize: 16 }}>Xóa</Text>
+            <Text style={{fontSize: 16}}>Xóa</Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight
@@ -539,13 +547,13 @@ function Post({
               name="notifications-outline"
               size={28}
               color={Colors.BLACK}
-              style={{ marginRight: 10 }}
+              style={{marginRight: 10}}
             />
             {noti == true ? (
-              <Text style={{ fontSize: 16 }}>Tắt thông báo về bài viết này</Text>
+              <Text style={{fontSize: 16}}>Tắt thông báo về bài viết này</Text>
             ) : (
-                <Text style={{ fontSize: 15 }}>Bật thông báo về bài viết này</Text>
-              )}
+              <Text style={{fontSize: 15}}>Bật thông báo về bài viết này</Text>
+            )}
           </View>
         </TouchableHighlight>
         {uid == (userInfo && userInfo.id) ? (
@@ -560,18 +568,18 @@ function Post({
                 name="report"
                 size={28}
                 color={Colors.BLACK}
-                style={{ marginRight: 10 }}
+                style={{marginRight: 10}}
               />
               <View>
-                <Text style={{ fontSize: 16 }}>Báo cáo bài viết</Text>
-                <Text style={{ fontSize: 12 }}>Tôi lo ngại về bài viết này.</Text>
+                <Text style={{fontSize: 16}}>Báo cáo bài viết</Text>
+                <Text style={{fontSize: 12}}>Tôi lo ngại về bài viết này.</Text>
               </View>
             </View>
           </TouchableHighlight>
         ) : null}
       </Modal>
       <Modal
-        style={[styles.modal, { height: '100%' }]}
+        style={[styles.modal, {height: '100%'}]}
         isVisible={showComment}
         onBackButtonPress={() => setShowComment(false)}
         onSwipeComplete={() => setShowComment(false)}
@@ -579,15 +587,15 @@ function Post({
         <Comment liked={isLike} countLike={countLike} comments={comments} />
       </Modal>
       <Modal
-        style={{ margin: 0, backgroundColor: Colors.WHITE }}
+        style={{margin: 0, backgroundColor: Colors.WHITE}}
         isVisible={showReport}
         onBackButtonPress={() => setShowReport(false)}
         onSwipeComplete={() => setShowReport(false)}
         swipeDirection="down"
         onModalHide={() => modalHide()}>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <View style={styles.reportHead}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Báo cáo</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Báo cáo</Text>
             <TouchableHighlight
               style={styles.exitReport}
               underlayColor={Colors.WHITESMOKE}
@@ -598,7 +606,7 @@ function Post({
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.listReport}>
               <Mat name="chat-alert" size={28} color={Colors.ORANGE1} />
-              <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
+              <Text style={{fontSize: 17, fontWeight: 'bold'}}>
                 Vui lòng chọn vấn đề để tiếp tục
               </Text>
               <Text
@@ -609,7 +617,7 @@ function Post({
                 }}>
                 Bạn có thể báo cáo bài viết sau khi chọn vấn đề.
               </Text>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                 {typesReport.map((value, index) => (
                   <Pressable onPress={() => selectType(index)} key={value}>
                     <ReportItem type={value} active={selectedType == index} />
@@ -618,10 +626,10 @@ function Post({
               </View>
               {selectedType >= 0 && !emptyDetail.includes(selectedType) ? (
                 <View>
-                  <Text style={{ marginBottom: 15 }}>
+                  <Text style={{marginBottom: 15}}>
                     Hãy giúp chúng tôi hiểu vấn đề.
                   </Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                     {detailsReport[selectedType].map((value, index) => (
                       <Pressable
                         onPress={() => selectDetail(index)}
@@ -644,12 +652,12 @@ function Post({
                 underlayColor={Colors.GRAY91}
                 onPress={() => setShowBlock(true)}>
                 <View style={styles.action}>
-                  <Ent name="block" size={24} style={{ margin: 10 }} />
+                  <Ent name="block" size={24} style={{margin: 10}} />
                   <View>
-                    <Text style={{ fontSize: 16 }}>
+                    <Text style={{fontSize: 16}}>
                       Chặn {userInfo && userInfo.name.split(' ')[0]}
                     </Text>
-                    <Text style={{ color: Colors.DARKGRAY, width: '90%' }}>
+                    <Text style={{color: Colors.DARKGRAY, width: '90%'}}>
                       Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.
                     </Text>
                   </View>
@@ -662,13 +670,13 @@ function Post({
                   <Ion
                     name="person-remove-outline"
                     size={24}
-                    style={{ margin: 10 }}
+                    style={{margin: 10}}
                   />
                   <View>
-                    <Text style={{ fontSize: 16 }}>
+                    <Text style={{fontSize: 16}}>
                       Bỏ theo dõi {userInfo && userInfo.name.split(' ')[0]}
                     </Text>
-                    <Text style={{ color: Colors.DARKGRAY }}>
+                    <Text style={{color: Colors.DARKGRAY}}>
                       Dừng xem bài viết nhưng vẫn là bạn bè.
                     </Text>
                   </View>
@@ -680,7 +688,7 @@ function Post({
                   color={Colors.LIGHTGRAY}
                   size={24}
                 />
-                <Text style={{ color: Colors.DARKGRAY, margin: 10 }}>
+                <Text style={{color: Colors.DARKGRAY, margin: 10}}>
                   Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà
                   hãy báo ngay cho dịch vụ cấp cứu tại địa phương.
                 </Text>
@@ -726,7 +734,7 @@ function Post({
         </View>
       </Modal>
       <Modal
-        style={{ alignItems: 'center' }}
+        style={{alignItems: 'center'}}
         isVisible={showBlock}
         onBackButtonPress={() => setShowBlock(false)}
         onBackdropPress={() => setShowBlock(false)}
@@ -735,12 +743,12 @@ function Post({
         animationOut="fadeOut">
         <View style={styles.blockContainer}>
           <Ent name="block" size={24} />
-          <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+          <Text style={{fontWeight: 'bold', fontSize: 17}}>
             Chặn {userInfo && userInfo.name}?
           </Text>
           <Text style={styles.happenText}>Điều sẽ diễn ra với bạn</Text>
           <View style={styles.happenContainer}>
-            <Image source={{ uri: uAvt }} style={styles.uImage} />
+            <Image source={{uri: uAvt}} style={styles.uImage} />
             <Text style={styles.happenContent}>
               Bạn sẽ không thể xem trang cá nhân hay nhắn tin cho{' '}
               {userInfo && userInfo.name.split(' ')[0]} nữa.
@@ -765,18 +773,18 @@ function Post({
               làm bạn bè.
             </Text>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <TouchableHighlight
-              style={[styles.actionButton, { backgroundColor: Colors.GRAY91 }]}
+              style={[styles.actionButton, {backgroundColor: Colors.GRAY91}]}
               onPress={() => setShowBlock(false)}
               underlayColor={Colors.GAINSBORO}>
-              <Text style={{ fontWeight: 'bold' }}>Hủy</Text>
+              <Text style={{fontWeight: 'bold'}}>Hủy</Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={[styles.actionButton, { backgroundColor: Colors.BLUE }]}
+              style={[styles.actionButton, {backgroundColor: Colors.BLUE}]}
               onPress={() => setShowBlock(false)}
               underlayColor="#185df3">
-              <Text style={{ fontWeight: 'bold', color: Colors.WHITE }}>
+              <Text style={{fontWeight: 'bold', color: Colors.WHITE}}>
                 Chặn
               </Text>
             </TouchableHighlight>
@@ -784,7 +792,7 @@ function Post({
         </View>
       </Modal>
       <Modal
-        style={{ alignItems: 'center' }}
+        style={{alignItems: 'center'}}
         isVisible={showDelete}
         onBackButtonPress={() => setShowDelete(false)}
         onBackdropPress={() => setShowDelete(false)}
@@ -792,8 +800,8 @@ function Post({
         animationIn="zoomIn"
         animationOut="zoomOut">
         <View style={styles.deleteContainer}>
-          <Text style={{ fontSize: 18, marginBottom: 20 }}>Xóa bài viết?</Text>
-          <Text style={{ fontSize: 15, color: Colors.DARKGRAY }}>
+          <Text style={{fontSize: 18, marginBottom: 20}}>Xóa bài viết?</Text>
+          <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
             Bạn có thể chỉnh sửa bài viết nếu cần thay đổi.
           </Text>
           <View
@@ -802,18 +810,12 @@ function Post({
               justifyContent: 'flex-end',
               marginTop: 10,
             }}>
-
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
-              onPress={() => {
-                requestDeletePost(postId);
-                requestGetPosts({});
-                setShowDelete(false);
-              }}>
-              <Text style={{ color: Colors.BLUE }}>XÓA</Text>
+              onPress={() => setShowDelete(false)}>
+              <Text style={{color: Colors.BLUE}}>XÓA</Text>
             </TouchableHighlight>
-
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
@@ -838,7 +840,7 @@ function Post({
         <View style={styles.reportCompleteLogo}>
           <Mat name="chat-alert" size={28} color={Colors.WHITE} />
         </View>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, margin: 10 }}>
+        <Text style={{fontWeight: 'bold', fontSize: 16, margin: 10}}>
           Cảm ơn bạn đã cho chúng tôi biết.
         </Text>
         <View style={styles.reportedButton}>
@@ -866,12 +868,12 @@ function Post({
             underlayColor={Colors.GRAY91}
             onPress={() => setShowBlock(true)}>
             <View style={styles.action}>
-              <Ent name="block" size={24} style={{ margin: 10 }} />
+              <Ent name="block" size={24} style={{margin: 10}} />
               <View>
-                <Text style={{ fontSize: 16 }}>
+                <Text style={{fontSize: 16}}>
                   Chặn {userInfo && userInfo.name.split(' ')[0]}
                 </Text>
-                <Text style={{ color: Colors.DARKGRAY, width: '90%' }}>
+                <Text style={{color: Colors.DARKGRAY, width: '90%'}}>
                   Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau.
                 </Text>
               </View>
@@ -884,13 +886,13 @@ function Post({
               <Ion
                 name="person-remove-outline"
                 size={24}
-                style={{ margin: 10 }}
+                style={{margin: 10}}
               />
               <View>
-                <Text style={{ fontSize: 16 }}>
+                <Text style={{fontSize: 16}}>
                   Bỏ theo dõi {userInfo && userInfo.name.split(' ')[0]}
                 </Text>
-                <Text style={{ color: Colors.DARKGRAY }}>
+                <Text style={{color: Colors.DARKGRAY}}>
                   Dừng xem bài viết nhưng vẫn là bạn bè.
                 </Text>
               </View>
@@ -899,9 +901,9 @@ function Post({
         </View>
         <View style={styles.completeReportButton}>
           <Pressable
-            style={[styles.nextButton, { backgroundColor: Colors.BLUE }]}
+            style={[styles.nextButton, {backgroundColor: Colors.BLUE}]}
             onPress={() => showReportComplete(false)}>
-            <Text style={[styles.nextText, { color: Colors.WHITE }]}>Xong</Text>
+            <Text style={[styles.nextText, {color: Colors.WHITE}]}>Xong</Text>
           </Pressable>
         </View>
       </Modal>
@@ -1086,7 +1088,6 @@ const styles = StyleSheet.create({
   avatar: {
     height: 40,
     width: 40,
-    marginLeft: 6,
     marginRight: 8,
     borderRadius: 50,
   },
@@ -1184,17 +1185,8 @@ const mapDispatchToProps = (dispatch) => {
     requestLikePost: (params) => {
       dispatch(requestLikePost(params));
     },
-
     requestUnlikePost: (params) => {
       dispatch(requestUnlikePost(params));
-    },
-
-    requestDeletePost: (postId) => {
-      dispatch(requestDeletePost(postId));
-    },
-
-    requestGetPosts: (params) => {
-      dispatch(requestGetPosts(params));
     },
   };
 };

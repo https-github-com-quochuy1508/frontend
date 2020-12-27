@@ -4,9 +4,10 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  Image,
   TextInput,
+  Image,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import CommentPane from './CommentPane.js';
 import Ant from 'react-native-vector-icons/AntDesign';
@@ -14,6 +15,16 @@ import * as Colors from '../../assets/Colors';
 
 export default function Comment({countLike, liked, comments}) {
   const [isLike, setLike] = useState(liked);
+  const [isEmpty, setIsEmpty] = useState(true);
+
+  const onChangeTextSearch = (content) => {
+    console.log('content: ', content.length);
+    if (content.length) {
+      setIsEmpty(false);
+    } else {
+      setIsEmpty(true);
+    }
+  }
   // console.log('comments: ', comments);
   return (
     <View style={styles.container}>
@@ -63,7 +74,23 @@ export default function Comment({countLike, liked, comments}) {
           placeholder="Viết bình luận... "
           multiline={true}
           autoFocus={true}
+          onChangeText={(content) => onChangeTextSearch(content)}
         />
+        <Pressable
+          style={[
+            {width: 0, height: 0},
+            !isEmpty && {width: 25, height: 25, position: 'absolute', right: 0},
+          ]}
+          onPress={() => {}}>
+          <Image
+            style={styles.send}
+            source={require('../../assets/images/send.png')}
+            style={[
+              {width: 0, height: 0},
+              !isEmpty && {width: 25, height: 25, right: 19},
+            ]}
+          />
+        </Pressable>
       </View>
     </View>
   );
@@ -114,5 +141,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: Colors.WHITESMOKE,
     paddingHorizontal: 10,
+  },
+  send:{
+    position:'absolute',
+    right:18,
+    height:25,
+    width:25,
   },
 });

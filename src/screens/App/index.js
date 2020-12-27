@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './HomeTab/Home';
@@ -11,8 +11,6 @@ import Icon from '../../components/TabBarIcon';
 import * as Colors from '../../assets/Colors';
 import Search from '../../components/SearchButton';
 import Messenger from '../../components/MessengerButton';
-import Setting from './PersonalTab/Setting';
-import Edit from './PersonalTab/Edit';
 import Chat from './Chat/Chat';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -44,7 +42,7 @@ function AppTabs() {
   );
 }
 
-export default function AppStack({navigation}) {
+export default function AppStack() {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
@@ -65,7 +63,7 @@ export default function AppStack({navigation}) {
             },
             headerRight: () =>
               <View style={{ flexDirection: 'row' }}>
-                <Search />
+                <Search bgColor={Colors.WHITESMOKE}/>
                 <Messenger />
               </View>
           }
@@ -100,15 +98,6 @@ export default function AppStack({navigation}) {
         headerTitleStyle: {
           fontWeight: 'bold',
         }
-      }} />
-      <Stack.Screen name="Setting" component={Setting} options={{
-        headerTitle: 'Cài đặt trang cá nhân',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
-      <Stack.Screen name="Edit" component={Edit} options={{
-        headerTitle: 'Chỉnh sửa trang cá nhân',
       }} />
     </Stack.Navigator>
   );

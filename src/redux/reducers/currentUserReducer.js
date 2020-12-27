@@ -1,18 +1,20 @@
 import {
-  GET_POSTS_SUCCESS,
-  GET_POSTS_FAIL,
-} from '../actions/postAction';
+  GET_CURRENT_USER_SUCCESS,
+  GET_CURRENT_USER_FAIL,
+} from '../actions/userAction';
 
 const register = (state = null, action) => {
+  // console.log('action: ', action);
   switch (action.type) {
-    case GET_POSTS_SUCCESS:
+    case GET_CURRENT_USER_SUCCESS:
       return {
         ...state,
         result: action.result,
       };
-    case GET_POSTS_FAIL:
+    case GET_CURRENT_USER_FAIL:
       return {
         ...state,
+        result: null,
       };
     default:
       return state;

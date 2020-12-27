@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import countTimeAgo from '../../../utils/countTimeAgo';
 import {connect} from 'react-redux';
 import {updateStatusFriendRequest} from '../../../redux/actions/friendAction';
+import {navigation} from '../../../../rootNavigation';
 
 function FriendRequest({data, updateStatusFriendRequest}) {
   const [showAcceptConfirm, setShowAcceptConfirm] = useState(false);
@@ -30,7 +31,7 @@ function FriendRequest({data, updateStatusFriendRequest}) {
 
   return (
     <View>
-      <TouchableHighlight underlayColor={Colors.GRAY91} onPress={() => {}}>
+      <TouchableHighlight underlayColor={Colors.GRAY91} onPress={() => navigation.navigate("OtherWall")}>
         <View style={{flexDirection: 'row', paddingVertical: 10}}>
           <Image
             source={{
