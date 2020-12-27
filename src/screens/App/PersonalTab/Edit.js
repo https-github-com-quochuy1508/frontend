@@ -82,9 +82,9 @@ export default function Edit() {
         <Pressable
           style={[
             styles.editBtn,
-            {backgroundColor: press == 4 ? Colors.GAINSBORO : Colors.WHITE},
+            {backgroundColor: press == 5 ? Colors.GAINSBORO : Colors.WHITE},
           ]}
-          onTouchStart={() => setPress(4)}
+          onTouchStart={() => setPress(5)}
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}>
           <Text style={styles.editText}>Chỉnh sửa</Text>

@@ -13,6 +13,7 @@ import AllFriendScreen from './src/screens/App/FriendTab/AllFriendScreen';
 import FriendSuggestScreen from './src/screens/App/FriendTab/FriendSuggestScreen';
 import Search from './src/components/search/SearchForm';
 import SearchDiary from './src/components/search/SearchDiary';
+import Messenger from './src/screens/App/Messenger'
 const rootStack = createStackNavigator();
 
 const App: () => React$Node = () => {
@@ -31,6 +32,7 @@ const App: () => React$Node = () => {
           <rootStack.Screen name="FriendSuggest" component={FriendSuggestScreen}/>
           <rootStack.Screen name="Search" component={Search}/>
           <rootStack.Screen name="SearchDiary" component={SearchDiary}/>
+          <rootStack.Screen name="Messenger" component={Messenger}/>
         </rootStack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -43,8 +43,8 @@ export default function SearchDiaryPane({date}) {
           <Icon
             name="close"
             style={styles.closeIcon}
-            size={30}
-            color={'#999'}
+            size={25}
+            color={'#aaa'}
           />
           </TouchableOpacity>
         </View>
@@ -85,5 +85,8 @@ const styles = StyleSheet.create({
   },
   dotIcon:{
     marginHorizontal:3,
+  },
+  closeIcon:{
+    
   },
 });

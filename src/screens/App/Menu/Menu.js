@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
@@ -14,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Octicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
+
 
 function Menu({logout, navigation}) {
   const [avt, setAvt] = useState(" ");
@@ -97,8 +99,8 @@ function Menu({logout, navigation}) {
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <Button name="job" />
         </TouchableHighlight>
-        <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="help" />
+        <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE} >
+          <Button style={styles.icon} name="help" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <Button name="setting" />
@@ -110,6 +112,9 @@ function Menu({logout, navigation}) {
           }}
           underlayColor={Colors.WHITESMOKE}>
           <Button name="logout" />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() =>{ BackHandler.exitApp();}} underlayColor={Colors.WHITESMOKE}>
+          <Button name="exit" />
         </TouchableHighlight>
       </ScrollView>
     </View>
@@ -133,6 +138,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.WHITE,
   },
+  icon:{
+    // height: 24,
+    // width: 24,
+    // marginLeft: 2,
+    // resizeMode: 'contain',
+    // marginRight: 8,
+  },  
   menu: {
     flexDirection: 'row',
     paddingTop: 10,
