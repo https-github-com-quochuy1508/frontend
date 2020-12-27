@@ -13,10 +13,10 @@ const getCurrentUserEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_GET_CURRENT_USER),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(userApi.getCurrentUser()).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response) {
             return getCurrentUserSuccess(response);
           } else {

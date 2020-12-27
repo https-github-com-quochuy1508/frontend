@@ -19,23 +19,32 @@ import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
 import {requestGetCurrentUser} from '../../../redux/actions/userAction';
 import {connect} from 'react-redux';
+import Post from '../../../components/Post';
+import countTimeAgo from '../../../utils/countTimeAgo';
 
-function Personal({navigation, requestGetCurrentUser}) {
+function Personal({navigation, requestGetCurrentUser, currentUser}) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
+  const [dataUser, setDataUser] = useState(null);
 
   useEffect(() => {
     requestGetCurrentUser();
   }, []);
+
+  useEffect(() => {
+    if (currentUser && currentUser.result) {
+      setDataUser(currentUser.result);
+    }
+  }, [currentUser]);
+
   return (
     <ScrollView style={styles.container}>
       <View>
         <Image
           style={styles.cover}
           source={{
-            uri:
-              'https://cdn.cnn.com/cnnnext/dam/assets/181010131059-australia-best-beaches-cossies-beach-cocos3.jpg',
+            uri: dataUser && dataUser.avatarCover,
           }}
         />
         <Pressable
@@ -46,8 +55,7 @@ function Personal({navigation, requestGetCurrentUser}) {
         <Image
           style={styles.avatar}
           source={{
-            uri:
-              'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
+            uri: dataUser && dataUser.avatar,
           }}
         />
         <Pressable
@@ -56,7 +64,7 @@ function Personal({navigation, requestGetCurrentUser}) {
           <Ent name="camera" style={styles.camera}></Ent>
         </Pressable>
       </View>
-      <Text style={styles.name}>Quân Nguyễn</Text>
+      <Text style={styles.name}>{dataUser && dataUser.name}</Text>
       <View style={{flexDirection: 'row'}}>
         <Pressable style={styles.storyBtn}>
           <Text style={{color: '#ffffff', alignSelf: 'center', fontSize: 15}}>
@@ -311,8 +319,7 @@ function Personal({navigation, requestGetCurrentUser}) {
           <Image
             style={styles.postAvatar}
             source={{
-              uri:
-                'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
+              uri: dataUser && dataUser.avatar,
             }}
           />
           <Text
@@ -326,6 +333,27 @@ function Personal({navigation, requestGetCurrentUser}) {
             Bạn đang nghĩ gì?
           </Text>
         </Pressable>
+      </View>
+      <View>
+        {dataUser &&
+          dataUser.posts &&
+          Array.isArray(dataUser.posts) &&
+          dataUser.posts.map((post) => {
+            return (
+              <Post
+                key={post.id}
+                liked={true}
+                countLike={post.likes.length}
+                countComment={post.comments.length}
+                postId={post.id}
+                userInfo={post.users}
+                time={countTimeAgo(post.createAt)}
+                content={post.content || ''}
+                medias={[]}
+                comments={post.comments}
+              />
+            );
+          })}
       </View>
     </ScrollView>
   );
@@ -532,7 +560,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return {};
+  // console.log('state: ', state.currentUser);
+  let currentUser = state.currentUser;
+  return {currentUser};
 };
 
 const mapDispatchToProps = (dispatch) => {

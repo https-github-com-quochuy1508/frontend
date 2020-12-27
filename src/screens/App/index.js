@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './HomeTab/Home';
@@ -42,7 +42,7 @@ function AppTabs() {
   );
 }
 
-export default function AppStack({navigation}) {
+export default function AppStack() {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
