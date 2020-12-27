@@ -381,7 +381,9 @@ function FullPostTool({
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}
           onPress={() => {
-            setModalVisible(false);
+            requestDeletePost(valuePost.id);
+            // setModalVisible(false);
+            requestDeletePost(valuePost.id);
             navigation.goBack();
           }}>
           <Ion
