@@ -12,6 +12,7 @@ import Ent from 'react-native-vector-icons/Entypo';
 import Font from 'react-native-vector-icons/Fontisto';
 import Ion from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import {navigation} from '../../../../rootNavigation';
 
 export default function FriendSuggest() {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +20,7 @@ export default function FriendSuggest() {
   const [showUnfriend, setShowUnfriend] = useState(false);
   return (
     <View>
-      <TouchableHighlight underlayColor={Colors.GRAY91} onPress={() => {}}>
+      <TouchableHighlight underlayColor={Colors.GRAY91} onPress={() => navigation.navigate("OtherWall")}>
         <View
           style={{
             flexDirection: 'row',

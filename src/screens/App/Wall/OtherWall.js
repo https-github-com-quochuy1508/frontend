@@ -9,7 +9,6 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
-import Ent from 'react-native-vector-icons/Entypo';
 import Ion from 'react-native-vector-icons/Ionicons';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Oct from 'react-native-vector-icons/Octicons';
@@ -20,14 +19,28 @@ import {requestGetCurrentUser} from '../../../redux/actions/userAction';
 import {connect} from 'react-redux';
 
 function Personal({navigation, requestGetCurrentUser}) {
-  const [isCoverModalVisible, setCoverModalVisible] = useState(false);
-  const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
   const [friend, setFriend] = useState(0);
+  const [requestModal, setRequestModal] = useState(false);
+  const [answerModal, setAnswerModal] = useState(false);
 
   useEffect(() => {
     requestGetCurrentUser();
   }, []);
+
+  const blueButtonHandle = () => {
+    switch (friend) {
+      case 0: 
+        setFriend(1);
+        break;
+      case 1:
+        setRequestModal(true);
+        break;
+      case 2:
+        setAnswerModal(true);
+        break;
+    }
+  }
   return (
     <View>
         <View style={styles.header}>
@@ -68,40 +81,62 @@ function Personal({navigation, requestGetCurrentUser}) {
         </View>
         <Text style={styles.name}>Quân Nguyễn</Text>
         <View style={{flexDirection: 'row'}}>
-            <TouchableHighlight 
-              style={styles.storyBtn} 
-              underlayColor="#185df3"
-              onPress={() => setFriend(1)}
-            >
-              <Text style={{color: Colors.WHITE, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
-                  <Ion name="person-add" size={18}/>{friend == 0 ? " Thêm bạn bè" : (friend == 1 ? " Đã gửi lời mời" : " Trả lời")}
-              </Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={styles.messBtn} 
-              underlayColor={Colors.GAINSBORO}
-              onPress={() => {}}
-            >
-              <Font name="messenger" size={18}/>
-            </TouchableHighlight>
+            {friend == 4 ?
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight 
+                style={styles.storyBtn} 
+                underlayColor="#185df3"
+                onPress={() => {}}
+              >
+                <Text style={{color: Colors.WHITE, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
+                    <Font name="messenger" size={18}/> Nhắn tin
+                </Text>
+              </TouchableHighlight>
+              <TouchableHighlight 
+                style={styles.messBtn} 
+                underlayColor={Colors.GAINSBORO}
+                onPress={() => {}}
+              >
+                <Ion name="person" size={18}/>
+              </TouchableHighlight>
+            </View> :
+            <View style={{flexDirection: 'row'}}>
+              <TouchableHighlight 
+                style={styles.storyBtn} 
+                underlayColor="#185df3"
+                onPress={() => blueButtonHandle()}
+              >
+                <Text style={{color: Colors.WHITE, alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
+                    <Ion name="person-add" size={18}/>{friend == 0 ? " Thêm bạn bè" : (friend == 1 ? " Đã gửi lời mời" : " Trả lời")}
+                </Text>
+              </TouchableHighlight>
+              <TouchableHighlight 
+                style={styles.messBtn} 
+                underlayColor={Colors.GAINSBORO}
+                onPress={() => {}}
+              >
+                <Font name="messenger" size={18}/>
+              </TouchableHighlight>
+            </View>
+            }
             <Pressable
-            style={[
-                styles.ellipsis,
-                {backgroundColor: press == 7 ? Colors.GAINSBORO : '#e5e6eb'},
-            ]}
-            onTouchStart={() => setPress(7)}
-            onTouchEnd={() => setPress(0)}
-            onPressOut={() => setPress(0)}
-            onPress={() => {}}>
-            <Text
-                style={{
-                alignSelf: 'center',
-                fontSize: 20,
-                fontWeight: 'bold',
-                marginBottom: 12,
-                }}>
-                …
-            </Text>
+              style={[
+                  styles.ellipsis,
+                  {backgroundColor: press == 7 ? Colors.GAINSBORO : '#e5e6eb'},
+              ]}
+              onTouchStart={() => setPress(7)}
+              onTouchEnd={() => setPress(0)}
+              onPressOut={() => setPress(0)}
+              onPress={() => {}}>
+              <Text
+                  style={{
+                  alignSelf: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginBottom: 12,
+                  }}>
+                  …
+              </Text>
             </Pressable>
         </View>
         <View style={styles.infoWrap}>
@@ -206,47 +241,134 @@ function Personal({navigation, requestGetCurrentUser}) {
             onTouchStart={() => setPress(6)}
             onTouchEnd={() => setPress(0)}
             onPressOut={() => setPress(0)}>
-            <Text style={{alignSelf: 'center'}}>Xem tất cả bạn bè</Text>
+            <Text style={{alignSelf: 'center', fontWeight: 'bold'}}>Xem tất cả bạn bè</Text>
         </Pressable>
         <View style={styles.posting}>
             <Text style={{fontWeight: 'bold', fontSize: 20, marginLeft: '4%'}}>
             Bài viết
             </Text>
-            <Pressable
-            style={[
-                styles.postWrap,
-                {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE},
-            ]}
-            onTouchStart={() => setPress(7)}
-            onTouchEnd={() => setPress(0)}
-            onPressOut={() => setPress(0)}>
-            <Image
-                style={styles.postAvatar}
-                source={{
-                uri:
-                    'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
-                }}
-            />
-            <Text
-                style={{
-                fontSize: 17,
-                marginLeft: '4%',
-                color: '#8c8f94',
-                alignSelf: 'center',
-                marginTop: '2%',
-                }}>
-                Bạn đang nghĩ gì?
-            </Text>
-            </Pressable>
+            {friend == 4 ?
+            <TouchableHighlight
+                style={styles.postWrap}
+                onPress={() => {}}
+                underlayColor={Colors.WHITESMOKE}
+            >
+                <View style={{flexDirection: 'row'}}>
+                    <Image
+                        style={styles.postAvatar}
+                        source={{
+                        uri:
+                            'https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2',
+                        }}
+                    />
+                    <Text
+                        style={{
+                        fontSize: 15,
+                        marginLeft: '4%',
+                        color: '#8c8f94',
+                        alignSelf: 'center',
+                        marginTop: '2%',
+                        }}>
+                        Viết điều gì đó cho Quân?
+                    </Text>
+                </View>
+            </TouchableHighlight> : null}
         </View>
         </ScrollView>
+        <Modal
+          style={{alignItems: 'center'}}
+          isVisible={requestModal}
+          onBackButtonPress={() => setRequestModal(false)}
+          onBackdropPress={() => setRequestModal(false)}
+          backdropOpacity={0.6}
+          animationIn="zoomIn"
+          animationOut="zoomOut">
+          <View style={styles.deleteContainer}>
+            <Text style={{fontSize: 18, marginBottom: 20}}>
+              Huỷ yêu cầu kết bạn?
+            </Text>
+            <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
+              Bạn không muốn thêm người ngày làm bạn bè trên Fakebook nữa.
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginTop: 10,
+              }}>
+              <TouchableHighlight
+                style={styles.deleteAction}
+                underlayColor={Colors.GRAY91}
+                onPress={() => {setFriend(0); setRequestModal(false)}}>
+                <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.deleteAction}
+                underlayColor={Colors.GRAY91}
+                onPress={() => setRequestModal(false)}>
+                <Text>HỦY</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          style={{alignItems: 'center'}}
+          isVisible={answerModal}
+          onBackButtonPress={() => setAnswerModal(false)}
+          onBackdropPress={() => setAnswerModal(false)}
+          backdropOpacity={0.6}
+          animationIn="zoomIn"
+          animationOut="zoomOut">
+          <View style={styles.deleteContainer}>
+            <Text style={{fontSize: 18, marginBottom: 20}}>
+              Chấp nhận lời mời kết bạn?
+            </Text>
+            <Text style={{fontSize: 15, color: Colors.DARKGRAY}}>
+              Chấp nhận người ngày làm bạn bè trên Fakebook.
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginTop: 10,
+              }}>
+              <TouchableHighlight
+                style={styles.deleteAction}
+                underlayColor={Colors.GRAY91}
+                onPress={() => {setFriend(4); setAnswerModal(false)}}>
+                <Text style={{color: Colors.BLUE}}>CHẤP NHẬN</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.deleteAction}
+                underlayColor={Colors.GRAY91}
+                onPress={() => {setFriend(0); setAnswerModal(false)}}>
+                <Text>XÓA LỜI MỜI</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  deleteAction: {
+    padding: 10,
+    height: 50,
+    justifyContent: 'center',
+    borderRadius: 3,
+  },
+  deleteContainer: {
+    padding: 20,
+    backgroundColor: Colors.WHITE,
+    width: '90%',
+    borderRadius: 3,
+    paddingBottom: 10,
+    paddingRight: 10,
+  },
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.WHITE,
+    marginBottom: 50,
   },
   header: {
     flexDirection: 'row', 
@@ -309,7 +431,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginLeft: '4%',
     backgroundColor: '#1878f3',
-    width: '63%',
+    width: '71%',
     height: 35,
     justifyContent: 'center',
     borderRadius: 5,
@@ -329,7 +451,7 @@ const styles = StyleSheet.create({
     width: '12%',
     height: 35,
     justifyContent: 'center',
-    marginLeft: 10,
+    marginLeft: -23,
     marginTop: 15,
     borderRadius: 5,
   },
