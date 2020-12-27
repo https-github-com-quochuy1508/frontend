@@ -7,6 +7,7 @@ import mediaEpic from './mediaEpic';
 import likeEpic from './likeEpic';
 import friendEpic from './friendEpic';
 import userEpic from './userEpic';
+import commentEpic from './commentEpic';
 
 const rootEpic = combineEpics(
   loginEpic,
@@ -16,6 +17,7 @@ const rootEpic = combineEpics(
   likeEpic,
   friendEpic,
   userEpic,
+  commentEpic,
 );
 
 export default rootEpic;

@@ -4,7 +4,7 @@ export const CREATE_COMMENT_SUCCESS = `CREATE_COMMENT_SUCCESS`;
 export const CREATE_COMMENT_FAIL = `CREATE_COMMENT_FAIL`;
 
 export const requestCreateComment = (data) => ({
-  type: REQUEST_COMMENT_POST,
+  type: REQUEST_CREATE_COMMENT,
   payload: data,
 });
 

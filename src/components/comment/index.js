@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,23 +9,58 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
-import CommentPane from './CommentPane.js';
+import {connect} from 'react-redux'
+import AsyncStorage from '@react-native-community/async-storage';
+import userServices from '../../redux/services/userServices';
+
 import Ant from 'react-native-vector-icons/AntDesign';
 import * as Colors from '../../assets/Colors';
 
-export default function Comment({countLike, liked, comments}) {
+import CommentPane from './CommentPane.js';
+import {requestCreateComment} from '../../redux/actions/commentAction';
+
+function Comment({postId, countLike, liked, comments, requestCreateComment}) {
   const [isLike, setLike] = useState(liked);
   const [isEmpty, setIsEmpty] = useState(true);
+  const [commentContent, setCommentContent] = useState("");
+  const [userId, setUserId] = useState(0);
 
   const onChangeTextSearch = (content) => {
-    console.log('content: ', content.length);
+    console.log('content: ', content);
+    setCommentContent(content);
     if (content.length) {
       setIsEmpty(false);
     } else {
       setIsEmpty(true);
     }
   }
-  // console.log('comments: ', comments);
+
+  const getData = async () => {
+    try {
+      const uuid = await AsyncStorage.getItem('userId');
+      if (uuid !== null && uavt !== null) {
+        setUserId(uuid);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    // console.log('HELLO');
+    getData();
+  }, []);
+
+  const onCreateComment = async () => {
+    console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+    const data = {
+      userId: userId,
+      content: commentContent,
+      postId: postId,
+    };
+    requestCreateComment(data);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headComment}>
@@ -57,6 +92,7 @@ export default function Comment({countLike, liked, comments}) {
               return (
                 <CommentPane
                   key={comment.id}
+                  postId={postId}
                   cmt={comment.content}
                   avt={avatar ? avatar : 'https://i.stack.imgur.com/l60Hf.png'}
                   name={name}
@@ -81,7 +117,7 @@ export default function Comment({countLike, liked, comments}) {
             {width: 0, height: 0},
             !isEmpty && {width: 25, height: 25, position: 'absolute', right: 0},
           ]}
-          onPress={() => {console.log("Create comment ************************");}}>
+          onPress={() => onCreateComment()}>
           <Image
             style={styles.send}
             source={require('../../assets/images/send.png')}
@@ -149,3 +185,19 @@ const styles = StyleSheet.create({
     width:25,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    requestCreateComment: (params) => {
+      dispatch(requestCreateComment(params));
+    },
+  };
+};
+
+const CommentConnected = connect(mapStateToProps, mapDispatchToProps)(Comment);
+
+export default CommentConnected;
