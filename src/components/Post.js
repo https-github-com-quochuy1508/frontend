@@ -7,7 +7,7 @@ import {
   Pressable,
   Dimensions,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import * as Colors from '../assets/Colors';
 import Modal from 'react-native-modal';
@@ -132,10 +132,10 @@ function Post({
   };
 
   const goToWall = () => {
-    if (userInfo.id == uid)
-      navigation.navigate("YourWall");
-    else navigation.navigate("OtherWall");
+    if (userInfo.id == uid) navigation.navigate('Wall');
+    else navigation.navigate('OtherWall', {userId: userInfo.id});
   };
+
   return (
     <View style={styles.wrap}>
       <View style={styles.headWrap}>

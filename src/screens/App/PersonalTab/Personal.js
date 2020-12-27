@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -6,14 +6,12 @@ import {
   Image,
   StyleSheet,
   Pressable,
-  TouchableHighlight,
-  Button,
+  RefreshControl,
+  TouchableHighlight
 } from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Ent from 'react-native-vector-icons/Entypo';
-import Sim from 'react-native-vector-icons/SimpleLineIcons';
 import Ion from 'react-native-vector-icons/Ionicons';
-import Oct from 'react-native-vector-icons/Octicons';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
@@ -48,6 +46,19 @@ function Personal({
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
   const [dataUser, setDataUser] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+  
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    requestGetCurrentUser();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     requestGetCurrentUser();
@@ -98,7 +109,10 @@ function Personal({
     });
   };
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.BLUE]}/>}
+    >
       <View>
         <Image
           style={styles.cover}
@@ -130,14 +144,9 @@ function Personal({
             <Ant name="pluscircle" style={{fontSize: 15}} /> Thêm vào tin
           </Text>
         </Pressable>
-        <Pressable
-          style={[
-            styles.ellipsis,
-            {backgroundColor: press == 7 ? Colors.GAINSBORO : '#e5e6eb'},
-          ]}
-          onTouchStart={() => setPress(7)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}
+        <TouchableHighlight
+          style={styles.ellipsis}
+          underlayColor={Colors.GAINSBORO}
           onPress={() => navigation.navigate('WallSetting')}>
           <Text
             style={{
@@ -148,7 +157,7 @@ function Personal({
             }}>
             …
           </Text>
-        </Pressable>
+        </TouchableHighlight>
       </View>
       <Modal
         isVisible={isCoverModalVisible}
@@ -363,31 +372,30 @@ function Personal({
         <Text style={{fontWeight: 'bold', fontSize: 20, marginLeft: '4%'}}>
           Bài viết
         </Text>
-        <Pressable
-          style={[
-            styles.postWrap,
-            {backgroundColor: press == 7 ? Colors.GAINSBORO : Colors.WHITE},
-          ]}
-          onTouchStart={() => setPress(7)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}>
-          <Image
-            style={styles.postAvatar}
-            source={{
-              uri: dataUser && dataUser.avatar,
-            }}
-          />
-          <Text
-            style={{
-              fontSize: 17,
-              marginLeft: '4%',
-              color: '#8c8f94',
-              alignSelf: 'center',
-              marginTop: '2%',
-            }}>
-            Bạn đang nghĩ gì?
-          </Text>
-        </Pressable>
+        <TouchableHighlight
+          style={styles.postWrap}
+          underlayColor={Colors.WHITESMOKE}
+          onPress={() => navigation.navigate("FullPostTool")}
+        >
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style={styles.postAvatar}
+              source={{
+                uri: dataUser && dataUser.avatar,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 17,
+                marginLeft: '4%',
+                color: '#8c8f94',
+                alignSelf: 'center',
+                marginTop: '2%',
+              }}>
+              Bạn đang nghĩ gì?
+            </Text>
+          </View>
+        </TouchableHighlight>
       </View>
       <View>
         {dataUser &&
@@ -615,7 +623,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log('state: ', state.currentUser);
+  // console.log('state: ', state.currentUser);
   let currentUser = state.currentUser;
   if (state.currentUser && currentUser.resultChange) {
     currentUser = {

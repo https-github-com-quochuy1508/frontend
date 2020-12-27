@@ -83,7 +83,9 @@ function FriendScreen({
         <Text style={styles.suggestText}>Lời mời kết bạn</Text>
         <Text style={styles.count}>
           {' '}
-          {friendRequestValue.count ? friendRequestValue.count : 0}
+          {friendRequestValue && friendRequestValue.count
+            ? friendRequestValue.count
+            : 0}
         </Text>
         <TouchableHighlight
           style={styles.buttonSeeAll}
@@ -92,7 +94,8 @@ function FriendScreen({
           <Text style={styles.seeAll}>Xem tất cả</Text>
         </TouchableHighlight>
       </View>
-      {friendRequestValue.rows &&
+      {friendRequestValue &&
+        friendRequestValue.rows &&
         Array.isArray(friendRequestValue.rows) &&
         friendRequestValue.rows.map((friend) => {
           return <FriendRequest key={friend.id} data={friend} />;
