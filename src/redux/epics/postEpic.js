@@ -71,7 +71,8 @@ const deletePostEpic = (action$) =>
         map((response) => {
           // console.log('response: ', response);
           if (response.success) {
-            return deletePostSuccess(response);
+            navigate('Home');
+            return deletePostSuccess(action.payload);
           } else {
             return deletePostFail(response.error);
           }

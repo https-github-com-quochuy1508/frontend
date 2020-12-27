@@ -1,6 +1,8 @@
 import {
   GET_POSTS_SUCCESS,
   GET_POSTS_FAIL,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_FAIL
 } from '../actions/postAction';
 
 const register = (state = null, action) => {
