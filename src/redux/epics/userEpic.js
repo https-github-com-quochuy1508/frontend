@@ -6,7 +6,7 @@ import {
   getCurrentUserFail,
 } from '../actions/userAction';
 import {combineEpics} from 'redux-observable';
-import friendApi from '../services/friendServices';
+import userApi from '../services/userServices';
 import {from} from 'rxjs';
 
 const getCurrentUserEpic = (action$) =>
@@ -14,7 +14,7 @@ const getCurrentUserEpic = (action$) =>
     ofType(REQUEST_GET_CURRENT_USER),
     switchMap((action) => {
       console.log('action: ', action);
-      return from(friendApi.get(action.payload)).pipe(
+      return from(userApi.getCurrentUser()).pipe(
         map((response) => {
           console.log('response: ', response);
           if (response) {

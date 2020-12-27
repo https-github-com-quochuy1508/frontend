@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -17,11 +17,17 @@ import Oct from 'react-native-vector-icons/Octicons';
 import FA5 from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
+import {requestGetCurrentUser} from '../../../redux/actions/userAction';
+import {connect} from 'react-redux';
 
-export default function Personal({navigation}) {
+function Personal({navigation, requestGetCurrentUser}) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [press, setPress] = useState(0);
+
+  useEffect(() => {
+    requestGetCurrentUser();
+  }, []);
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -524,3 +530,22 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
   },
 });
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    requestGetCurrentUser: () => {
+      dispatch(requestGetCurrentUser());
+    },
+  };
+};
+
+const PersonalConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Personal);
+
+export default PersonalConnected;
