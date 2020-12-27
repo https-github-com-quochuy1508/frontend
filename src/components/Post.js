@@ -24,7 +24,7 @@ import {typesReport, detailsReport, emptyDetail} from '../assets/TypeRepost';
 import {ScrollView} from 'react-native-gesture-handler';
 import {navigation} from '../../rootNavigation';
 import {requestLikePost, requestUnlikePost} from '../redux/actions/likeAction';
-import {requestCountPost} from '../redux/actions/postAction';
+import {requestCountPost, requestDeletePost, requestGetPosts} from '../redux/actions/postAction';
 import {connect} from 'react-redux';
 
 function Post({
@@ -36,6 +36,8 @@ function Post({
   postId,
   requestLikePost,
   requestUnlikePost,
+  requestDeletePost,
+  requestGetPosts,
   liked,
   countLike,
   countComment,
@@ -813,7 +815,11 @@ function Post({
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
-              onPress={() => setShowDelete(false)}>
+              onPress={() => {
+                requestDeletePost(postId);
+                requestGetPosts({});
+                setShowDelete(false)
+                }}>
               <Text style={{color: Colors.BLUE}}>XÓA</Text>
             </TouchableHighlight>
             <TouchableHighlight
@@ -1187,6 +1193,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     requestUnlikePost: (params) => {
       dispatch(requestUnlikePost(params));
+    },
+    requestDeletePost: (params) => {
+      dispatch(requestDeletePost(params));
+    },
+    requestGetPosts: (params) => {
+      dispatch(requestGetPosts(params));
     },
   };
 };
