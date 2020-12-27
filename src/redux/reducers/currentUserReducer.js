@@ -4,7 +4,7 @@ import {
 } from '../actions/userAction';
 
 const register = (state = null, action) => {
-  console.log('action: ', action);
+  // console.log('action: ', action);
   switch (action.type) {
     case GET_CURRENT_USER_SUCCESS:
       return {
@@ -14,7 +14,7 @@ const register = (state = null, action) => {
     case GET_CURRENT_USER_FAIL:
       return {
         ...state,
-        result: {},
+        result: null,
       };
     default:
       return state;

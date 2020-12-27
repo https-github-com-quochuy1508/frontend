@@ -18,6 +18,11 @@ import {
   countPostSuccess,
   countPostFail,
 } from '../actions/postAction';
+import {
+  REQUEST_SEARCH_POST,
+  searchPostSuccess,
+  searchPostFail,
+} from '../actions/searchAction';
 import {combineEpics} from 'redux-observable';
 import postApi from '../services/postServices';
 import {from} from 'rxjs';
@@ -111,10 +116,29 @@ const countPostsEpic = (action$) =>
     }),
   );
 
+const searchPostsEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_SEARCH_POST),
+    switchMap((action) => {
+      console.log('action: ', action);
+      return from(postApi.search(action.payload)).pipe(
+        map((response) => {
+          if (response && response.success) {
+            console.log('response: ', response);
+            return searchPostSuccess(response);
+          } else {
+            return searchPostFail(response.error);
+          }
+        }),
+      );
+    }),
+  );
+
 export default combineEpics(
   createPostEpic,
   updatePostEpic,
   getPostsEpic,
   deletePostEpic,
   countPostsEpic,
+  searchPostsEpic,
 );

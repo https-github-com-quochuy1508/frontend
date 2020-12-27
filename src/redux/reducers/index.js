@@ -6,6 +6,7 @@ import postsReducer from './postsReducer';
 import countReducer from './countReducer';
 import friendReducer from './friendReducer';
 import currentUserReducer from './currentUserReducer';
+import searchReducer from './searchReducer';
 
 const rootReducer = combineReducers({
   users: loginReducer,
@@ -15,5 +16,6 @@ const rootReducer = combineReducers({
   count: countReducer,
   friend: friendReducer,
   currentUser: currentUserReducer,
+  search: searchReducer,
 });
 export default rootReducer;
