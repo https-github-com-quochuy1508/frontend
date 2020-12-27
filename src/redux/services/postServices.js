@@ -25,6 +25,15 @@ export default {
       params: params,
     });
   },
+  search: (params) => {
+    return request(
+      varEnv.apiUrlBackend +
+        `/api/posts/search/ok?filter=${JSON.stringify(params.filter)}`,
+      {
+        method: 'GET',
+      },
+    );
+  },
   count: (params) => {
     return request(varEnv.apiUrlBackend + `/api/posts/count/like`, {
       method: 'GET',

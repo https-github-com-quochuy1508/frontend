@@ -9,13 +9,57 @@ import {
   Modal,
   TextInput,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import * as Colors from '../../assets/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SearchHistoryPane from './SearchHistoryPane';
+import {connect} from 'react-redux';
+import {requestSearchPost} from '../../redux/actions/searchAction';
 
-export default function SearchForm({navigation}) {
+function SearchForm({navigation, requestSearchPost, searchReturn}) {
+  const [dataSearch, setDataSearch] = useState([]);
+  const [load, setLoad] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   const onPress = () => {};
+  let timeout = null;
+
+  /**
+   * Handle load end
+   */
+  useEffect(() => {
+    if (searchReturn) {
+      setDataSearch(searchReturn);
+      setLoad(false);
+    }
+  }, [searchReturn]);
+
+  /**
+   * Handle when change text in search input
+   * @param {*} content
+   */
+  const onChangeTextSearch = (content) => {
+    console.log('content: ', content.length);
+    if (content.length) {
+      setIsEmpty(false);
+    } else {
+      setLoad(false);
+      setIsEmpty(true);
+    }
+
+    if (timeout && content.length) {
+      clearTimeout(timeout);
+    }
+    const param = {
+      filter: {
+        content,
+      },
+    };
+    setLoad(true);
+    timeout = setTimeout(() => {
+      requestSearchPost(param);
+    }, 2000);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,8 +72,9 @@ export default function SearchForm({navigation}) {
         </TouchableHighlight>
         <TextInput
           style={styles.inputForm}
-          placeholder="Tìm kiếm "
+          placeholder="Tìm kiếm"
           autoFocus={true}
+          onChangeText={(content) => onChangeTextSearch(content)}
         />
       </View>
 
@@ -44,11 +89,19 @@ export default function SearchForm({navigation}) {
             <Text style={{color: '#666', fontSize: 15}}>CHỈNH SỬA</Text>
           </TouchableHighlight>
         </View>
-        <View style={styles.history}>
-          <SearchHistoryPane keyword="Hồ Quốc Huy" />
-          <SearchHistoryPane keyword="Phạm đình thắng" />
-          <SearchHistoryPane keyword="Nguyễn Xuân Hoạt" />
-        </View>
+        {load && !isEmpty ? (
+          <ActivityIndicator size="small" color="#5e5e61" />
+        ) : isEmpty ? (
+          <View style={styles.history}>
+            <SearchHistoryPane keyword="Hồ Quốc Huy" />
+            <SearchHistoryPane keyword="Phạm đình thắng" />
+            <SearchHistoryPane keyword="Nguyễn Xuân Hoạt" />
+          </View>
+        ) : (
+          dataSearch.map((data) => (
+            <SearchHistoryPane key={data.id} keyword={data.content} />
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -109,3 +162,30 @@ const styles = StyleSheet.create({
     // alignItems:'center',
   },
 });
+
+const mapStateToProps = (state) => {
+  let searchReturn = null;
+  if (state.search && state.search.result && state.search.result.result) {
+    console.log('state: ', state.search.result.result.list);
+    searchReturn =
+      state.search.result &&
+      state.search.result.result &&
+      state.search.result.result.list;
+  }
+  return {searchReturn};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    requestSearchPost: (data) => {
+      dispatch(requestSearchPost(data));
+    },
+  };
+};
+
+const SearchFormConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SearchForm);
+
+export default SearchFormConnected;

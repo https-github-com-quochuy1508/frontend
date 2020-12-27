@@ -16,7 +16,7 @@ const getListRequestFriendEpic = (action$) =>
   action$.pipe(
     ofType(GET_LIST_FRIEND_REQUEST),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(friendApi.get(action.payload)).pipe(
         map((response) => {
           // console.log('response: ', response);

@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log('state: ', state.currentUser);
+  // console.log('state: ', state.currentUser);
   let currentUser = state.currentUser;
   return {currentUser};
 };

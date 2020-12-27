@@ -23,7 +23,7 @@ export default {
 
   getCurrentUser: async () => {
     const id = await AsyncStorage.getItem('userId');
-    console.log('id: ', id);
+    // console.log('id: ', id);
     return request(varEnv.apiUrlBackend + `/api/users/` + id, {
       method: 'GET',
     });
