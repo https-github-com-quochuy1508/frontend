@@ -21,6 +21,8 @@ import {requestGetCurrentUser} from '../../../redux/actions/userAction';
 import {connect} from 'react-redux';
 import Post from '../../../components/Post';
 import countTimeAgo from '../../../utils/countTimeAgo';
+import ImagePicker from 'react-native-image-picker';
+import mediaServices from '../../../redux/services/mediaServices';
 
 function Personal({navigation, requestGetCurrentUser, currentUser}) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
@@ -38,6 +40,31 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
     }
   }, [currentUser]);
 
+  const changeAvatar = () => {
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else if (response.customButton) {
+      } else {
+        let photo = {
+          uri: response.uri,
+          name: response.fileName,
+          type: response.type,
+        };
+
+        let formdata = new FormData();
+        formdata.append('myFiles', photo);
+        await mediaServices
+          .uploadAvatar(formdata)
+          .then((response) => {
+            console.log('response: ', response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -229,7 +256,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
 
       <View style={{marginTop: 10, paddingLeft: '4%', paddingRight: '4%'}}>
         <View style={{flexDirection: 'row'}}>
-          <Pressable style={styles.friend}>
+          <View style={styles.friend}>
             <Image
               style={styles.friendAvatar}
               source={{
@@ -238,7 +265,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
               }}
             />
             <Text style={styles.friendName}>Quân Nguyễn</Text>
-          </Pressable>
+          </View>
           <View style={styles.friend}>
             <Image
               style={styles.friendAvatar}
