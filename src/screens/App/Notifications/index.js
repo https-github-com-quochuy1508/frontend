@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Notifications from './Notification';
+import Notifications from './Notifications';
 const Stack = createStackNavigator();
 
 export default function NotificationsStack() {

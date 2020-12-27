@@ -25,6 +25,12 @@ export default {
       params: params,
     });
   },
+  count: (params) => {
+    return request(varEnv.apiUrlBackend + `/api/posts/count/like`, {
+      method: 'GET',
+      params: params,
+    });
+  },
   delete: (id) => {
     return request(varEnv.apiUrlBackend + `/api/posts/` + id, {
       method: 'DELETE',

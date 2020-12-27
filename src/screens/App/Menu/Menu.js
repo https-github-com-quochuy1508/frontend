@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {logOut} from '../../../redux/actions/loginAction';
@@ -15,7 +16,8 @@ import Icon from 'react-native-vector-icons/Octicons';
 import Button from '../../../components/MenuButton';
 import * as Colors from '../../../assets/Colors';
 
-function Menu({logout}) {
+
+function Menu({logout, navigation}) {
   const [avt, setAvt] = useState(" ");
   const [name, setName] = useState("");
   const removeToken = async () => {
@@ -44,24 +46,32 @@ function Menu({logout}) {
   })
 
   const onPress = () => {};
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={styles.menu}>
           <Text style={styles.menu_text}>Menu</Text>
-          <TouchableOpacity style={styles.menu_button}>
+          <TouchableOpacity
+            style={styles.menu_button}
+            onPress={() => {
+              navigation.navigate("Search")
+            }}>
             <Icon name="search" size={20} />
           </TouchableOpacity>
         </View>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <View style={styles.btnProfile}>
-            <Image style={styles.avatar} source={{ uri: avt }}/>
+            <Image style={styles.avatar} source={{uri: avt}} />
             <View style={styles.text}>
               <Text style={styles.name}>{name}</Text>
-              <Text style={{color: Colors.DARKGRAY}}>Xem trang cá nhân của bạn</Text>
+              <Text style={{color: Colors.DARKGRAY}}>
+                Xem trang cá nhân của bạn
+              </Text>
             </View>
           </View>
         </TouchableHighlight>
@@ -89,8 +99,8 @@ function Menu({logout}) {
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <Button name="job" />
         </TouchableHighlight>
-        <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
-          <Button name="help" />
+        <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE} >
+          <Button style={styles.icon} name="help" />
         </TouchableHighlight>
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITESMOKE}>
           <Button name="setting" />
@@ -102,6 +112,9 @@ function Menu({logout}) {
           }}
           underlayColor={Colors.WHITESMOKE}>
           <Button name="logout" />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() =>{ BackHandler.exitApp();}} underlayColor={Colors.WHITESMOKE}>
+          <Button name="exit" />
         </TouchableHighlight>
       </ScrollView>
     </View>
@@ -125,6 +138,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.WHITE,
   },
+  icon:{
+    // height: 24,
+    // width: 24,
+    // marginLeft: 2,
+    // resizeMode: 'contain',
+    // marginRight: 8,
+  },  
   menu: {
     flexDirection: 'row',
     paddingTop: 10,
@@ -162,5 +182,15 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  modal:{
+    flex: 1,
+    backgroundColor:'#FFF',
+    height:500,
+    position:'relative',
+  },
+  hideModal:{
+    position:'absolute',
+    bottom:5,
   },
 });

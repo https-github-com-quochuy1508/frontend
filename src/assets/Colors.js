@@ -14,3 +14,9 @@ export const BLACK = "#000000"
 export const GRAY91 = "#E8E8E8"
 export const ORANGE1 = "#FFA500"
 export const REDPINK = "#FF3366"
+export const SILVER95 = '#C9CCD1'
+export const SILVER97 = '#B6B9BE'
+export const ALICEBLUE97 = '#E7F3FF'
+export const PALEBLUE91 = '#C9E4FF'
+export const AZURE91 = '#2379E8'
+

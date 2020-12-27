@@ -20,7 +20,10 @@ import ImagePicker from 'react-native-image-picker';
 import AliasImage from '../../../components/AliasImage';
 import mediaServices from '../../../redux/services/mediaServices';
 import {requestDeleteMedia} from '../../../redux/actions/mediaAction';
-import {requestUpdatePost, requestDeletePost} from '../../../redux/actions/postAction';
+import {
+  requestUpdatePost,
+  requestDeletePost,
+} from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -30,7 +33,7 @@ function FullPostTool({
   deleteMediaPost,
   requestUpdatePost,
   hasUpdate,
-  requestDeletePost
+  requestDeletePost,
 }) {
   const [press, setPress] = useState(0);
   const [show, setShow] = useState(true);
@@ -51,7 +54,7 @@ function FullPostTool({
 
   useEffect(() => {
     if (hasUpdate) {
-      console.log("hasUpdate: ", hasUpdate);
+      console.log('hasUpdate: ', hasUpdate);
       // navigation.navigate('Home');
     }
   }, [hasUpdate]);
@@ -156,12 +159,12 @@ function FullPostTool({
   };
 
   const updatePost = () => {
-    console.log('valuePost: ', valuePost);
+    // console.log('valuePost: ', valuePost);
     const param = {
       id: valuePost.id,
       content: content || '',
     };
-    console.log("param: ", param);
+    // console.log("param: ", param);
     requestUpdatePost(param);
   };
   const Remove = ({id}) => {
