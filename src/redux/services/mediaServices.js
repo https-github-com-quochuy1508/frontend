@@ -21,6 +21,24 @@ export default {
     });
   },
 
+  uploadAvatar: async (formdata) => {
+    const cookieToken = await AsyncStorage.getItem('token');
+
+    // console.log(
+    //   '========================================cookieToken========================================: ',
+    //   cookieToken,
+    // );
+    const token = cookieToken !== 'undefined' ? cookieToken : null;
+    return request(varEnv.apiUrlBackend + '/api/upload/user/changeAvatar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-Auth-Key': `${token}`,
+      },
+      body: formdata,
+    });
+  },
+
   deleteImage: (params) => {
     return request(varEnv.apiUrlBackend + `/api/upload/` + params, {
       method: 'DELETE',

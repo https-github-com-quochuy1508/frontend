@@ -21,6 +21,15 @@ export default {
     });
   },
 
+  update: (id, data) => {
+    return request(varEnv.apiUrlBackend + `/api/users/` + id, {
+      method: 'PUT',
+      body: {
+        ...data,
+      },
+    });
+  },
+
   getCurrentUser: async () => {
     const id = await AsyncStorage.getItem('userId');
     // console.log('id: ', id);
