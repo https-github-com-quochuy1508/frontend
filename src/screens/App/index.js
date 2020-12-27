@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useState} from 'react';
+import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import Home from './HomeTab/Home';
 import Notifications from './Notifications';
-import Personal from './PersonalTab/Personal';
+import Friend from './FriendTab';
+import Wall from './PersonalTab';
 import Menu from './Menu';
 import Icon from '../../components/TabBarIcon';
 import * as Colors from '../../assets/Colors';
@@ -23,25 +24,28 @@ const Stack = createStackNavigator();
 function AppTabs() {
   return (
     <Tab.Navigator
-      tabBarOptions={{ showIcon: true, showLabel: false, activeTintColor: Colors.BLUE, inactiveTintColor: Colors.DARKGRAY }}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color }) => {
+      tabBarOptions={{
+        showIcon: true,
+        showLabel: false,
+        activeTintColor: Colors.BLUE,
+        inactiveTintColor: Colors.DARKGRAY,
+      }}
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color}) => {
           return <Icon name={route.name} color={color} focused={focused} />;
         },
-      })}
-    >
+      })}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Friend" component={Friend} />
-      <Tab.Screen name="Wall" component={Personal} />
+      <Tab.Screen name="Wall" component={Wall} />
       <Tab.Screen name="Watch" component={Notifications} />
       <Tab.Screen name="Notification" component={Notifications} />
       <Tab.Screen name="Menu" component={Menu} />
     </Tab.Navigator>
-
   );
 }
 
-export default function AppStack({ navigation }) {
+export default function AppStack({navigation}) {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
@@ -108,5 +112,5 @@ export default function AppStack({ navigation }) {
         headerTitle: 'Chỉnh sửa trang cá nhân',
       }} />
     </Stack.Navigator>
-  )
+  );
 }

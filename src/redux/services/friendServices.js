@@ -16,4 +16,12 @@ export default {
       },
     );
   },
+  update: (id, params) => {
+    return request(varEnv.apiUrlBackend + `/api/friends/` + id, {
+      method: 'PUT',
+      body: {
+        ...params,
+      },
+    });
+  },
 };
