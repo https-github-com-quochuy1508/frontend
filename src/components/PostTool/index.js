@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
+import {Text, StyleSheet, View, Image, Pressable, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import * as Colors from '../../assets/Colors';
 import {navigation} from '../../../rootNavigation';
@@ -35,9 +35,9 @@ function PostTool({createPost}) {
   })
   return (
     <View style={styles.container}>
-      <Pressable>
+      <TouchableOpacity onPress={() => navigation.navigate("YourWall")}>
         <Image source={{uri: avt}} style={styles.userAvatar}/>
-      </Pressable>
+      </TouchableOpacity>
       <Pressable
         onPress={() => onFullPostToolPressHandler()}
         style={[

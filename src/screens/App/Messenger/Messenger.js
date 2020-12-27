@@ -160,19 +160,31 @@ function Messenger({navigation}) {
           style={styles.btn_footer}
           onPress={onPress}
           underlayColor={Colors.WHITESMOKE}>
+            <View
+            style={{alignItems:'center',}}
+            >
           <Image
-            // style={styles.pencil}
+            style={styles.img_footer}
             source={require('../../../assets/images/chat.png')}
           />
+          <Text style={styles.btn_text}>Chat</Text>
+          </View>
         </TouchableHighlight>
         <TouchableHighlight
           style={styles.btn_footer}
           onPress={onPress}
           underlayColor={Colors.WHITESMOKE}>
+            <View
+            style={{alignItems:'center',}}
+            >
           <Image
-            // style={styles.pencil}
+            style={styles.img_footer}
             source={require('../../../assets/images/friends.png')}
           />
+          <Text  style={styles.btn_text}
+            style={{color:'#aaa'}}
+          >Danh bạ</Text>
+          </View>
         </TouchableHighlight>
       </View>
     </View>
@@ -304,4 +316,12 @@ search: {
     textAlign:'center',
     fontSize:13,
   },
+  btn_text:{
+    // textAlign:'center',
+    // alignItems:'center',
+  },
+  img_footer:{
+    width:25,
+    height:25,
+  },  
 });

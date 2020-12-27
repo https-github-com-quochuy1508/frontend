@@ -106,7 +106,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
           onTouchStart={() => setPress(7)}
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}
-          onPress={() => navigation.navigate('Setting')}>
+          onPress={() => navigation.navigate('WallSetting')}>
           <Text
             style={{
               alignSelf: 'center',
@@ -217,7 +217,7 @@ function Personal({navigation, requestGetCurrentUser, currentUser}) {
           onTouchStart={() => setPress(8)}
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}
-          onPress={() => navigation.navigate('Edit')}>
+          onPress={() => navigation.navigate('WallEdit')}>
           <Text style={{color: Colors.AZURE91, alignSelf: 'center'}}>
             Chỉnh sửa chi tiết công khai
           </Text>

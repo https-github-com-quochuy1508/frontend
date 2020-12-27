@@ -13,7 +13,12 @@ import AllFriendScreen from './src/screens/App/FriendTab/AllFriendScreen';
 import FriendSuggestScreen from './src/screens/App/FriendTab/FriendSuggestScreen';
 import Search from './src/components/search/SearchForm';
 import SearchDiary from './src/components/search/SearchDiary';
-import Messenger from './src/screens/App/Messenger'
+import Messenger from './src/screens/App/Messenger';
+import YourWall from './src/screens/App/Wall/YourWall';
+import OtherWall from './src/screens/App/Wall/OtherWall';
+import Setting from './src/screens/App/PersonalTab/Setting';
+import Edit from './src/screens/App/PersonalTab/Edit';
+
 const rootStack = createStackNavigator();
 
 const App: () => React$Node = () => {
@@ -33,6 +38,19 @@ const App: () => React$Node = () => {
           <rootStack.Screen name="Search" component={Search}/>
           <rootStack.Screen name="SearchDiary" component={SearchDiary}/>
           <rootStack.Screen name="Messenger" component={Messenger}/>
+          <rootStack.Screen name="YourWall" component={YourWall}/>
+          <rootStack.Screen name="OtherWall" component={OtherWall}/>
+          <rootStack.Screen name="WallSetting" component={Setting} options={{
+            headerShown: true,
+            headerTitle: 'Cài đặt trang cá nhân',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            }
+          }} />
+          <rootStack.Screen name="WallEdit" component={Edit} options={{
+            headerShown: true,
+            headerTitle: 'Chỉnh sửa trang cá nhân',
+          }} />
         </rootStack.Navigator>
       </NavigationContainer>
     </Provider>

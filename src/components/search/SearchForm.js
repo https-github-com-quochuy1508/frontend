@@ -5,14 +5,11 @@ import {
   ScrollView,
   StyleSheet,
   TouchableHighlight,
-  TouchableOpacity,
-  Modal,
   TextInput,
-  Button,
   ActivityIndicator,
 } from 'react-native';
 import * as Colors from '../../assets/Colors';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import SearchHistoryPane from './SearchHistoryPane';
 import SearchResultPane from './SearchResult';
 import {connect} from 'react-redux';
@@ -69,7 +66,7 @@ function SearchForm({navigation, requestSearchPost, searchReturn}) {
           style={styles.back_button}
           onPress={() => navigation.goBack()}
           underlayColor={'#ccc'}>
-          <Icon name="arrow-back" size={25} />
+          <Icon name="arrowleft" size={25} />
         </TouchableHighlight>
         <TextInput
           style={styles.inputForm}
