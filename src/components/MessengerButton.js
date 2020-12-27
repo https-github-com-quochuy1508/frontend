@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Fontisto';
 import {TouchableOpacity} from 'react-native';
 import * as Colors from '../assets/Colors';
+import {navigation} from '../../rootNavigation';
 
 function MessengerButton() {
   return(
@@ -15,6 +16,7 @@ function MessengerButton() {
         justifyContent: 'center',
         alignItems: 'center'
       }}
+      onPress={() => navigation.navigate("Messenger")}
     >
       <Icon name="messenger" size={24}/>
     </TouchableOpacity>

@@ -48,6 +48,10 @@ export default function Button({name}) {
             title = "Đăng xuất";
             image = require('../assets/images/logout.png');
             break;
+        case 'exit':
+            title = "Thoát";
+            image = require('../assets/images/exit.png');
+            break;
     }
     return(
         <View style={styles.btnOption}>
