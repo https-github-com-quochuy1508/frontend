@@ -26,6 +26,7 @@ import {
 } from '../../../redux/actions/postAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import { goBack } from '../../../../rootNavigation';
 
 function FullPostTool({
   navigation,
@@ -76,8 +77,8 @@ function FullPostTool({
       Keyboard.dismiss();
       setModalVisible(true);
     } else {
-      navigation.goBack();
       requestDeletePost(valuePost.id);
+      navigation.goBack();
     }
     return true;
   };
@@ -382,6 +383,7 @@ function FullPostTool({
           onPressOut={() => setPress(0)}
           onPress={() => {
             setModalVisible(false);
+            // requestDeletePost(valuePost.id);
             navigation.goBack();
           }}>
           <Ion

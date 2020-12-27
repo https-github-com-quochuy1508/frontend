@@ -808,8 +808,8 @@ function Post({
               underlayColor={Colors.GRAY91}
               onPress={() => {
                 requestDeletePost(postId);
-                setShowDelete(false);
                 requestGetPosts({});
+                setShowDelete(false);
               }}>
               <Text style={{ color: Colors.BLUE }}>XÓA</Text>
             </TouchableHighlight>
