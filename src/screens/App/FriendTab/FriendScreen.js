@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   Text,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableHighlight,
+  RefreshControl
 } from 'react-native';
 import Search from '../../../components/SearchButton';
 import * as Colors from '../../../assets/Colors';
@@ -19,6 +20,25 @@ function FriendScreen({
   friendRequestValue,
   dataUpdate,
 }) {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+  
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    const param = {
+      filter: {
+        status: 1,
+      }, // status 1 is pending wating for accept
+    };
+    requestListFriendRequest(param);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   useEffect(() => {
     const param = {
       filter: {
@@ -38,7 +58,11 @@ function FriendScreen({
     requestListFriendRequest(param);
   }, [dataUpdate]);
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+    <ScrollView 
+      showsVerticalScrollIndicator={false} 
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.BLUE]}/>}
+    >
       <View style={styles.header}>
         <Text style={{fontSize: 25, fontWeight: 'bold'}}>Bạn bè</Text>
         <Search bgColor={Colors.GRAY91} />

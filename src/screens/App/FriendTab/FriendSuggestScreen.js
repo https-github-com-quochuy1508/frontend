@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   ScrollView,
   Pressable,
+  RefreshControl
 } from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Oct from 'react-native-vector-icons/Octicons';
@@ -16,6 +17,18 @@ import FriendCard from './FriendSuggest';
 
 export default function FriendSuggest({navigation}) {
   const [showSort, setShowSort] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+  
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -33,7 +46,10 @@ export default function FriendSuggest({navigation}) {
           <Oct name="search" size={24} />
         </TouchableHighlight>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[Colors.BLUE]}/>}
+      >
         <View style={styles.requestHeader}>
           <Text style={styles.suggestText}>Những người bạn có thể biết</Text>
         </View>
