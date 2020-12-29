@@ -23,7 +23,7 @@ const Navigation = ({users}) => {
     // console.log('users: ', users);
     getUser();
   }, [users]);
-  return auth ? <App /> : <Auth/> ;
+  return true ? <App /> : <Auth/> ;
 };
 
 const mapStateToProps = (state) => state;
