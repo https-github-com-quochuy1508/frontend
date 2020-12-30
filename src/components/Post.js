@@ -825,7 +825,7 @@ function Post({
             <TouchableHighlight
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
-              onPress={() => setShowDelete(false)}>
+              onPress={() => {setShowDelete(false); updatePost()}}>
               <Text>CHỈNH SỬA</Text>
             </TouchableHighlight>
             <TouchableHighlight

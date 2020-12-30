@@ -19,6 +19,8 @@ import {
   requestGetCurrentUser,
   requestChangeUser,
 } from '../../../redux/actions/userAction';
+import {requestCreatePost} from '../../../redux/actions/postAction';
+import userServices from '../../../redux/services/userServices';
 import {connect} from 'react-redux';
 import Post from '../../../components/Post';
 import countTimeAgo from '../../../utils/countTimeAgo';
@@ -41,6 +43,7 @@ function Personal({
   requestGetCurrentUser,
   currentUser,
   requestChangeUser,
+  createPost
 }) {
   const [isCoverModalVisible, setCoverModalVisible] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
@@ -70,6 +73,14 @@ function Personal({
     }
   }, [currentUser]);
 
+  const onFullPostToolPressHandler = async (data) => {
+    const fakeData = {
+      userId: (await userServices.getUserId()) || 0,
+    };
+    createPost(fakeData);
+    navigation.navigate('FullPostTool');
+  };
+  
   const changeAvatar = (isCover) => {
     ImagePicker.showImagePicker(options, async (response) => {
       // console.log('response: ', response);
@@ -140,7 +151,7 @@ function Personal({
       <Text style={styles.name}>{dataUser && dataUser.name}</Text>
       <View style={{flexDirection: 'row'}}>
         <Pressable style={styles.storyBtn}>
-          <Text style={{color: '#ffffff', alignSelf: 'center', fontSize: 15}}>
+          <Text style={{color: '#ffffff', alignSelf: 'center', fontSize: 15, fontWeight: 'bold'}}>
             <Ant name="pluscircle" style={{fontSize: 15}} /> Thêm vào tin
           </Text>
         </Pressable>
@@ -255,7 +266,7 @@ function Personal({
           onTouchEnd={() => setPress(0)}
           onPressOut={() => setPress(0)}
           onPress={() => navigation.navigate('WallEdit')}>
-          <Text style={{color: Colors.AZURE91, alignSelf: 'center'}}>
+          <Text style={{color: Colors.AZURE91, alignSelf: 'center', fontWeight: "bold"}}>
             Chỉnh sửa chi tiết công khai
           </Text>
         </Pressable>
@@ -375,7 +386,7 @@ function Personal({
         <TouchableHighlight
           style={styles.postWrap}
           underlayColor={Colors.WHITESMOKE}
-          onPress={() => navigation.navigate("FullPostTool")}
+          onPress={() => onFullPostToolPressHandler()}
         >
           <View style={{flexDirection: 'row'}}>
             <Image
@@ -397,7 +408,7 @@ function Personal({
           </View>
         </TouchableHighlight>
       </View>
-      <View>
+      <View style={{backgroundColor: "#c9ccd1"}}>
         {dataUser &&
           dataUser.posts &&
           Array.isArray(dataUser.posts) &&
@@ -424,7 +435,7 @@ function Personal({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.WHITE,
   },
 
   editBtn: {
@@ -600,9 +611,7 @@ const styles = StyleSheet.create({
 
   posting: {
     borderTopWidth: 10,
-    borderBottomWidth: 10,
     borderTopColor: '#c9ccd1',
-    borderBottomColor: '#c9ccd1',
     width: '100%',
     paddingTop: '3%',
   },
@@ -642,6 +651,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     requestChangeUser: (data) => {
       dispatch(requestChangeUser(data));
+    },
+    createPost: (params) => {
+      dispatch(requestCreatePost(params));
     },
   };
 };
