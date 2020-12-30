@@ -12,6 +12,8 @@ import * as Colors from '../../assets/Colors';
 import Search from '../../components/SearchButton';
 import Messenger from '../../components/MessengerButton';
 import Chat from './Chat/Chat';
+import Info from './Chat/Info';
+import Ion from 'react-native-vector-icons/Ionicons';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -46,6 +48,22 @@ export default function AppStack() {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Info" component={Info} options={{
+        headerTitle: '',
+        headerRight: () => (
+          <Pressable
+          style={[
+            { backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE },
+            {marginRight: 20}
+          ]}
+          onTouchStart={() => setPress(2)}
+          onTouchEnd={() => setPress(0)}
+          onPressOut={() => setPress(0)}>
+            <Ion name='ellipsis-vertical-sharp' size={22} color={Colors.BLACK}></Ion>
+          </Pressable>
+          
+        ),
+      }} />
       <Stack.Screen
         name="App"
         component={AppTabs}
@@ -69,6 +87,7 @@ export default function AppStack() {
           }
         }
       />
+      
       <Stack.Screen name="Chat" component={Chat} options={{
         headerTitle: '',
         headerRight: () => (

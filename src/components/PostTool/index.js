@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 function PostTool({createPost}) {
   const [press, setPress] = useState(false);
   const [avt, setAvt] = useState(" ");
+  const [uid, setUid] = useState();
 
   const onFullPostToolPressHandler = async (data) => {
     const fakeData = {
@@ -21,9 +22,11 @@ function PostTool({createPost}) {
 
   const getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('avatar')
-      if(value !== null) {
-        setAvt(value);
+      const a = await AsyncStorage.getItem('avatar')
+      const u = await AsyncStorage.getItem('userId')
+      if(a !== null && u !== null) {
+        setAvt(a);
+        setUid(u);
       }
     } catch(e) {
       // error reading value
@@ -35,7 +38,7 @@ function PostTool({createPost}) {
   })
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("YourWall")}>
+      <TouchableOpacity onPress={() => navigation.navigate("YourWall", {userId: uid})}>
         <Image source={{uri: avt}} style={styles.userAvatar}/>
       </TouchableOpacity>
       <Pressable
