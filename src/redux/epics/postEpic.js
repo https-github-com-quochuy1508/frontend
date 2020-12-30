@@ -120,11 +120,11 @@ const searchPostsEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_SEARCH_POST),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(postApi.search(action.payload)).pipe(
         map((response) => {
           if (response && response.success) {
-            console.log('response: ', response);
+            // console.log('response: ', response);
             return searchPostSuccess(response);
           } else {
             return searchPostFail(response.error);
