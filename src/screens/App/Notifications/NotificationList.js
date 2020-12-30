@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native'
-import NotificationItemContainer from './NotificationItem';
+import { View } from 'react-native'
+import NotificationItem from './NotificationItem';
 
 export default function NotificationList() {
   const notifications = [1, 2, 3]
@@ -8,7 +8,7 @@ export default function NotificationList() {
     return (
         <View >
             {notifications.map((item, index) => (
-                <NotificationItemContainer key={index}  />
+                <NotificationItem key={index} type={2} isRead={true} />
             ))}
         </View>
     )
