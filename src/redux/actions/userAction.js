@@ -6,6 +6,10 @@ export const REQUEST_GET_INFO_FRIEND = 'REQUEST_GET_INFO_FRIEND';
 export const GET_INFO_FRIEND_SUCCESS = `GET_INFO_FRIEND_SUCCESS`;
 export const GET_INFO_FRIEND_FAIL = `GET_INFO_FRIEND_FAIL`;
 
+export const REQUEST_GET_FRIEND_STATUS = 'REQUEST_FRIEND_STATUS';
+export const GET_FRIEND_STATUS_SUCCESS = `GET_FRIEND_STATUS_SUCCESS`;
+export const GET_FRIEND_STATUS_FAIL = `GET_FRIEND_STATUS_FAIL`;
+
 export const REQUEST_CHANGE_USER = 'REQUEST_CHANGE_USER';
 export const CHANGE_USER_SUCCESS = `CHANGE_USER_SUCCESS`;
 export const CHANGE_USER_FAIL = `CHANGE_USER_FAIL`;
@@ -62,6 +66,25 @@ export const getInfoFriendSuccess = (response = null) => {
 export const getInfoFriendFail = (response = null) => {
   return {
     type: GET_INFO_FRIEND_FAIL,
+    error: response,
+  };
+};
+
+export const requestGetFriendStatus = (friendId) => ({
+  type: REQUEST_GET_FRIEND_STATUS,
+  payload: friendId,
+});
+
+export const getFriendStatusSuccess = (response = null) => {
+  return {
+    type: GET_FRIEND_STATUS_SUCCESS,
+    result: response,
+  };
+};
+
+export const getFriendStatusFail = (response = null) => {
+  return {
+    type: GET_FRIEND_STATUS_FAIL,
     error: response,
   };
 };

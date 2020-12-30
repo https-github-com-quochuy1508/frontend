@@ -44,6 +44,15 @@ export default {
     });
   },
 
+  getFriendStatus: async (friendId) => {
+    return request(
+      varEnv.apiUrlBackend + `/api/users/checkFriend/` + friendId,
+      {
+        method: 'GET',
+      },
+    );
+  },
+
   setToken: async (token) => {
     try {
       await AsyncStorage.setItem('token', token);
