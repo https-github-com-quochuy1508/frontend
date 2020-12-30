@@ -80,17 +80,17 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
           <Image
             style={styles.cover}
             source={{
-              uri: info.avatarCover,
+              uri: info && info.avatarCover,
             }}
           />
           <Image
             style={styles.avatar}
             source={{
-              uri: info.avatar,
+              uri: info && info.avatar,
             }}
           />
         </View>
-        <Text style={styles.name}>{info.name}</Text>
+        <Text style={styles.name}>{info && info.name}</Text>
         <View style={{flexDirection: 'row'}}>
           {friend == 4 ? (
             <View style={{flexDirection: 'row'}}>

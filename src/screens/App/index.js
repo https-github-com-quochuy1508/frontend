@@ -48,76 +48,110 @@ export default function AppStack() {
   const [press, setPress] = useState(0);
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Info" component={Info} options={{
-        headerTitle: '',
-        headerRight: () => (
-          <Pressable
-          style={[
-            { backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE },
-            {marginRight: 20}
-          ]}
-          onTouchStart={() => setPress(2)}
-          onTouchEnd={() => setPress(0)}
-          onPressOut={() => setPress(0)}>
-            <Ion name='ellipsis-vertical-sharp' size={22} color={Colors.BLACK}></Ion>
-          </Pressable>
-          
-        ),
-      }} />
       <Stack.Screen
         name="App"
         component={AppTabs}
-        options={
-          {
-            headerTitle: "fakebook",
-            headerTitleStyle: {
-              color: Colors.BLUE,
-              fontWeight: "bold",
-              fontSize: 28,
-              fontFamily: "Roboto",
-            },
-            headerStyle: {
-              elevation: 0
-            },
-            headerRight: () =>
-              <View style={{ flexDirection: 'row' }}>
-                <Search bgColor={Colors.WHITESMOKE}/>
-                <Messenger />
-              </View>
-          }
-        }
+        options={{
+          headerTitle: 'fakebook',
+          headerTitleStyle: {
+            color: Colors.BLUE,
+            fontWeight: 'bold',
+            fontSize: 28,
+            fontFamily: 'Roboto',
+          },
+          headerStyle: {
+            elevation: 0,
+          },
+          headerRight: () => (
+            <View style={{flexDirection: 'row'}}>
+              <Search bgColor={Colors.WHITESMOKE} />
+              <Messenger />
+            </View>
+          ),
+        }}
       />
-      
-      <Stack.Screen name="Chat" component={Chat} options={{
-        headerTitle: '',
-        headerRight: () => (
-          <View style={{ marginRight: 30, flexDirection: 'row', justifyContent: 'center', }}>
-            <FA name='phone' size={22} color={Colors.BLUE} style={{ marginRight: 30 }}></FA>
-            <FA name='video-camera' size={22} color={Colors.BLUE} style={{ marginRight: 30 }}></FA>
+
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          headerTitle: '',
+          headerRight: () => (
+            <View
+              style={{
+                marginRight: 30,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <FA
+                name="phone"
+                size={22}
+                color={Colors.BLUE}
+                style={{marginRight: 30}}></FA>
+              <FA
+                name="video-camera"
+                size={22}
+                color={Colors.BLUE}
+                style={{marginRight: 30}}></FA>
+              <Pressable
+                style={[
+                  {
+                    backgroundColor:
+                      press == 1 ? Colors.GAINSBORO : Colors.WHITE,
+                  },
+                ]}
+                onTouchStart={() => setPress(1)}
+                onTouchEnd={() => setPress(0)}
+                onPressOut={() => setPress(0)}>
+                <Mat name="information" size={22} color={Colors.BLUE}></Mat>
+              </Pressable>
+            </View>
+          ),
+          headerLeft: () => (
+            <View
+              style={{
+                marginLeft: 30,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <Pressable
+                style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Image
+                  style={{width: 35, height: 35, borderRadius: 20}}
+                  source={{uri: 'https://placeimg.com/50/50/animals'}}></Image>
+                <Text style={{fontSize: 17, marginLeft: 10, marginTop: 3}}>
+                  Quân
+                </Text>
+              </Pressable>
+            </View>
+          ),
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Info"
+        component={Info}
+        options={{
+          headerTitle: '',
+          headerRight: () => (
             <Pressable
               style={[
-                { backgroundColor: press == 1 ? Colors.GAINSBORO : Colors.WHITE },
+                {backgroundColor: press == 2 ? Colors.GAINSBORO : Colors.WHITE},
+                {marginRight: 20},
               ]}
-              onTouchStart={() => setPress(1)}
+              onTouchStart={() => setPress(2)}
               onTouchEnd={() => setPress(0)}
-              onPressOut={() => setPress(0)}
-            >
-              <Mat name='information' size={22} color={Colors.BLUE}></Mat>
+              onPressOut={() => setPress(0)}>
+              <Ion
+                name="ellipsis-vertical-sharp"
+                size={22}
+                color={Colors.BLACK}></Ion>
             </Pressable>
-          </View>
-        ),
-        headerLeft: () => (
-          <View style={{ marginLeft: 30, flexDirection: 'row', justifyContent: 'center', }}>
-            <Pressable style={{flexDirection: 'row', justifyContent: 'center',}}>
-              <Image style={{width: 35, height: 35, borderRadius: 20}} source={{ uri: "https://placeimg.com/50/50/animals" }}></Image>
-              <Text style={{fontSize: 17, marginLeft: 10, marginTop: 3}}>Quân</Text>
-            </Pressable>
-          </View>
-        ),
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
