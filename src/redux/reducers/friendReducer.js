@@ -8,7 +8,7 @@ import {
   GET_INFO_FRIEND_FAIL,
 } from '../actions/userAction';
 const friends = (state = null, action) => {
-  console.log('action: ', action);
+  // console.log('action: ', action);
   switch (action.type) {
     case GET_LIST_FRIEND_REQUEST_SUCCESS:
       return {

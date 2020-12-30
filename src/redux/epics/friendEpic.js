@@ -39,7 +39,7 @@ const getInfoFriendEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_GET_INFO_FRIEND),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(userApi.getInfoFriend(action.payload)).pipe(
         map((response) => {
           console.log('response: ', response);

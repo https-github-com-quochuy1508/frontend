@@ -34,10 +34,10 @@ const changeUserEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_CHANGE_USER),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(userApi.update(action.payload.id, action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response && response.success) {
             return changeUserSuccess(response);
           } else {
