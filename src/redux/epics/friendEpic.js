@@ -12,6 +12,9 @@ import {
   REQUEST_GET_INFO_FRIEND,
   getInfoFriendSuccess,
   getInfoFriendFail,
+  REQUEST_GET_FRIEND_STATUS,
+  getFriendStatusSuccess,
+  getFriendStatusFail,
 } from '../actions/userAction';
 import {combineEpics} from 'redux-observable';
 import friendApi from '../services/friendServices';
@@ -39,14 +42,31 @@ const getInfoFriendEpic = (action$) =>
   action$.pipe(
     ofType(REQUEST_GET_INFO_FRIEND),
     switchMap((action) => {
-      console.log('action: ', action);
+      // console.log('action: ', action);
       return from(userApi.getInfoFriend(action.payload)).pipe(
         map((response) => {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           if (response) {
             return getInfoFriendSuccess(response);
           } else {
             return getInfoFriendFail(response);
+          }
+        }),
+      );
+    }),
+  );
+const getFriendStatusEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_GET_FRIEND_STATUS),
+    switchMap((action) => {
+      console.log('action: ', action);
+      return from(userApi.getFriendStatus(action.payload)).pipe(
+        map((response) => {
+          console.log('response: ', response);
+          if (response) {
+            return getFriendStatusSuccess(response);
+          } else {
+            return getFriendStatusFail(response);
           }
         }),
       );
@@ -73,4 +93,5 @@ export default combineEpics(
   getListRequestFriendEpic,
   changeStatusFriendEpic,
   getInfoFriendEpic,
+  getFriendStatusEpic,
 );

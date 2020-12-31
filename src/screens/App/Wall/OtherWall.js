@@ -15,10 +15,22 @@ import Oct from 'react-native-vector-icons/Octicons';
 import Font from 'react-native-vector-icons/Fontisto';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
-import {requestGetInfoFriend} from '../../../redux/actions/userAction';
+import {
+  requestGetInfoFriend,
+  requestGetFriendStatus,
+} from '../../../redux/actions/userAction';
+import {updateStatusFriendRequest} from '../../../redux/actions/friendAction';
 import {connect} from 'react-redux';
 
-function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
+function OtherWall({
+  route,
+  navigation,
+  requestGetInfoFriend,
+  infoFriends,
+  requestGetFriendStatus,
+  statusFriend,
+  updateStatusFriendRequest,
+}) {
   const [press, setPress] = useState(0);
   const [friend, setFriend] = useState(0);
   const [info, setInfo] = useState(null);
@@ -27,8 +39,9 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
 
   useEffect(() => {
     const {userId} = route.params;
-    console.log('userId: ', userId);
+    // console.log('userId: ', userId);
     requestGetInfoFriend(userId);
+    requestGetFriendStatus(userId);
   }, []);
 
   useEffect(() => {
@@ -37,16 +50,28 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
     }
   }, [infoFriends]);
 
+  useEffect(() => {
+    if (statusFriend && statusFriend.status !== friend) {
+      setFriend(statusFriend.status);
+    }
+  }, [statusFriend]);
+
   const blueButtonHandle = () => {
     switch (friend) {
       case 0:
-        setFriend(1);
-        break;
-      case 1:
         setRequestModal(true);
         break;
-      case 2:
+      case 1:
         setAnswerModal(true);
+        break;
+      case 2:
+        break;
+      case -1:
+        setFriend(0);
+        updateStatusFriendRequest({
+          id: statusFriend && statusFriend.id,
+          status: 0,
+        });
         break;
     }
   };
@@ -80,19 +105,22 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
           <Image
             style={styles.cover}
             source={{
-              uri: info.avatarCover,
+              uri: info && info.avatarCover,
             }}
           />
           <Image
             style={styles.avatar}
             source={{
-              uri: info.avatar,
+              uri: info && info.avatar,
             }}
           />
         </View>
-        <Text style={styles.name}>{info.name}</Text>
+        <Text style={styles.name}>{info && info.name}</Text>
         <View style={{flexDirection: 'row'}}>
-          {friend == 4 ? (
+          {
+            // is Friends
+          }
+          {friend === 2 ? (
             <View style={{flexDirection: 'row'}}>
               <TouchableHighlight
                 style={styles.storyBtn}
@@ -129,9 +157,9 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
                     fontWeight: 'bold',
                   }}>
                   <Ion name="person-add" size={18} />
-                  {friend == 0
+                  {friend === 0
                     ? ' Thêm bạn bè'
-                    : friend == 1
+                    : friend === -1
                     ? ' Đã gửi lời mời'
                     : ' Trả lời'}
                 </Text>
@@ -327,8 +355,12 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
               onPress={() => {
-                setFriend(0);
+                setFriend(-1);
                 setRequestModal(false);
+                updateStatusFriendRequest({
+                  id: statusFriend && statusFriend.id,
+                  status: 1,
+                });
               }}>
               <Text style={{color: Colors.BLUE}}>ĐỒNG Ý</Text>
             </TouchableHighlight>
@@ -366,8 +398,12 @@ function OtherWall({route, navigation, requestGetInfoFriend, infoFriends}) {
               style={styles.deleteAction}
               underlayColor={Colors.GRAY91}
               onPress={() => {
-                setFriend(4);
+                setFriend(2);
                 setAnswerModal(false);
+                updateStatusFriendRequest({
+                  id: statusFriend && statusFriend.id,
+                  status: 2,
+                });
               }}>
               <Text style={{color: Colors.BLUE}}>CHẤP NHẬN</Text>
             </TouchableHighlight>
@@ -635,17 +671,27 @@ const mapStateToProps = (state) => {
   console.log('state: ', state.friend);
   const friend = state.friend;
   let infoFriends = null;
+  let statusFriend = 0;
   if (friend && friend.infoFriends) {
     infoFriends = friend.infoFriends;
   }
 
-  return {infoFriends};
+  if (friend && friend.statusFriend) {
+    statusFriend = friend.statusFriend;
+  }
+  return {infoFriends, statusFriend};
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     requestGetInfoFriend: (id) => {
       dispatch(requestGetInfoFriend(id));
+    },
+    requestGetFriendStatus: (id) => {
+      dispatch(requestGetFriendStatus(id));
+    },
+    updateStatusFriendRequest: (data) => {
+      dispatch(updateStatusFriendRequest(data));
     },
   };
 };

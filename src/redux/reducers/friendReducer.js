@@ -6,9 +6,11 @@ import {
 import {
   GET_INFO_FRIEND_SUCCESS,
   GET_INFO_FRIEND_FAIL,
+  GET_FRIEND_STATUS_SUCCESS,
+  GET_FRIEND_STATUS_FAIL,
 } from '../actions/userAction';
 const friends = (state = null, action) => {
-  console.log('action: ', action);
+  // console.log('action: ', action);
   switch (action.type) {
     case GET_LIST_FRIEND_REQUEST_SUCCESS:
       return {
@@ -29,6 +31,16 @@ const friends = (state = null, action) => {
       return {
         ...state,
         infoFriends: null,
+      };
+    case GET_FRIEND_STATUS_SUCCESS:
+      return {
+        ...state,
+        statusFriend: action.result,
+      };
+    case GET_FRIEND_STATUS_FAIL:
+      return {
+        ...state,
+        statusFriend: null,
       };
     case UPDATE_STATUS_FRIEND_REQUEST_SUCCESS:
       return {

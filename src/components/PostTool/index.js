@@ -21,9 +21,9 @@ function PostTool({createPost}) {
 
   const getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('avatar')
-      if(value !== null) {
-        setAvt(value);
+      const a = await AsyncStorage.getItem('avatar')
+      if(a !== null) {
+        setAvt(a);
       }
     } catch(e) {
       // error reading value
@@ -35,7 +35,7 @@ function PostTool({createPost}) {
   })
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("YourWall")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Wall")}>
         <Image source={{uri: avt}} style={styles.userAvatar}/>
       </TouchableOpacity>
       <Pressable
