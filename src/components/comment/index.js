@@ -19,13 +19,24 @@ import * as Colors from '../../assets/Colors';
 import CommentPane from './CommentPane.js';
 import {requestCreateComment} from '../../redux/actions/commentAction';
 
-function Comment({postId, countLike, liked, comments, requestCreateComment}) {
+function Comment({postId, countLike, liked, listComment, requestCreateComment}) {
   const [isLike, setLike] = useState(liked);
   const [isEmpty, setIsEmpty] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [userId, setUserId] = useState(0);
+  const [comments, setComments] = useState([]);
 
-  const onChangeTextSearch = (content) => {
+  // console.log("11111111111111111111111111 ", listComment);
+
+  useEffect(() => {
+    if (listComment && listComment.length) {
+      //console.log('listPosts.result.result.list: ', listPosts.result.list);
+      let tmp = listComment;
+      setComments(tmp)
+    }
+  }, [listComment]);
+
+  const onChangeTextSearch = (content) => { 
     console.log('content: ', content);
     setCommentContent(content);
     if (content.length) {
@@ -38,7 +49,7 @@ function Comment({postId, countLike, liked, comments, requestCreateComment}) {
   const getData = async () => {
     try {
       const uuid = await AsyncStorage.getItem('userId');
-      if (uuid !== null && uavt !== null) {
+      if (uuid) {
         setUserId(uuid);
       }
     } catch (e) {
@@ -47,18 +58,17 @@ function Comment({postId, countLike, liked, comments, requestCreateComment}) {
   };
 
   useEffect(() => {
-    // console.log('HELLO');
+    // console.log('HELLO ----------------');
     getData();
   }, []);
 
   const onCreateComment = async () => {
-    console.log("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
     const data = {
       userId: userId,
       content: commentContent,
       postId: postId,
     };
-    requestCreateComment(data);
+    await requestCreateComment(data);
   };
 
   return (
@@ -89,6 +99,7 @@ function Comment({postId, countLike, liked, comments, requestCreateComment}) {
           comments.map((comment) => {
             if (comment.content && comment.users) {
               const {avatar, name} = comment.users;
+              // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
               return (
                 <CommentPane
                   key={comment.id}
@@ -112,22 +123,22 @@ function Comment({postId, countLike, liked, comments, requestCreateComment}) {
           autoFocus={true}
           onChangeText={(content) => onChangeTextSearch(content)}
         />
-        <Pressable
+      </View>
+      <Pressable
+        style={[
+          {width: 0, height: 0},
+          !isEmpty && {width: 25, height: 25, position: 'absolute', right: 0, bottom: 13},
+        ]}
+        onPress={() => onCreateComment()}>
+        <Image
+          style={styles.send}
+          source={require('../../assets/images/send.png')}
           style={[
             {width: 0, height: 0},
-            !isEmpty && {width: 25, height: 25, position: 'absolute', right: 0},
+            !isEmpty && {width: 25, height: 25, right: 19},
           ]}
-          onPress={() => onCreateComment()}>
-          <Image
-            style={styles.send}
-            source={require('../../assets/images/send.png')}
-            style={[
-              {width: 0, height: 0},
-              !isEmpty && {width: 25, height: 25, right: 19},
-            ]}
-          />
-        </Pressable>
-      </View>
+        />
+      </Pressable>
     </View>
   );
 }
@@ -187,7 +198,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  return {};
+  let listComment;
+  if (state.comments) {
+    listComment = state.comments.result;
+  }
+  return {
+    listComment
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

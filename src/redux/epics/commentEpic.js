@@ -7,6 +7,10 @@ import {
     REQUEST_CREATE_COMMENT,
     createCommentSuccess,
     createCommentFail,
+
+    REQUEST_GET_COMMENTS,
+    getCommentsSuccess,
+    getCommentsFail
 } from '../actions/commentAction';
 
 import commentService from '../services/commentService';
@@ -30,6 +34,26 @@ const createCommentEpic = (action$) =>
     }),
   );
 
+  const getCommentsEpic = (action$) =>
+  action$.pipe(
+    ofType(REQUEST_GET_COMMENTS),
+    switchMap((action) => {
+      // console.log('action: ', action);
+      return from(commentService.get(action.payload)).pipe(
+        map((response) => {
+          console.log('response:88888888888888888 ', response);
+          if (response && response.count) {
+            // console.log('response: ', response);
+            return getCommentsSuccess(response);
+          } else {
+            return getCommentsFail(response.error);
+          }
+        }),
+      );
+    }),
+  );
+
 export default combineEpics(
-    createCommentEpic
+    createCommentEpic,
+    getCommentsEpic,
 );

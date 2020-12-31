@@ -25,6 +25,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { navigation } from '../../rootNavigation';
 import { requestLikePost, requestUnlikePost } from '../redux/actions/likeAction';
 import { requestCountPost, requestDeletePost, requestGetPosts } from '../redux/actions/postAction';
+import { requestGetComments } from '../redux/actions/commentAction';
 import { connect } from 'react-redux';
 
 function Post({
@@ -38,6 +39,7 @@ function Post({
   requestUnlikePost,
   requestDeletePost,
   requestGetPosts,
+  requestGetComments,
   liked,
   countLike,
   countComment,
@@ -267,7 +269,10 @@ function Post({
         </TouchableHighlight>
         <TouchableHighlight
           underlayColor={Colors.WHITESMOKE}
-          onPress={() => setShowComment(true)}
+          onPress={() => {
+            setShowComment(true);
+            requestGetComments({ postId: postId });
+          }}
           style={{ width: '50%', alignItems: 'center' }}>
           <View style={styles.button}>
             <Ion
@@ -1199,6 +1204,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     requestGetPosts: (params) => {
       dispatch(requestGetPosts(params));
+    },
+    requestGetComments: (params) => {
+      dispatch(requestGetComments(params));
     },
   };
 };
