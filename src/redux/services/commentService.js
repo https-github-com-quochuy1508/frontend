@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default {
   create: (params) => {
-    console.log("Call api create comment ************** ", params);
+    console.log("params:************** ", params);
     return request(varEnv.apiUrlBackend + `/api/comments`, {
       method: 'POST',
       body: {
@@ -13,4 +13,12 @@ export default {
     });
   },
   
+  get: (params) => {
+    // console.log("params:************** ", params);
+    return request(varEnv.apiUrlBackend + `/api/comments`, {
+      method: 'GET',
+      params: params,
+    });
+  },
+
 };
