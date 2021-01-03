@@ -15,10 +15,13 @@ export default {
   
   get: (params) => {
     // console.log("params:************** ", params);
-    return request(varEnv.apiUrlBackend + `/api/comments`, {
-      method: 'GET',
-      params: params,
-    });
+    return request(
+      varEnv.apiUrlBackend +
+        `/api/comments?filter=${JSON.stringify(params.filter)}`,
+      {
+        method: 'GET',
+      },
+    );
   },
 
 };

@@ -24,6 +24,8 @@ function Comment({postId, countLike, liked, listComment, requestCreateComment}) 
   const [isEmpty, setIsEmpty] = useState(true);
   const [commentContent, setCommentContent] = useState("");
   const [userId, setUserId] = useState(0);
+  const [avt, setAvt] = useState("");
+  const [name, setName] = useState("");
   const [comments, setComments] = useState([]);
 
   // console.log("11111111111111111111111111 ", listComment);
@@ -49,8 +51,12 @@ function Comment({postId, countLike, liked, listComment, requestCreateComment}) 
   const getData = async () => {
     try {
       const uuid = await AsyncStorage.getItem('userId');
-      if (uuid) {
+      const avt = await AsyncStorage.getItem('avatar');
+      const name = await AsyncStorage.getItem('name');
+      if (uuid && avt && name) {
         setUserId(uuid);
+        setAvt(avt);
+        setName(name);
       }
     } catch (e) {
       // error reading value
@@ -97,8 +103,16 @@ function Comment({postId, countLike, liked, listComment, requestCreateComment}) 
         {comments &&
           Array.isArray(comments) &&
           comments.map((comment) => {
-            if (comment.content && comment.users) {
-              const {avatar, name} = comment.users;
+            if (comment.content) {
+              let avatar, name;
+              if (comment.users) {
+                avatar = comment.users.avatar;
+                name = comment.users.name;
+              }
+              else {
+                avatar = avt;
+                name = name;
+              }
               // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
               return (
                 <CommentPane

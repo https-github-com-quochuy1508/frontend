@@ -271,7 +271,7 @@ function Post({
           underlayColor={Colors.WHITESMOKE}
           onPress={() => {
             setShowComment(true);
-            requestGetComments({ postId: postId });
+            requestGetComments({filter: { postId: postId }});
           }}
           style={{ width: '50%', alignItems: 'center' }}>
           <View style={styles.button}>

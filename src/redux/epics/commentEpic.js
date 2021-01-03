@@ -42,7 +42,7 @@ const createCommentEpic = (action$) =>
       return from(commentService.get(action.payload)).pipe(
         map((response) => {
           console.log('response:88888888888888888 ', response);
-          if (response && response.count) {
+          if (response && response.count !== null && response.count !== undefined) {
             // console.log('response: ', response);
             return getCommentsSuccess(response);
           } else {
