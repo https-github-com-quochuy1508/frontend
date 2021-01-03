@@ -19,8 +19,8 @@ import {
         };
 
       case CREATE_COMMENT_SUCCESS:
-          // console.log("Okkkkkkkkkkkkkkkkkkkkkkkkkkkkkk ", action.result.result);
-          let oldList = state.result;
+          console.log("Okkkkkkkkkkkkkkkkkkkkkkkkkkkkkk ", state.result, " ",action.result.result);
+          let oldList = state ? state.result : [];
         return {
           ...state,
           result: [...oldList, action.result.result],
