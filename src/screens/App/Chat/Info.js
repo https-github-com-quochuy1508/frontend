@@ -12,7 +12,7 @@ import Ant from 'react-native-vector-icons/AntDesign';
 import Modal from 'react-native-modal';
 import * as Colors from '../../../assets/Colors';
 
-export default function Info() {
+export default function Info({ navigation }) {
     const [press, setPress] = useState(0);
     const [isModalVisible, setModalVisible] = useState(false);
     return (
@@ -51,56 +51,69 @@ export default function Info() {
                     <FA5 name='minus-circle' size={22} color={Colors.BLACK} style={{ justifyContent: 'center', alignSelf: 'center' }}></FA5>
                 </Pressable>
             </Pressable>
+
             <Modal
                 isVisible={isModalVisible}
-                backdropOpacity={0.35}
+                backdropOpacity={0.7}
                 onBackdropPress={() => setModalVisible(false)}
                 style={styles.modal}>
-                    <Image style={styles.cover} source={{ uri: "https://placeimg.com/800/450/any" }}></Image>
-                <View style={{ top: '-40%' }}>
-                    <Pressable
-                        style={[
-                            styles.icon,
-                            { backgroundColor: press == 4 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', marginTop: '3%', left: '85%' },
-                        ]}
-                        onTouchStart={() => setPress(4)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
-                        onPress={() => setModalVisible(false)}>
-                        <Ant name='close' size={20} color={Colors.BLACK} style={{ alignSelf: 'center' }}></Ant>
-                    </Pressable>
-                    <Pressable
-                        onTouchStart={() => setPress(1)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}>
-                        <Image style={[styles.avatar]}
-                            source={{ uri: "https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2" }} />
-                    </Pressable>
-                    <Text style={{ alignSelf: 'center', fontWeight: 'bold', fontSize: 28, marginTop: '2%' }}>Quân Nguyễn</Text>
-                    <Pressable
-                        style={[
-                            styles.icon,
-                            { backgroundColor: press == 3 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', alignSelf: 'center', marginTop: '4%' },
-                        ]}
-                        onTouchStart={() => setPress(3)}
-                        onTouchEnd={() => setPress(0)}
-                        onPressOut={() => setPress(0)}
-                        onPress={() => setModalVisible(true)}>
-                        <FA name='comment' size={16} color={Colors.BLACK} style={{ alignSelf: 'center' }}></FA>
+                <View style={{ bottom: '40%',  }}>
+                    <View style={{ paddingBottom: 20, borderBottomLeftRadius: 20, borderBottomRightRadius: 20}}>
+                        <Image style={styles.cover} source={{ uri: "https://placeimg.com/800/450/any" }}></Image>
+                        <Pressable
+                            style={[
+                                styles.closeIcon,
+                                { backgroundColor: press == 4 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', left: '88%' },
+                            ]}
+                            onTouchStart={() => setPress(4)}
+                            onTouchEnd={() => setPress(0)}
+                            onPressOut={() => setPress(0)}
+                            onPress={() => setModalVisible(false)}>
+                            <Ant name='close' size={16} color={Colors.BLACK} style={{ alignSelf: 'center' }}></Ant>
+                        </Pressable>
+                        <Pressable
+                            onTouchStart={() => setPress(1)}
+                            onTouchEnd={() => setPress(0)}
+                            onPressOut={() => setPress(0)}>
+                            <Image style={[styles.avatar]}
+                                source={{ uri: "https://scontent-sin6-1.xx.fbcdn.net/v/t1.15752-9/130720265_169936591506039_5571318822476082269_n.jpg?_nc_cat=100&ccb=2&_nc_sid=ae9488&_nc_ohc=B7jb8LKVm9AAX_iKd3V&_nc_ht=scontent-sin6-1.xx&oh=4fcda1e478e529511fa48c6397ff35b1&oe=5FF7AAB2" }} />
+                        </Pressable>
+                        <Text style={{ alignSelf: 'center', fontWeight: 'bold', fontSize: 28, marginTop: '2%' }}>Quân Nguyễn</Text>
+                        <Pressable
+                            style={[
+                                styles.icon,
+                                { backgroundColor: press == 3 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', alignSelf: 'center', marginTop: '4%' },
+                            ]}
+                            onTouchStart={() => setPress(3)}
+                            onTouchEnd={() => setPress(0)}
+                            onPressOut={() => setPress(0)}
+                            onPress={() => setModalVisible(true)}>
+                            <FA name='comment' size={16} color={Colors.BLACK} style={{ alignSelf: 'center' }}></FA>
 
-                    </Pressable>
-                    <Text style={{ alignSelf: 'center', marginTop: '1%' }}>Nhắn tin</Text>
-                    <Pressable
-                    style={[
-                        styles.viewBtn,
-                        { backgroundColor: press == 5 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', alignSelf: 'center', marginTop: '4%' },
-                    ]}
-                    onTouchStart={() => setPress(5)}
-                    onTouchEnd={() => setPress(0)}
-                    onPressOut={() => setPress(0)}>
-                        <Text style={{alignSelf: 'center'}}>XEM TRANG CÁ NHÂN TRÊN FACEBOOK</Text>
-                    </Pressable>
-                    \
+                        </Pressable>
+                        <Text style={{ alignSelf: 'center', marginTop: '1%' }}>Nhắn tin</Text>
+                        <Pressable
+                            style={[
+                                styles.viewBtn,
+                                { backgroundColor: press == 5 ? Colors.GAINSBORO : '#f5f5f5', justifyContent: 'center', alignSelf: 'center', marginTop: '4%' },
+                            ]}
+                            onTouchStart={() => setPress(5)}
+                            onTouchEnd={() => setPress(0)}
+                            onPressOut={() => setPress(0)}>
+                            <Text style={{ alignSelf: 'center' }}>XEM TRANG CÁ NHÂN TRÊN FACEBOOK</Text>
+                        </Pressable>
+                    </View>
+                    <View style={styles.separator}>
+                        <View style={{height: 20, backgroundColor: Colors.WHITE, borderBottomLeftRadius:20, borderBottomRightRadius:20}}></View>
+                        <View style={{height: 20, backgroundColor: Colors.WHITE, borderTopLeftRadius:20, borderTopRightRadius:20, marginTop: 10}}></View>
+                    </View>
+                    <View>
+                        <Text style={{color: Colors.GRAY, marginLeft: 20, marginBottom: 20}}>Điểm chung</Text>
+                        <View style={{flexDirection: 'row',}}>
+                            <Ion name='person' color={'#818181'} size={26} style={{marginLeft: 20}}></Ion>
+                            <Text style={{marginLeft: 20, marginTop: 2}}>60 bạn chung</Text>
+                        </View>
+                    </View>
                 </View>
             </Modal>
         </View>
@@ -121,23 +134,27 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
+    separator: {
+        backgroundColor: '#4d4d4d',
+        height: 50,
+    },
+
     cover: {
         height: 130,
         width: '100%',
-        top: '-23%',
+        top: '25%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
 
     modal: {
-        height: '93%',
+        backgroundColor: Colors.WHITE,
+        height: '80%',
         margin: 0,
         position: 'absolute',
-        bottom: 0,
+        top: '20%',
         width: '100%',
-        backgroundColor: Colors.WHITE,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderRadius: 20,
         paddingTop: 15,
     },
 
@@ -160,6 +177,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
 
+    closeIcon: {
+        width: 25,
+        height: 25,
+        borderRadius: 20,
+    },
+
     line: {
         marginTop: '4%',
         borderTopWidth: 1,
@@ -170,7 +193,7 @@ const styles = StyleSheet.create({
     },
 
     avatar: {
-        marginTop: '6%',
+        marginTop: '9%',
         alignSelf: 'center',
         width: 110,
         height: 110,
