@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableHighlight} from 'react-native';
 import * as Colors from '../../assets/Colors';
+import {navigation} from '../../../rootNavigation';
 
 export default function ChatPane({avt, name,mess}) {
-    const onPress= () =>{}
+    const onPress= () =>{navigation.navigate("Chat")}
   return (
     <TouchableHighlight
     onPress={onPress}
