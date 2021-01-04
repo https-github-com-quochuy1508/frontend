@@ -16,6 +16,7 @@ import Info from './Chat/Info';
 import Ion from 'react-native-vector-icons/Ionicons';
 import FA from 'react-native-vector-icons/FontAwesome';
 import Mat from 'react-native-vector-icons/MaterialCommunityIcons';
+import {navigation} from '../../../rootNavigation';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -102,7 +103,8 @@ export default function AppStack() {
                 ]}
                 onTouchStart={() => setPress(1)}
                 onTouchEnd={() => setPress(0)}
-                onPressOut={() => setPress(0)}>
+                onPressOut={() => setPress(0)}
+                onPress={() => navigation.navigate("Info")}>
                 <Mat name="information" size={22} color={Colors.BLUE}></Mat>
               </Pressable>
             </View>
